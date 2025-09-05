@@ -2,10 +2,7 @@
 
 import ScalevAPI from 'scalev-api';
 
-const client = new ScalevAPI({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new ScalevAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource bundles', () => {
   // Prism doesn't support callbacks yet
@@ -46,6 +43,40 @@ describe('resource bundles', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism doesn't support callbacks yet
+  test.skip('update', async () => {
+    const responsePromise = client.bundles.update(0);
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism doesn't support callbacks yet
+  test.skip('update: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.bundles.update(
+        0,
+        {
+          bundlelines: [{ quantity: 0, variant_id: 0 }],
+          custom_id: 'custom_id',
+          description: 'description',
+          images: ['https://example.com'],
+          meta_thumbnail: 'https://example.com',
+          name: 'name',
+          public_name: 'public_name',
+          rich_description: 'rich_description',
+          weight_bump: 0,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(ScalevAPI.NotFoundError);
   });
 
   // Prism doesn't support callbacks yet

@@ -6,6 +6,7 @@ export { Metadata, Endpoint, HandlerFunction };
 
 import create_bundles from './bundles/create-bundles';
 import retrieve_bundles from './bundles/retrieve-bundles';
+import update_bundles from './bundles/update-bundles';
 import list_bundles from './bundles/list-bundles';
 import delete_bundles from './bundles/delete-bundles';
 import count_bundles from './bundles/count-bundles';
@@ -66,6 +67,7 @@ import retrieve_product_taxonomies from './product-taxonomies/retrieve-product-t
 import list_product_taxonomies from './product-taxonomies/list-product-taxonomies';
 import create_products from './products/create-products';
 import retrieve_products from './products/retrieve-products';
+import update_products from './products/update-products';
 import list_products from './products/list-products';
 import delete_products from './products/delete-products';
 import count_products from './products/count-products';
@@ -86,6 +88,7 @@ import get_estimates_shipping_costs from './shipping-costs/get-estimates-shippin
 import search_warehouses_shipping_costs from './shipping-costs/search-warehouses-shipping-costs';
 import create_stores from './stores/create-stores';
 import retrieve_stores from './stores/retrieve-stores';
+import update_stores from './stores/update-stores';
 import list_stores from './stores/list-stores';
 import delete_stores from './stores/delete-stores';
 import list_custom_audiences_stores from './stores/list-custom-audiences-stores';
@@ -102,6 +105,7 @@ import add_stores_courier_services from './stores/courier-services/add-stores-co
 import remove_stores_courier_services from './stores/courier-services/remove-stores-courier-services';
 import create_stores_follow_up_chats from './stores/follow-up-chats/create-stores-follow-up-chats';
 import retrieve_stores_follow_up_chats from './stores/follow-up-chats/retrieve-stores-follow-up-chats';
+import update_stores_follow_up_chats from './stores/follow-up-chats/update-stores-follow-up-chats';
 import list_stores_follow_up_chats from './stores/follow-up-chats/list-stores-follow-up-chats';
 import delete_stores_follow_up_chats from './stores/follow-up-chats/delete-stores-follow-up-chats';
 import list_stores_payment_methods from './stores/payment-methods/list-stores-payment-methods';
@@ -131,6 +135,7 @@ function addEndpoint(endpoint: Endpoint) {
 
 addEndpoint(create_bundles);
 addEndpoint(retrieve_bundles);
+addEndpoint(update_bundles);
 addEndpoint(list_bundles);
 addEndpoint(delete_bundles);
 addEndpoint(count_bundles);
@@ -191,6 +196,7 @@ addEndpoint(retrieve_product_taxonomies);
 addEndpoint(list_product_taxonomies);
 addEndpoint(create_products);
 addEndpoint(retrieve_products);
+addEndpoint(update_products);
 addEndpoint(list_products);
 addEndpoint(delete_products);
 addEndpoint(count_products);
@@ -211,6 +217,7 @@ addEndpoint(get_estimates_shipping_costs);
 addEndpoint(search_warehouses_shipping_costs);
 addEndpoint(create_stores);
 addEndpoint(retrieve_stores);
+addEndpoint(update_stores);
 addEndpoint(list_stores);
 addEndpoint(delete_stores);
 addEndpoint(list_custom_audiences_stores);
@@ -227,6 +234,7 @@ addEndpoint(add_stores_courier_services);
 addEndpoint(remove_stores_courier_services);
 addEndpoint(create_stores_follow_up_chats);
 addEndpoint(retrieve_stores_follow_up_chats);
+addEndpoint(update_stores_follow_up_chats);
 addEndpoint(list_stores_follow_up_chats);
 addEndpoint(delete_stores_follow_up_chats);
 addEndpoint(list_stores_payment_methods);

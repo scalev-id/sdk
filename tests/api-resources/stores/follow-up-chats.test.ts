@@ -2,10 +2,7 @@
 
 import ScalevAPI from 'scalev-api';
 
-const client = new ScalevAPI({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new ScalevAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource followUpChats', () => {
   // Prism doesn't support callbacks yet
@@ -53,6 +50,41 @@ describe('resource followUpChats', () => {
   // Prism doesn't support callbacks yet
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.stores.followUpChats.retrieve(0, { store_id: 0 });
+  });
+
+  // Prism doesn't support callbacks yet
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.stores.followUpChats.update(0, {
+      store_id: 0,
+      name: 'name',
+      provider: 'provider',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism doesn't support callbacks yet
+  test.skip('update: required and optional params', async () => {
+    const response = await client.stores.followUpChats.update(0, {
+      store_id: 0,
+      name: 'name',
+      provider: 'provider',
+      change_status: true,
+      hours_after: 0,
+      image: 'https://example.com',
+      is_default: true,
+      text_for_bank_transfer: 'text_for_bank_transfer',
+      text_for_cod: 'text_for_cod',
+      text_for_epayment: 'text_for_epayment',
+      trigger: 'trigger',
+      wa_gateway_assignation_type: 'wa_gateway_assignation_type',
+      wa_integration_id: 0,
+    });
   });
 
   // Prism doesn't support callbacks yet

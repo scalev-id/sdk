@@ -2,10 +2,7 @@
 
 import ScalevAPI from 'scalev-api';
 
-const client = new ScalevAPI({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new ScalevAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource products', () => {
   // Prism doesn't support callbacks yet
@@ -68,6 +65,58 @@ describe('resource products', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism doesn't support callbacks yet
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.products.update(0, { item_type: 'physical', name: 'name' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism doesn't support callbacks yet
+  test.skip('update: required and optional params', async () => {
+    const response = await client.products.update(0, {
+      item_type: 'physical',
+      name: 'name',
+      description: 'description',
+      is_inventory: true,
+      is_multiple: true,
+      is_product_sharing: true,
+      meta_thumbnail: 'https://example.com',
+      option1_name: 'option1_name',
+      option2_name: 'option2_name',
+      option3_name: 'option3_name',
+      public_name: 'public_name',
+      rich_description: 'rich_description',
+      slug: 'slug',
+      taxonomy_id: 0,
+      variants: [
+        {
+          price: 0,
+          weight: 0,
+          cogs: 0,
+          description: 'description',
+          images: ['https://example.com'],
+          is_checked: true,
+          is_deleted: true,
+          metadata: { foo: 'bar' },
+          option1_value: 'option1_value',
+          option2_value: 'option2_value',
+          option3_value: 'option3_value',
+          reseller_price: 0,
+          rich_description: 'rich_description',
+          self_file_urls: ['https://example.com'],
+          sku: 'sku',
+          variant_id: 0,
+        },
+      ],
+    });
   });
 
   // Prism doesn't support callbacks yet

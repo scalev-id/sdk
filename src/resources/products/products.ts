@@ -50,6 +50,13 @@ export class Products extends APIResource {
   }
 
   /**
+   * Updates the details of a product, including its variants.
+   */
+  update(id: number, body: ProductUpdateParams, options?: RequestOptions): APIPromise<ProductUpdateResponse> {
+    return this._client.patch(path`/v2/products/${id}`, { body, ...options });
+  }
+
+  /**
    * Retrieves a paginated list of products with optional filtering. The data is
    * sorted by id in descending order and cannot be changed. Uses cursor-based
    * pagination with default page size of 25 and maximum of 25.
@@ -423,7 +430,7 @@ export namespace ProductCreateResponse {
         /**
          * Mailketing List ID
          */
-        id?: number;
+        id: number;
 
         /**
          * Mailketing List Name
@@ -1154,7 +1161,738 @@ export namespace ProductRetrieveResponse {
         /**
          * Mailketing List ID
          */
+        id: number;
+
+        /**
+         * Mailketing List Name
+         */
+        list?: string;
+
+        /**
+         * Mailketing List Name
+         */
+        list_name?: string;
+      }
+    }
+
+    export interface Store {
+      /**
+       * Store ID
+       */
+      id?: number;
+
+      custom_domain?: Store.CustomDomain;
+
+      /**
+       * Store name
+       */
+      name?: string;
+    }
+
+    export namespace Store {
+      export interface CustomDomain {
+        /**
+         * Custom Domain ID
+         */
         id?: number;
+
+        /**
+         * Full URL
+         */
+        full_url?: string;
+
+        /**
+         * Is Verified
+         */
+        is_verified?: boolean;
+      }
+    }
+
+    export interface Taxonomy {
+      /**
+       * Taxonomy ID
+       */
+      id?: number;
+
+      /**
+       * Full Path
+       */
+      full_path?: string;
+
+      /**
+       * Level 1
+       */
+      level_1?: string;
+
+      /**
+       * Level 2
+       */
+      level_2?: string;
+
+      /**
+       * Level 3
+       */
+      level_3?: string;
+
+      /**
+       * Level 4
+       */
+      level_4?: string;
+
+      /**
+       * Level 5
+       */
+      level_5?: string;
+
+      /**
+       * Level 6
+       */
+      level_6?: string;
+
+      /**
+       * Level 7
+       */
+      level_7?: string;
+    }
+
+    export interface Variant {
+      /**
+       * Variant ID
+       */
+      id?: number;
+
+      /**
+       * Cost of Goods Sold
+       */
+      cogs?: number;
+
+      /**
+       * Cost of Goods Sold Before Tax
+       */
+      cogs_bt?: number;
+
+      created_at?: string;
+
+      /**
+       * Variant Description
+       */
+      description?: string;
+
+      digital_product_files?: Array<Variant.DigitalProductFile>;
+
+      form_displays?: Array<Variant.FormDisplay>;
+
+      /**
+       * Variant Fullname
+       */
+      fullname?: string;
+
+      images?: Array<string>;
+
+      /**
+       * Mark variant as sellable
+       */
+      is_checked?: boolean;
+
+      /**
+       * Is Editable
+       */
+      is_editable?: boolean;
+
+      /**
+       * Type of the product item
+       */
+      item_type?: 'physical' | 'digital' | 'course';
+
+      last_updated_at?: string;
+
+      metadata?: { [key: string]: unknown };
+
+      /**
+       * Variant Name
+       */
+      name?: string;
+
+      /**
+       * Color associated with the first product option
+       */
+      option1_color?: string;
+
+      /**
+       * Icon URL for the first product option
+       */
+      option1_icon_url?: string;
+
+      /**
+       * Option 1 Value
+       */
+      option1_value?: string;
+
+      /**
+       * Color associated with the second product option
+       */
+      option2_color?: string;
+
+      /**
+       * Icon URL for the second product option
+       */
+      option2_icon_url?: string;
+
+      /**
+       * Option 2 Value
+       */
+      option2_value?: string;
+
+      /**
+       * Color associated with the third product option
+       */
+      option3_color?: string;
+
+      /**
+       * Icon URL for the third product option
+       */
+      option3_icon_url?: string;
+
+      /**
+       * Option 3 Value
+       */
+      option3_value?: string;
+
+      /**
+       * Price
+       */
+      price?: number;
+
+      /**
+       * Price Before Tax
+       */
+      price_bt?: number;
+
+      /**
+       * Product ID
+       */
+      product_id?: number;
+
+      /**
+       * Product Name
+       */
+      product_name?: string;
+
+      /**
+       * Reseller Price
+       */
+      reseller_price?: number;
+
+      /**
+       * Reseller Price Before Tax
+       */
+      reseller_price_bt?: number;
+
+      /**
+       * Variant Rich Description
+       */
+      rich_description?: string;
+
+      self_file_urls?: Array<string>;
+
+      /**
+       * SKU
+       */
+      sku?: string;
+
+      /**
+       * Variant Unique ID
+       */
+      unique_id?: string;
+
+      upsell_form_displays?: Array<Variant.UpsellFormDisplay>;
+
+      /**
+       * Variant UUID
+       */
+      uuid?: string;
+
+      /**
+       * Weight
+       */
+      weight?: number;
+    }
+
+    export namespace Variant {
+      export interface DigitalProductFile {
+        /**
+         * Digital product file primary key
+         */
+        id?: number;
+
+        /**
+         * MIME type of the digital product file
+         */
+        content_type?: string;
+
+        /**
+         * File name of the digital product file
+         */
+        name?: string;
+
+        /**
+         * Size of the digital product file in bytes
+         */
+        size_in_bytes?: number;
+
+        /**
+         * URL to access the digital product file
+         */
+        url?: string;
+      }
+
+      export interface FormDisplay {
+        /**
+         * Form Display ID
+         */
+        id?: number;
+
+        page_display?: FormDisplay.PageDisplay;
+      }
+
+      export namespace FormDisplay {
+        export interface PageDisplay {
+          /**
+           * Page Display ID
+           */
+          id?: number;
+
+          page?: PageDisplay.Page;
+        }
+
+        export namespace PageDisplay {
+          export interface Page {
+            /**
+             * Page ID
+             */
+            id?: number;
+
+            /**
+             * Is the page published?
+             */
+            is_published?: boolean;
+
+            /**
+             * Name of the page
+             */
+            name?: string;
+
+            /**
+             * Publication date of the page
+             */
+            published_at?: string;
+
+            /**
+             * Slug for the page URL
+             */
+            slug?: string;
+
+            /**
+             * ID of the store the page belongs to
+             */
+            store_id?: number;
+
+            /**
+             * Unique identifier for the page
+             */
+            unique_id?: string;
+          }
+        }
+      }
+
+      export interface UpsellFormDisplay {
+        /**
+         * Form Display ID
+         */
+        id?: number;
+
+        page_display?: UpsellFormDisplay.PageDisplay;
+      }
+
+      export namespace UpsellFormDisplay {
+        export interface PageDisplay {
+          /**
+           * Page Display ID
+           */
+          id?: number;
+
+          page?: PageDisplay.Page;
+        }
+
+        export namespace PageDisplay {
+          export interface Page {
+            /**
+             * Page ID
+             */
+            id?: number;
+
+            /**
+             * Is the page published?
+             */
+            is_published?: boolean;
+
+            /**
+             * Name of the page
+             */
+            name?: string;
+
+            /**
+             * Publication date of the page
+             */
+            published_at?: string;
+
+            /**
+             * Slug for the page URL
+             */
+            slug?: string;
+
+            /**
+             * ID of the store the page belongs to
+             */
+            store_id?: number;
+
+            /**
+             * Unique identifier for the page
+             */
+            unique_id?: string;
+          }
+        }
+      }
+    }
+
+    export interface Warehouse {
+      /**
+       * Warehouse ID
+       */
+      id?: number;
+
+      /**
+       * Name of the warehouse
+       */
+      name?: string;
+    }
+  }
+}
+
+export interface ProductUpdateResponse {
+  code?: number;
+
+  data?: ProductUpdateResponse.Data;
+
+  status?: string;
+}
+
+export namespace ProductUpdateResponse {
+  export interface Data {
+    /**
+     * Product ID
+     */
+    id?: number;
+
+    business?: Data.Business;
+
+    created_at?: string;
+
+    created_by?: Data.CreatedBy;
+
+    /**
+     * Description
+     */
+    description?: string;
+
+    /**
+     * Product name for display
+     */
+    display?: string;
+
+    images?: Array<string>;
+
+    /**
+     * Is Inventory
+     */
+    is_inventory?: boolean;
+
+    /**
+     * Is Multiple
+     */
+    is_multiple?: boolean;
+
+    /**
+     * Is Product Sharing
+     */
+    is_product_sharing?: boolean;
+
+    /**
+     * Type of the product item
+     */
+    item_type?: 'physical' | 'digital' | 'course';
+
+    /**
+     * Item Type Name
+     */
+    item_type_name?: string;
+
+    labels?: Array<Data.Label>;
+
+    last_updated_at?: string;
+
+    last_updated_by?: Data.LastUpdatedBy;
+
+    /**
+     * Meta Thumbnail
+     */
+    meta_thumbnail?: string;
+
+    /**
+     * Product Name
+     */
+    name?: string;
+
+    /**
+     * Option 1 Name
+     */
+    option1_name?: string;
+
+    /**
+     * Option 2 Name
+     */
+    option2_name?: string;
+
+    /**
+     * Option 3 Name
+     */
+    option3_name?: string;
+
+    product_birdsend_sequences?: Array<Data.ProductBirdsendSequence>;
+
+    product_mailketing_lists?: Array<Data.ProductMailketingList>;
+
+    /**
+     * Product Public Name
+     */
+    public_name?: string;
+
+    /**
+     * Rich Description
+     */
+    rich_description?: string;
+
+    /**
+     * Product Slug
+     */
+    slug?: string;
+
+    stores?: Array<Data.Store>;
+
+    taxonomy?: Data.Taxonomy;
+
+    /**
+     * Product UUID
+     */
+    uuid?: string;
+
+    variants?: Array<Data.Variant>;
+
+    /**
+     * Variants Count
+     */
+    variants_count?: number;
+
+    warehouses?: Array<Data.Warehouse>;
+  }
+
+  export namespace Data {
+    export interface Business {
+      /**
+       * Business ID
+       */
+      id?: number;
+
+      /**
+       * Name of the account holder
+       */
+      account_holder?: string;
+
+      /**
+       * Email address of the business
+       */
+      email?: string;
+
+      /**
+       * Is the business banned?
+       */
+      is_banned?: boolean;
+
+      /**
+       * URL to the business logo
+       */
+      logo?: string;
+
+      /**
+       * Unique identifier for the business
+       */
+      unique_id?: string;
+
+      /**
+       * Username of the business
+       */
+      username?: string;
+    }
+
+    export interface CreatedBy {
+      /**
+       * User ID
+       */
+      id?: number;
+
+      /**
+       * Affiliate code of the user
+       */
+      aff_code?: string;
+
+      /**
+       * URL to user avatar
+       */
+      avatar?: string;
+
+      /**
+       * User email
+       */
+      email?: string;
+
+      /**
+       * User full name
+       */
+      fullname?: string;
+
+      /**
+       * User phone number
+       */
+      phone?: string;
+    }
+
+    export interface Label {
+      /**
+       * Label name
+       */
+      name?: string;
+    }
+
+    export interface LastUpdatedBy {
+      /**
+       * User ID
+       */
+      id?: number;
+
+      /**
+       * Affiliate code of the user
+       */
+      aff_code?: string;
+
+      /**
+       * URL to user avatar
+       */
+      avatar?: string;
+
+      /**
+       * User email
+       */
+      email?: string;
+
+      /**
+       * User full name
+       */
+      fullname?: string;
+
+      /**
+       * User phone number
+       */
+      phone?: string;
+    }
+
+    export interface ProductBirdsendSequence {
+      birdsend_sequence?: ProductBirdsendSequence.BirdsendSequence;
+
+      /**
+       * Order status
+       */
+      order_status?:
+        | 'draft'
+        | 'pending'
+        | 'confirmed'
+        | 'in_process'
+        | 'ready'
+        | 'shipped'
+        | 'completed'
+        | 'canceled'
+        | 'rts'
+        | 'closed';
+    }
+
+    export namespace ProductBirdsendSequence {
+      export interface BirdsendSequence {
+        /**
+         * Birdsend sequence primary key
+         */
+        id?: number;
+
+        /**
+         * Indicates if the Birdsend sequence is active
+         */
+        active?: boolean;
+
+        /**
+         * Identifier of the associated form
+         */
+        form_id?: number;
+
+        /**
+         * Name of the Birdsend sequence
+         */
+        name?: string;
+
+        /**
+         * Identifier of the associated sequence
+         */
+        sequence_id?: number;
+
+        /**
+         * Type of the Birdsend sequence (either 'sequence' or 'form')
+         */
+        type?: 'sequence' | 'form';
+      }
+    }
+
+    export interface ProductMailketingList {
+      mailketing_list?: ProductMailketingList.MailketingList;
+
+      /**
+       * Order status
+       */
+      order_status?:
+        | 'draft'
+        | 'pending'
+        | 'confirmed'
+        | 'in_process'
+        | 'ready'
+        | 'shipped'
+        | 'completed'
+        | 'canceled'
+        | 'rts'
+        | 'closed';
+    }
+
+    export namespace ProductMailketingList {
+      export interface MailketingList {
+        /**
+         * Mailketing List ID
+         */
+        id: number;
 
         /**
          * Mailketing List Name
@@ -2947,7 +3685,7 @@ export namespace ProductUpdateSharingResponse {
         /**
          * Mailketing List ID
          */
-        id?: number;
+        id: number;
 
         /**
          * Mailketing List Name
@@ -3516,6 +4254,167 @@ export namespace ProductCreateParams {
   }
 }
 
+export interface ProductUpdateParams {
+  /**
+   * Type of the product item
+   */
+  item_type: 'physical' | 'digital' | 'course';
+
+  /**
+   * Product Name
+   */
+  name: string;
+
+  /**
+   * Description
+   */
+  description?: string;
+
+  /**
+   * Is Inventory
+   */
+  is_inventory?: boolean;
+
+  /**
+   * Is Multiple
+   */
+  is_multiple?: boolean;
+
+  /**
+   * Is Product Sharing
+   */
+  is_product_sharing?: boolean;
+
+  /**
+   * Meta Thumbnail
+   */
+  meta_thumbnail?: string;
+
+  /**
+   * Option 1 Name
+   */
+  option1_name?: string;
+
+  /**
+   * Option 2 Name
+   */
+  option2_name?: string;
+
+  /**
+   * Option 3 Name
+   */
+  option3_name?: string;
+
+  /**
+   * Product Public Name
+   */
+  public_name?: string;
+
+  /**
+   * Rich Description
+   */
+  rich_description?: string;
+
+  /**
+   * Product Slug
+   */
+  slug?: string;
+
+  /**
+   * Taxonomy ID
+   */
+  taxonomy_id?: number;
+
+  /**
+   * List of variants associated with the product
+   */
+  variants?: Array<ProductUpdateParams.Variant>;
+}
+
+export namespace ProductUpdateParams {
+  export interface Variant {
+    /**
+     * Price
+     */
+    price: number;
+
+    /**
+     * Weight in grams
+     */
+    weight: number;
+
+    /**
+     * Cost of Goods Sold
+     */
+    cogs?: number;
+
+    /**
+     * Variant Description
+     */
+    description?: string;
+
+    /**
+     * List of image URLs
+     */
+    images?: Array<string>;
+
+    /**
+     * Mark variant as sellable
+     */
+    is_checked?: boolean;
+
+    /**
+     * Mark variant as deleted
+     */
+    is_deleted?: boolean;
+
+    /**
+     * Additional metadata
+     */
+    metadata?: { [key: string]: unknown };
+
+    /**
+     * Option 1 Value
+     */
+    option1_value?: string;
+
+    /**
+     * Option 2 Value
+     */
+    option2_value?: string;
+
+    /**
+     * Option 3 Value
+     */
+    option3_value?: string;
+
+    /**
+     * Reseller Price
+     */
+    reseller_price?: number;
+
+    /**
+     * Variant Rich Description
+     */
+    rich_description?: string;
+
+    /**
+     * List of self file URLs
+     */
+    self_file_urls?: Array<string>;
+
+    /**
+     * SKU
+     */
+    sku?: string;
+
+    /**
+     * Variant ID for update; leave empty for create
+     */
+    variant_id?: number;
+  }
+}
+
 export interface ProductListParams {
   /**
    * Show variants in products where is_checked is true or false
@@ -3728,6 +4627,7 @@ export declare namespace Products {
   export {
     type ProductCreateResponse as ProductCreateResponse,
     type ProductRetrieveResponse as ProductRetrieveResponse,
+    type ProductUpdateResponse as ProductUpdateResponse,
     type ProductListResponse as ProductListResponse,
     type ProductDeleteResponse as ProductDeleteResponse,
     type ProductCountResponse as ProductCountResponse,
@@ -3735,6 +4635,7 @@ export declare namespace Products {
     type ProductShowRelationsResponse as ProductShowRelationsResponse,
     type ProductUpdateSharingResponse as ProductUpdateSharingResponse,
     type ProductCreateParams as ProductCreateParams,
+    type ProductUpdateParams as ProductUpdateParams,
     type ProductListParams as ProductListParams,
     type ProductCountParams as ProductCountParams,
     type ProductListSimplifiedParams as ProductListSimplifiedParams,
