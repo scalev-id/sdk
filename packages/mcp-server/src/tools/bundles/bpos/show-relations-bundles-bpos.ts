@@ -1,0 +1,50 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import { maybeFilter } from 'scalev-api-mcp/filtering';
+import { Metadata, asTextContentResult } from 'scalev-api-mcp/tools/types';
+
+import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import ScalevAPI from 'scalev-api';
+
+export const metadata: Metadata = {
+  resource: 'bundles.bpos',
+  operation: 'read',
+  tags: [],
+  httpMethod: 'get',
+  httpPath: '/v2/bundles/{bundle_id}/bpos/{id}/relations',
+  operationId: 'ScalevApiWeb.BundleController.show_bpo_relations',
+};
+
+export const tool: Tool = {
+  name: 'show_relations_bundles_bpos',
+  description:
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRetrieves a bundle price option along with its related entities such as associated stores and form displays.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    data: {\n      type: 'object',\n      title: 'BundlePriceOptionExtendedRelation',\n      properties: {\n        id: {\n          type: 'integer',\n          description: 'Bundle Price Option ID'\n        },\n        bundle_id: {\n          type: 'integer',\n          description: 'Bundle ID'\n        },\n        name: {\n          type: 'string',\n          description: 'Name'\n        },\n        pages: {\n          type: 'object',\n          properties: {\n            all: {\n              type: 'array',\n              items: {\n                type: 'object',\n                title: 'PageRelation',\n                properties: {\n                  id: {\n                    type: 'integer',\n                    description: 'Page ID'\n                  },\n                  business: {\n                    type: 'object',\n                    title: 'BusinessSimple',\n                    properties: {\n                      id: {\n                        type: 'integer',\n                        description: 'Business ID'\n                      },\n                      account_holder: {\n                        type: 'string',\n                        description: 'Name of the account holder'\n                      },\n                      email: {\n                        type: 'string',\n                        description: 'Email address of the business'\n                      },\n                      is_banned: {\n                        type: 'boolean',\n                        description: 'Is the business banned?'\n                      },\n                      logo: {\n                        type: 'string',\n                        description: 'URL to the business logo'\n                      },\n                      unique_id: {\n                        type: 'string',\n                        description: 'Unique identifier for the business'\n                      },\n                      username: {\n                        type: 'string',\n                        description: 'Username of the business'\n                      }\n                    }\n                  },\n                  name: {\n                    type: 'string',\n                    description: 'Name of the page'\n                  },\n                  slug: {\n                    type: 'string',\n                    description: 'Slug for the page URL'\n                  },\n                  unique_id: {\n                    type: 'string',\n                    description: 'Unique identifier for the page'\n                  }\n                }\n              }\n            },\n            will_unpublish: {\n              type: 'array',\n              items: {\n                type: 'object',\n                title: 'PageRelation',\n                properties: {\n                  id: {\n                    type: 'integer',\n                    description: 'Page ID'\n                  },\n                  business: {\n                    type: 'object',\n                    title: 'BusinessSimple',\n                    properties: {\n                      id: {\n                        type: 'integer',\n                        description: 'Business ID'\n                      },\n                      account_holder: {\n                        type: 'string',\n                        description: 'Name of the account holder'\n                      },\n                      email: {\n                        type: 'string',\n                        description: 'Email address of the business'\n                      },\n                      is_banned: {\n                        type: 'boolean',\n                        description: 'Is the business banned?'\n                      },\n                      logo: {\n                        type: 'string',\n                        description: 'URL to the business logo'\n                      },\n                      unique_id: {\n                        type: 'string',\n                        description: 'Unique identifier for the business'\n                      },\n                      username: {\n                        type: 'string',\n                        description: 'Username of the business'\n                      }\n                    }\n                  },\n                  name: {\n                    type: 'string',\n                    description: 'Name of the page'\n                  },\n                  slug: {\n                    type: 'string',\n                    description: 'Slug for the page URL'\n                  },\n                  unique_id: {\n                    type: 'string',\n                    description: 'Unique identifier for the page'\n                  }\n                }\n              }\n            }\n          }\n        },\n        price: {\n          type: 'number',\n          description: 'Price (including tax)'\n        },\n        price_bt: {\n          type: 'number',\n          description: 'Price before tax'\n        },\n        slug: {\n          type: 'string',\n          description: 'Slug'\n        },\n        stores: {\n          type: 'array',\n          description: 'List of stores where the bundle price option is available',\n          items: {\n            type: 'object',\n            title: 'StoreRelation',\n            properties: {\n              id: {\n                type: 'integer',\n                description: 'Store ID'\n              },\n              business: {\n                type: 'object',\n                title: 'BusinessSimple',\n                properties: {\n                  id: {\n                    type: 'integer',\n                    description: 'Business ID'\n                  },\n                  account_holder: {\n                    type: 'string',\n                    description: 'Name of the account holder'\n                  },\n                  email: {\n                    type: 'string',\n                    description: 'Email address of the business'\n                  },\n                  is_banned: {\n                    type: 'boolean',\n                    description: 'Is the business banned?'\n                  },\n                  logo: {\n                    type: 'string',\n                    description: 'URL to the business logo'\n                  },\n                  unique_id: {\n                    type: 'string',\n                    description: 'Unique identifier for the business'\n                  },\n                  username: {\n                    type: 'string',\n                    description: 'Username of the business'\n                  }\n                }\n              },\n              name: {\n                type: 'string',\n                description: 'Store name'\n              },\n              unique_id: {\n                type: 'string',\n                description: 'Unique identifier for the store'\n              }\n            }\n          }\n        },\n        unique_id: {\n          type: 'string',\n          description: 'Bundle Price Option Unique ID'\n        }\n      }\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
+  inputSchema: {
+    type: 'object',
+    properties: {
+      bundle_id: {
+        type: 'integer',
+      },
+      id: {
+        type: 'integer',
+      },
+      jq_filter: {
+        type: 'string',
+        title: 'jq Filter',
+        description:
+          'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
+      },
+    },
+    required: ['bundle_id', 'id'],
+  },
+  annotations: {
+    readOnlyHint: true,
+  },
+};
+
+export const handler = async (client: ScalevAPI, args: Record<string, unknown> | undefined) => {
+  const { id, jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.bundles.bpos.showRelations(id, body)));
+};
+
+export default { metadata, tool, handler };
