@@ -47,12 +47,14 @@ export class PaymentMethods extends APIResource {
    * @example
    * ```ts
    * const paymentMethod =
-   *   await client.stores.paymentMethods.remove(1);
+   *   await client.stores.paymentMethods.remove(1, {
+   *     payment_account_id: 0,
+   *   });
    * ```
    */
   remove(
     storeID: number,
-    body: PaymentMethodRemoveParams | null | undefined = {},
+    body: PaymentMethodRemoveParams,
     options?: RequestOptions,
   ): APIPromise<PaymentMethodRemoveResponse> {
     return this._client.delete(path`/v2/stores/${storeID}/payment-methods`, { body, ...options });
@@ -136,45 +138,56 @@ export interface PaymentMethodAddParams {
   >;
 }
 
-export interface PaymentMethodRemoveParams {
-  /**
-   * Payment account ID to remove from the store
-   */
-  payment_account_id?: number;
+export type PaymentMethodRemoveParams =
+  | PaymentMethodRemoveParams.Variant0
+  | PaymentMethodRemoveParams.Variant1
+  | PaymentMethodRemoveParams.Variant2;
 
-  /**
-   * Order payment method
-   */
-  payment_method?:
-    | 'gopay'
-    | 'va'
-    | 'qris'
-    | 'card'
-    | 'invoice'
-    | 'alfamart'
-    | 'ovo'
-    | 'dana'
-    | 'shopeepay'
-    | 'linkaja'
-    | 'no_payment'
-    | 'bank_transfer'
-    | 'marketplace'
-    | 'cod';
+export declare namespace PaymentMethodRemoveParams {
+  export interface Variant0 {
+    /**
+     * Payment account ID to remove from the store
+     */
+    payment_account_id: number;
+  }
 
-  /**
-   * Xendit VA bank code
-   */
-  sub_payment_method?:
-    | 'BCA'
-    | 'BNI'
-    | 'BRI'
-    | 'MANDIRI'
-    | 'PERMATA'
-    | 'BSI'
-    | 'BJB'
-    | 'CIMB'
-    | 'SAHABAT_SAMPOERNA'
-    | 'ARTAJASA';
+  export interface Variant1 {
+    /**
+     * Xendit VA bank code
+     */
+    xendit_va_bank_code:
+      | 'BCA'
+      | 'BNI'
+      | 'BRI'
+      | 'MANDIRI'
+      | 'PERMATA'
+      | 'BSI'
+      | 'BJB'
+      | 'CIMB'
+      | 'SAHABAT_SAMPOERNA'
+      | 'ARTAJASA';
+  }
+
+  export interface Variant2 {
+    /**
+     * Order payment method
+     */
+    payment_method:
+      | 'gopay'
+      | 'va'
+      | 'qris'
+      | 'card'
+      | 'invoice'
+      | 'alfamart'
+      | 'ovo'
+      | 'dana'
+      | 'shopeepay'
+      | 'linkaja'
+      | 'no_payment'
+      | 'bank_transfer'
+      | 'marketplace'
+      | 'cod';
+  }
 }
 
 export declare namespace PaymentMethods {

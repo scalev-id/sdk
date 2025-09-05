@@ -28,7 +28,7 @@
     "SCALEV_API_API_KEY": {
       "title": "api_key",
       "description": "",
-      "required": true,
+      "required": false,
       "type": "string"
     }
   },

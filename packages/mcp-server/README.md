@@ -145,13 +145,23 @@ over time, you can manually enable or disable certain capabilities:
 
 Launching the client with `--transport=http` launches the server as a remote server using Streamable HTTP transport. The `--port` setting can choose the port it will run on, and the `--socket` setting allows it to run on a Unix socket.
 
+Authorization can be provided via the `Authorization` header using the Bearer scheme.
+
+Additionally, authorization can be provided via the following headers:
+| Header | Equivalent client option | Security scheme |
+| ---------------------- | ------------------------ | --------------- |
+| `x-scalev-api-api-key` | `apiKey` | bearerApiKey |
+
 A configuration JSON for this server might look like this, assuming the server is hosted at `http://localhost:3000`:
 
 ```json
 {
   "mcpServers": {
     "scalev_api_api": {
-      "url": "http://localhost:3000"
+      "url": "http://localhost:3000",
+      "headers": {
+        "Authorization": "Bearer <auth value>"
+      }
     }
   }
 }
@@ -213,6 +223,7 @@ The following tools are available in this MCP server.
 
 - `create_bundles` (`write`): Creates a new bundle with the provided data.
 - `retrieve_bundles` (`read`): Retrieves a bundle by its ID.
+- `update_bundles` (`write`): Updates an existing bundle with the provided data.
 - `list_bundles` (`read`): Retrieves a paginated list of bundles with optional filtering. The data is sorted by id in descending order and cannot be changed. Uses cursor-based pagination with default page size of 25 and maximum of 25.
 - `delete_bundles` (`write`): Deletes a bundle by its ID.
 - `count_bundles` (`read`): Retrieves the total count of bundles for the authenticated business. This endpoint does not support any filtering or pagination.
@@ -300,6 +311,7 @@ The following tools are available in this MCP server.
 
 - `create_products` (`write`): Creates a new product with the provided data.
 - `retrieve_products` (`read`): Retrieves the details of a single product, including its variants and other associated data.
+- `update_products` (`write`): Updates the details of a product, including its variants.
 - `list_products` (`read`): Retrieves a paginated list of products with optional filtering. The data is sorted by id in descending order and cannot be changed. Uses cursor-based pagination with default page size of 25 and maximum of 25.
 - `delete_products` (`write`): Deletes a product and all its associated data.
 - `count_products` (`read`): Returns the total count of products.
@@ -332,6 +344,7 @@ The following tools are available in this MCP server.
 
 - `create_stores` (`write`): Creates a new store with the provided details.
 - `retrieve_stores` (`read`): Retrieves detailed information about a specific store identified by its ID.
+- `update_stores` (`write`): Updates the details of an existing store identified by its ID.
 - `list_stores` (`read`): Retrieves a paginated list of stores with optional filtering. The data is sorted by id in descending order and cannot be changed. Uses cursor-based pagination with default page size of 25 and maximum of 25.
 - `delete_stores` (`write`): Deletes a store and all its associated data.
 - `list_custom_audiences_stores` (`read`): Retrieves a list of custom audiences associated with a specific store.
@@ -360,6 +373,7 @@ The following tools are available in this MCP server.
 
 - `create_stores_follow_up_chats` (`write`): Create a follow up chat template for a store.
 - `retrieve_stores_follow_up_chats` (`read`): Retrieves a follow up chat template by its ID.
+- `update_stores_follow_up_chats` (`write`): Updates a follow up chat template.
 - `list_stores_follow_up_chats` (`read`): Retrieves a paginated list of follow up chats for a store.
 - `delete_stores_follow_up_chats` (`write`): Deletes a follow up chat template.
 

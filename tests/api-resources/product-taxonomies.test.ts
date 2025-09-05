@@ -2,10 +2,7 @@
 
 import ScalevAPI from 'scalev-api';
 
-const client = new ScalevAPI({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new ScalevAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource productTaxonomies', () => {
   // Prism doesn't support callbacks yet
