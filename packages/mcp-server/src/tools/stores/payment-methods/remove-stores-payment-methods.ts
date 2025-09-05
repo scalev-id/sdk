@@ -21,76 +21,50 @@ export const tool: Tool = {
     "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nDissociates a specific payment method from a store.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  title: 'BlankSuccessResponse',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
-    anyOf: [
-      {
-        type: 'object',
-        properties: {
-          store_id: {
-            type: 'integer',
-          },
-          payment_account_id: {
-            type: 'integer',
-            description: 'Payment account ID to remove from the store',
-          },
-        },
-        required: ['store_id', 'payment_account_id'],
-      },
-      {
-        type: 'object',
-        properties: {
-          store_id: {
-            type: 'integer',
-          },
-          xendit_va_bank_code: {
-            type: 'string',
-            description: 'Xendit VA bank code',
-            enum: [
-              'BCA',
-              'BNI',
-              'BRI',
-              'MANDIRI',
-              'PERMATA',
-              'BSI',
-              'BJB',
-              'CIMB',
-              'SAHABAT_SAMPOERNA',
-              'ARTAJASA',
-            ],
-          },
-        },
-        required: ['store_id', 'xendit_va_bank_code'],
-      },
-      {
-        type: 'object',
-        properties: {
-          store_id: {
-            type: 'integer',
-          },
-          payment_method: {
-            type: 'string',
-            description: 'Order payment method',
-            enum: [
-              'gopay',
-              'va',
-              'qris',
-              'card',
-              'invoice',
-              'alfamart',
-              'ovo',
-              'dana',
-              'shopeepay',
-              'linkaja',
-              'no_payment',
-              'bank_transfer',
-              'marketplace',
-              'cod',
-            ],
-          },
-        },
-        required: ['store_id', 'payment_method'],
-      },
-    ],
     properties: {
+      store_id: {
+        type: 'integer',
+      },
+      payment_account_id: {
+        type: 'integer',
+        description: 'Payment account ID to remove from the store',
+      },
+      payment_method: {
+        type: 'string',
+        description: 'Order payment method',
+        enum: [
+          'gopay',
+          'va',
+          'qris',
+          'card',
+          'invoice',
+          'alfamart',
+          'ovo',
+          'dana',
+          'shopeepay',
+          'linkaja',
+          'no_payment',
+          'bank_transfer',
+          'marketplace',
+          'cod',
+        ],
+      },
+      sub_payment_method: {
+        type: 'string',
+        description: 'Xendit VA bank code',
+        enum: [
+          'BCA',
+          'BNI',
+          'BRI',
+          'MANDIRI',
+          'PERMATA',
+          'BSI',
+          'BJB',
+          'CIMB',
+          'SAHABAT_SAMPOERNA',
+          'ARTAJASA',
+        ],
+      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -98,6 +72,7 @@ export const tool: Tool = {
           'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
       },
     },
+    required: ['store_id'],
   },
   annotations: {
     idempotentHint: true,

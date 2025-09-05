@@ -423,7 +423,7 @@ export namespace ProductCreateResponse {
         /**
          * Mailketing List ID
          */
-        id: number;
+        id?: number;
 
         /**
          * Mailketing List Name
@@ -1154,7 +1154,7 @@ export namespace ProductRetrieveResponse {
         /**
          * Mailketing List ID
          */
-        id: number;
+        id?: number;
 
         /**
          * Mailketing List Name
@@ -2947,7 +2947,7 @@ export namespace ProductUpdateSharingResponse {
         /**
          * Mailketing List ID
          */
-        id: number;
+        id?: number;
 
         /**
          * Mailketing List Name
