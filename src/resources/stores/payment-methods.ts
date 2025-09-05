@@ -47,16 +47,17 @@ export class PaymentMethods extends APIResource {
    * @example
    * ```ts
    * const paymentMethod =
-   *   await client.stores.paymentMethods.remove(1);
+   *   await client.stores.paymentMethods.remove(1, {
+   *     payment_account_id: 0,
+   *   });
    * ```
    */
   remove(
     storeID: number,
-    params: PaymentMethodRemoveParams | null | undefined = undefined,
+    body: PaymentMethodRemoveParams,
     options?: RequestOptions,
   ): APIPromise<PaymentMethodRemoveResponse> {
-    const { body } = params ?? {};
-    return this._client.delete(path`/v2/stores/${storeID}/payment-methods`, { body: body, ...options });
+    return this._client.delete(path`/v2/stores/${storeID}/payment-methods`, { body, ...options });
   }
 }
 
@@ -139,11 +140,22 @@ export interface PaymentMethodAddParams {
 
 export type PaymentMethodRemoveParams =
   | PaymentMethodRemoveParams.Variant0
-  | PaymentMethodRemoveParams.Variant1;
+  | PaymentMethodRemoveParams.Variant1
+  | PaymentMethodRemoveParams.Variant2;
 
 export declare namespace PaymentMethodRemoveParams {
   export interface Variant0 {
-    body?:
+    /**
+     * Payment account ID to remove from the store
+     */
+    payment_account_id: number;
+  }
+
+  export interface Variant1 {
+    /**
+     * Xendit VA bank code
+     */
+    xendit_va_bank_code:
       | 'BCA'
       | 'BNI'
       | 'BRI'
@@ -153,7 +165,14 @@ export declare namespace PaymentMethodRemoveParams {
       | 'BJB'
       | 'CIMB'
       | 'SAHABAT_SAMPOERNA'
-      | 'ARTAJASA'
+      | 'ARTAJASA';
+  }
+
+  export interface Variant2 {
+    /**
+     * Order payment method
+     */
+    payment_method:
       | 'gopay'
       | 'va'
       | 'qris'
@@ -168,13 +187,6 @@ export declare namespace PaymentMethodRemoveParams {
       | 'bank_transfer'
       | 'marketplace'
       | 'cod';
-  }
-
-  export interface Variant1 {
-    /**
-     * Payment account ID to remove from the store
-     */
-    payment_account_id: number;
   }
 }
 

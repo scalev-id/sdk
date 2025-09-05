@@ -4,7 +4,6 @@ Types:
 
 - <code><a href="./src/resources/bundles/bundles.ts">BundleCreateResponse</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleRetrieveResponse</a></code>
-- <code><a href="./src/resources/bundles/bundles.ts">BundleUpdateResponse</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleListResponse</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleDeleteResponse</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleCountResponse</a></code>
@@ -16,7 +15,6 @@ Methods:
 
 - <code title="post /v2/bundles">client.bundles.<a href="./src/resources/bundles/bundles.ts">create</a>({ ...params }) -> BundleCreateResponse</code>
 - <code title="get /v2/bundles/{id}">client.bundles.<a href="./src/resources/bundles/bundles.ts">retrieve</a>(id) -> BundleRetrieveResponse</code>
-- <code title="put /v2/bundles/{id}">client.bundles.<a href="./src/resources/bundles/bundles.ts">update</a>(id, { ...params }) -> BundleUpdateResponse</code>
 - <code title="get /v2/bundles">client.bundles.<a href="./src/resources/bundles/bundles.ts">list</a>({ ...params }) -> BundleListResponse</code>
 - <code title="delete /v2/bundles/{id}">client.bundles.<a href="./src/resources/bundles/bundles.ts">delete</a>(id) -> BundleDeleteResponse</code>
 - <code title="get /v2/bundles/count">client.bundles.<a href="./src/resources/bundles/bundles.ts">count</a>({ ...params }) -> BundleCountResponse</code>
@@ -198,7 +196,6 @@ Types:
 
 - <code><a href="./src/resources/products/products.ts">ProductCreateResponse</a></code>
 - <code><a href="./src/resources/products/products.ts">ProductRetrieveResponse</a></code>
-- <code><a href="./src/resources/products/products.ts">ProductUpdateResponse</a></code>
 - <code><a href="./src/resources/products/products.ts">ProductListResponse</a></code>
 - <code><a href="./src/resources/products/products.ts">ProductDeleteResponse</a></code>
 - <code><a href="./src/resources/products/products.ts">ProductCountResponse</a></code>
@@ -210,7 +207,6 @@ Methods:
 
 - <code title="post /v2/products">client.products.<a href="./src/resources/products/products.ts">create</a>({ ...params }) -> ProductCreateResponse</code>
 - <code title="get /v2/products/{id}">client.products.<a href="./src/resources/products/products.ts">retrieve</a>(id) -> ProductRetrieveResponse</code>
-- <code title="put /v2/products/{id}">client.products.<a href="./src/resources/products/products.ts">update</a>(id, { ...params }) -> ProductUpdateResponse</code>
 - <code title="get /v2/products">client.products.<a href="./src/resources/products/products.ts">list</a>({ ...params }) -> ProductListResponse</code>
 - <code title="delete /v2/products/{id}">client.products.<a href="./src/resources/products/products.ts">delete</a>(id) -> ProductDeleteResponse</code>
 - <code title="get /v2/products/count">client.products.<a href="./src/resources/products/products.ts">count</a>({ ...params }) -> ProductCountResponse</code>
@@ -272,7 +268,6 @@ Types:
 
 - <code><a href="./src/resources/stores/stores.ts">StoreCreateResponse</a></code>
 - <code><a href="./src/resources/stores/stores.ts">StoreRetrieveResponse</a></code>
-- <code><a href="./src/resources/stores/stores.ts">StoreUpdateResponse</a></code>
 - <code><a href="./src/resources/stores/stores.ts">StoreListResponse</a></code>
 - <code><a href="./src/resources/stores/stores.ts">StoreDeleteResponse</a></code>
 - <code><a href="./src/resources/stores/stores.ts">StoreListCustomAudiencesResponse</a></code>
@@ -285,7 +280,6 @@ Methods:
 
 - <code title="post /v2/stores">client.stores.<a href="./src/resources/stores/stores.ts">create</a>({ ...params }) -> StoreCreateResponse</code>
 - <code title="get /v2/stores/{id}">client.stores.<a href="./src/resources/stores/stores.ts">retrieve</a>(id) -> StoreRetrieveResponse</code>
-- <code title="put /v2/stores/{id}">client.stores.<a href="./src/resources/stores/stores.ts">update</a>(id, { ...params }) -> StoreUpdateResponse</code>
 - <code title="get /v2/stores">client.stores.<a href="./src/resources/stores/stores.ts">list</a>({ ...params }) -> StoreListResponse</code>
 - <code title="delete /v2/stores/{id}">client.stores.<a href="./src/resources/stores/stores.ts">delete</a>(id) -> StoreDeleteResponse</code>
 - <code title="get /v2/stores/{store_id}/custom-audiences">client.stores.<a href="./src/resources/stores/stores.ts">listCustomAudiences</a>(storeID) -> StoreListCustomAudiencesResponse</code>
@@ -338,7 +332,6 @@ Types:
 
 - <code><a href="./src/resources/stores/follow-up-chats.ts">FollowUpChatCreateResponse</a></code>
 - <code><a href="./src/resources/stores/follow-up-chats.ts">FollowUpChatRetrieveResponse</a></code>
-- <code><a href="./src/resources/stores/follow-up-chats.ts">FollowUpChatUpdateResponse</a></code>
 - <code><a href="./src/resources/stores/follow-up-chats.ts">FollowUpChatListResponse</a></code>
 - <code><a href="./src/resources/stores/follow-up-chats.ts">FollowUpChatDeleteResponse</a></code>
 
@@ -346,7 +339,6 @@ Methods:
 
 - <code title="post /v2/stores/{store_id}/follow-up-chats">client.stores.followUpChats.<a href="./src/resources/stores/follow-up-chats.ts">create</a>(storeID, { ...params }) -> FollowUpChatCreateResponse</code>
 - <code title="get /v2/stores/{store_id}/follow-up-chats/{id}">client.stores.followUpChats.<a href="./src/resources/stores/follow-up-chats.ts">retrieve</a>(id, { ...params }) -> FollowUpChatRetrieveResponse</code>
-- <code title="put /v2/stores/{store_id}/follow-up-chats/{id}">client.stores.followUpChats.<a href="./src/resources/stores/follow-up-chats.ts">update</a>(id, { ...params }) -> FollowUpChatUpdateResponse</code>
 - <code title="get /v2/stores/{store_id}/follow-up-chats">client.stores.followUpChats.<a href="./src/resources/stores/follow-up-chats.ts">list</a>(storeID, { ...params }) -> FollowUpChatListResponse</code>
 - <code title="delete /v2/stores/{store_id}/follow-up-chats/{id}">client.stores.followUpChats.<a href="./src/resources/stores/follow-up-chats.ts">delete</a>(id, { ...params }) -> FollowUpChatDeleteResponse</code>
 

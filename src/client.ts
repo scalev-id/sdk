@@ -42,8 +42,6 @@ import {
   BundleListSimplifiedResponse,
   BundleRetrieveResponse,
   BundleShowRelationsResponse,
-  BundleUpdateParams,
-  BundleUpdateResponse,
   BundleUpdateSharingParams,
   BundleUpdateSharingResponse,
   Bundles,
@@ -116,8 +114,6 @@ import {
   ProductListSimplifiedResponse,
   ProductRetrieveResponse,
   ProductShowRelationsResponse,
-  ProductUpdateParams,
-  ProductUpdateResponse,
   ProductUpdateSharingParams,
   ProductUpdateSharingResponse,
   Products,
@@ -138,8 +134,6 @@ import {
   StoreListSimplifiedParams,
   StoreListSimplifiedResponse,
   StoreRetrieveResponse,
-  StoreUpdateParams,
-  StoreUpdateResponse,
   Stores,
 } from './resources/stores/stores';
 import { VariantRetrieveResponse, Variants } from './resources/variants/variants';
@@ -333,14 +327,6 @@ export class ScalevAPI {
   }
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([await this.bearerAuth(opts), await this.oauth2Auth(opts)]);
-  }
-
-  protected async bearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
-  }
-
-  protected async oauth2Auth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return undefined;
   }
 
@@ -876,7 +862,6 @@ export declare namespace ScalevAPI {
     Bundles as Bundles,
     type BundleCreateResponse as BundleCreateResponse,
     type BundleRetrieveResponse as BundleRetrieveResponse,
-    type BundleUpdateResponse as BundleUpdateResponse,
     type BundleListResponse as BundleListResponse,
     type BundleDeleteResponse as BundleDeleteResponse,
     type BundleCountResponse as BundleCountResponse,
@@ -884,7 +869,6 @@ export declare namespace ScalevAPI {
     type BundleShowRelationsResponse as BundleShowRelationsResponse,
     type BundleUpdateSharingResponse as BundleUpdateSharingResponse,
     type BundleCreateParams as BundleCreateParams,
-    type BundleUpdateParams as BundleUpdateParams,
     type BundleListParams as BundleListParams,
     type BundleCountParams as BundleCountParams,
     type BundleListSimplifiedParams as BundleListSimplifiedParams,
@@ -970,7 +954,6 @@ export declare namespace ScalevAPI {
     Products as Products,
     type ProductCreateResponse as ProductCreateResponse,
     type ProductRetrieveResponse as ProductRetrieveResponse,
-    type ProductUpdateResponse as ProductUpdateResponse,
     type ProductListResponse as ProductListResponse,
     type ProductDeleteResponse as ProductDeleteResponse,
     type ProductCountResponse as ProductCountResponse,
@@ -978,7 +961,6 @@ export declare namespace ScalevAPI {
     type ProductShowRelationsResponse as ProductShowRelationsResponse,
     type ProductUpdateSharingResponse as ProductUpdateSharingResponse,
     type ProductCreateParams as ProductCreateParams,
-    type ProductUpdateParams as ProductUpdateParams,
     type ProductListParams as ProductListParams,
     type ProductCountParams as ProductCountParams,
     type ProductListSimplifiedParams as ProductListSimplifiedParams,
@@ -996,7 +978,6 @@ export declare namespace ScalevAPI {
     Stores as Stores,
     type StoreCreateResponse as StoreCreateResponse,
     type StoreRetrieveResponse as StoreRetrieveResponse,
-    type StoreUpdateResponse as StoreUpdateResponse,
     type StoreListResponse as StoreListResponse,
     type StoreDeleteResponse as StoreDeleteResponse,
     type StoreListCustomAudiencesResponse as StoreListCustomAudiencesResponse,
@@ -1005,7 +986,6 @@ export declare namespace ScalevAPI {
     type StoreListSalesPeopleResponse as StoreListSalesPeopleResponse,
     type StoreListSimplifiedResponse as StoreListSimplifiedResponse,
     type StoreCreateParams as StoreCreateParams,
-    type StoreUpdateParams as StoreUpdateParams,
     type StoreListParams as StoreListParams,
     type StoreListPagesParams as StoreListPagesParams,
     type StoreListPaymentAccountsParams as StoreListPaymentAccountsParams,

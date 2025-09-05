@@ -50,8 +50,8 @@ describe('resource paymentMethods', () => {
   });
 
   // Prism doesn't support callbacks yet
-  test.skip('remove', async () => {
-    const responsePromise = client.stores.paymentMethods.remove(1);
+  test.skip('remove: only required params', async () => {
+    const responsePromise = client.stores.paymentMethods.remove(1, { payment_account_id: 0 });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -62,10 +62,7 @@ describe('resource paymentMethods', () => {
   });
 
   // Prism doesn't support callbacks yet
-  test.skip('remove: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.stores.paymentMethods.remove(1, { body: 'BCA' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(ScalevAPI.NotFoundError);
+  test.skip('remove: required and optional params', async () => {
+    const response = await client.stores.paymentMethods.remove(1, { payment_account_id: 0 });
   });
 });

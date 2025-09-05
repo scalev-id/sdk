@@ -38,7 +38,6 @@ describe('resource products', () => {
           page_size: 25,
           qty_type: 'available_qty',
           search: 'search',
-          query_store_id: 0,
           warehouse_id: 0,
         },
         { path: '/_stainless_unknown_path' },

@@ -22,7 +22,7 @@ export const tool: Tool = {
   inputSchema: {
     type: 'object',
     properties: {
-      path_store_id: {
+      store_id: {
         type: 'integer',
       },
       is_checked: {
@@ -73,10 +73,6 @@ export const tool: Tool = {
         type: 'string',
         description: 'Search term to filter products by name (case-insensitive, partial match)',
       },
-      query_store_id: {
-        type: 'integer',
-        description: 'Filter products associated with a specific store ID',
-      },
       warehouse_id: {
         type: 'integer',
         description: 'Filter products associated with a specific warehouse ID',
@@ -88,7 +84,7 @@ export const tool: Tool = {
           'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
       },
     },
-    required: ['path_store_id'],
+    required: ['store_id'],
   },
   annotations: {
     readOnlyHint: true,

@@ -172,7 +172,7 @@ export namespace BundleRetrieveResponse {
        */
       item_type?: 'physical' | 'digital' | 'course';
 
-      metadata?: unknown;
+      metadata?: { [key: string]: unknown };
 
       /**
        * Variant Fullname
@@ -401,7 +401,7 @@ export namespace BundleListResponse {
            */
           item_type?: 'physical' | 'digital' | 'course';
 
-          metadata?: unknown;
+          metadata?: { [key: string]: unknown };
 
           /**
            * Variant Fullname

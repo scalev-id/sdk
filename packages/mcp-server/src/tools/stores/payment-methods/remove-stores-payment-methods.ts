@@ -28,8 +28,22 @@ export const tool: Tool = {
           store_id: {
             type: 'integer',
           },
-          body: {
+          payment_account_id: {
+            type: 'integer',
+            description: 'Payment account ID to remove from the store',
+          },
+        },
+        required: ['store_id', 'payment_account_id'],
+      },
+      {
+        type: 'object',
+        properties: {
+          store_id: {
+            type: 'integer',
+          },
+          xendit_va_bank_code: {
             type: 'string',
+            description: 'Xendit VA bank code',
             enum: [
               'BCA',
               'BNI',
@@ -41,6 +55,21 @@ export const tool: Tool = {
               'CIMB',
               'SAHABAT_SAMPOERNA',
               'ARTAJASA',
+            ],
+          },
+        },
+        required: ['store_id', 'xendit_va_bank_code'],
+      },
+      {
+        type: 'object',
+        properties: {
+          store_id: {
+            type: 'integer',
+          },
+          payment_method: {
+            type: 'string',
+            description: 'Order payment method',
+            enum: [
               'gopay',
               'va',
               'qris',
@@ -58,20 +87,7 @@ export const tool: Tool = {
             ],
           },
         },
-        required: ['store_id'],
-      },
-      {
-        type: 'object',
-        properties: {
-          store_id: {
-            type: 'integer',
-          },
-          payment_account_id: {
-            type: 'integer',
-            description: 'Payment account ID to remove from the store',
-          },
-        },
-        required: ['store_id', 'payment_account_id'],
+        required: ['store_id', 'payment_method'],
       },
     ],
     properties: {

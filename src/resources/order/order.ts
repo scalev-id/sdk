@@ -6495,162 +6495,12 @@ export namespace OrderListResponse {
          */
         id?: number;
 
-        /**
-         * Days until auto-expire
-         */
-        auto_expire_days?: number;
-
-        /**
-         * Is auto other income enabled?
-         */
-        auto_other_income?: boolean;
-
         business?: Store.Business;
-
-        /**
-         * Type of CAPI purchase value
-         */
-        capi_purchase_value_type?: 'gross_revenue' | 'net_revenue' | 'adj_gross_revenue';
-
-        /**
-         * COD purchase triggers
-         */
-        cod_purchase_triggers?: Array<
-          'public_upload' | 'internal_upload' | 'confirmed' | 'shipped' | 'completed'
-        >;
-
-        /**
-         * Default amount for dynamic COD income
-         */
-        dynamic_other_income_cod_default_amount?: number;
-
-        /**
-         * Default percentage for dynamic COD income
-         */
-        dynamic_other_income_cod_default_percentage?: number;
-
-        /**
-         * Type of amount (fixed or percentage)
-         */
-        dynamic_other_income_cod_type?: 'fixed' | 'percentage';
-
-        /**
-         * Default amount for dynamic e-payment income
-         */
-        dynamic_other_income_epayment_default_amount?: number;
-
-        /**
-         * Default percentage for dynamic e-payment income
-         */
-        dynamic_other_income_epayment_default_percentage?: number;
-
-        /**
-         * Type of amount (fixed or percentage)
-         */
-        dynamic_other_income_epayment_type?: 'fixed' | 'percentage';
-
-        /**
-         * Is fixed auto other income enabled?
-         */
-        fixed_auto_other_income?: boolean;
-
-        /**
-         * Is the store active?
-         */
-        is_active?: boolean;
-
-        /**
-         * Is auto-expire enabled?
-         */
-        is_auto_expire?: boolean;
-
-        /**
-         * Is discount editable?
-         */
-        is_discount_editable?: boolean;
-
-        /**
-         * Is dropshipping allowed in this store?
-         */
-        is_dropshipping_allowed?: boolean;
-
-        /**
-         * Is Moota integration enabled for this store?
-         */
-        is_moota_enabled?: boolean;
-
-        /**
-         * Is postal code required for orders?
-         */
-        is_postal_code?: boolean;
-
-        /**
-         * Is transfer proof required for orders in this store?
-         */
-        is_transferproof_required?: boolean;
-
-        /**
-         * Is unique code required for orders?
-         */
-        is_unique_code?: boolean;
-
-        /**
-         * Is WABA integration enabled?
-         */
-        is_use_waba?: boolean;
-
-        /**
-         * Maximum amount for unique code orders
-         */
-        max_unique_code_amount?: number;
 
         /**
          * Name of the store
          */
         name?: string;
-
-        /**
-         * Non-COD purchase triggers
-         */
-        non_cod_purchase_triggers?: Array<
-          'public_upload' | 'internal_upload' | 'confirmed' | 'shipped' | 'completed'
-        >;
-
-        /**
-         * Name of the other income
-         */
-        other_income_name?: string;
-
-        /**
-         * Postal code requirement options
-         */
-        postal_code_requirement?: 'autofill' | 'manual';
-
-        /**
-         * Other incomes for store couriers
-         */
-        store_courier_other_incomes?: Array<Store.StoreCourierOtherIncome>;
-
-        /**
-         * Other incomes for store methods
-         */
-        store_method_other_incomes?: Array<Store.StoreMethodOtherIncome>;
-
-        /**
-         * Xendit VA bank codes
-         */
-        sub_payment_methods?: Array<
-          | 'BCA'
-          | 'BNI'
-          | 'BRI'
-          | 'MANDIRI'
-          | 'PERMATA'
-          | 'BSI'
-          | 'BJB'
-          | 'CIMB'
-          | 'SAHABAT_SAMPOERNA'
-          | 'ARTAJASA'
-        >;
 
         /**
          * Unique identifier for the store
@@ -6699,61 +6549,6 @@ export namespace OrderListResponse {
            * Username of the business
            */
           username?: string;
-        }
-
-        /**
-         * Store Courier Other Income Schema
-         */
-        export interface StoreCourierOtherIncome {
-          /**
-           * Courier ID
-           */
-          courier_id: number;
-
-          /**
-           * Type of other income
-           */
-          type: 'fixed' | 'percentage';
-
-          /**
-           * Amount of other income
-           */
-          amount?: number;
-
-          /**
-           * Percentage of other income
-           */
-          percentage?: number;
-        }
-
-        /**
-         * Store Payment Method Other Income Schema
-         */
-        export interface StoreMethodOtherIncome {
-          /**
-           * Payment Method
-           */
-          payment_method: string;
-
-          /**
-           * Type of amount (fixed or percentage)
-           */
-          type: 'fixed' | 'percentage';
-
-          /**
-           * Amount of other income
-           */
-          amount?: number;
-
-          /**
-           * Percentage of other income
-           */
-          percentage?: number;
-
-          /**
-           * Sub Payment Method
-           */
-          sub_payment_method?: string;
         }
       }
 
@@ -14411,7 +14206,7 @@ export namespace OrderStatisticsResponse {
 
     is_breakdown_status?: boolean;
 
-    params?: unknown;
+    params?: { [key: string]: unknown };
 
     results?: Array<Data.Result>;
 
@@ -19980,7 +19775,7 @@ export interface OrderCreateParams {
   /**
    * Additional metadata
    */
-  metadata?: unknown;
+  metadata?: { [key: string]: unknown };
 
   /**
    * Order notes
