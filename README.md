@@ -1,0 +1,1 @@
+# scalev-api-typescript
