@@ -39,7 +39,7 @@ describe('resource order', () => {
       is_dropshipping: true,
       is_probably_spam: true,
       location_id: 0,
-      metadata: {},
+      metadata: { foo: 'bar' },
       notes: 'notes',
       orderbundles: [{ bundle_price_option_unique_id: 'bundle_price_option_unique_id', quantity: 0 }],
       ordervariants: [{ quantity: 0, variant_unique_id: 'variant_unique_id' }],

@@ -102,7 +102,7 @@ export namespace VariantRetrieveResponse {
     /**
      * Additional metadata associated with the variant
      */
-    metadata?: unknown;
+    metadata?: { [key: string]: unknown };
 
     /**
      * Full name of the variant

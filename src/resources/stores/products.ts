@@ -212,7 +212,7 @@ export namespace ProductListResponse {
         /**
          * Additional metadata associated with the variant
          */
-        metadata?: unknown;
+        metadata?: { [key: string]: unknown };
 
         /**
          * Full name of the variant
@@ -518,11 +518,6 @@ export interface ProductListParams {
    * Search term to filter products by name (case-insensitive, partial match)
    */
   search?: string;
-
-  /**
-   * Filter products associated with a specific store ID
-   */
-  query_store_id?: number;
 
   /**
    * Filter products associated with a specific warehouse ID
