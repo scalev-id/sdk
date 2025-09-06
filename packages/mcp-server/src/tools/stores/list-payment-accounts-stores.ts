@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { maybeFilter } from 'scalev-api-mcp/filtering';
-import { Metadata, asTextContentResult } from 'scalev-api-mcp/tools/types';
+import { maybeFilter } from 'scalev-mcp/filtering';
+import { Metadata, asTextContentResult } from 'scalev-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import ScalevAPI from 'scalev-api';
@@ -62,9 +62,8 @@ export const tool: Tool = {
 
 export const handler = async (client: ScalevAPI, args: Record<string, unknown> | undefined) => {
   const { store_id, jq_filter, ...body } = args as any;
-  return asTextContentResult(
-    await maybeFilter(jq_filter, await client.stores.listPaymentAccounts(store_id, body)),
-  );
+  const response = await client.stores.listPaymentAccounts(store_id, body).asResponse();
+  return asTextContentResult(await maybeFilter(jq_filter, await response.json()));
 };
 
 export default { metadata, tool, handler };

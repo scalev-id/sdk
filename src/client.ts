@@ -13,15 +13,29 @@ import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
 import { VERSION } from './version';
 import * as Errors from './core/error';
+import * as Pagination from './core/pagination';
+import {
+  AbstractPage,
+  type CursorPaginationParams,
+  CursorPaginationResponse,
+  type PagePaginationParams,
+  PagePaginationResponse,
+} from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { BusinessRetrieveEnabledEpaymentsResponse, Businesses } from './resources/businesses';
-import { LocationListParams, LocationListResponse, Locations } from './resources/locations';
+import {
+  LocationListParams,
+  LocationListResponse,
+  LocationListResponsesPagePagination,
+  Locations,
+} from './resources/locations';
 import {
   ProductTaxonomies,
   ProductTaxonomyListParams,
   ProductTaxonomyListResponse,
+  ProductTaxonomyListResponsesPagePagination,
   ProductTaxonomyRetrieveResponse,
 } from './resources/product-taxonomies';
 import {
@@ -38,8 +52,10 @@ import {
   BundleDeleteResponse,
   BundleListParams,
   BundleListResponse,
+  BundleListResponsesCursorPagination,
   BundleListSimplifiedParams,
   BundleListSimplifiedResponse,
+  BundleListSimplifiedResponsesCursorPagination,
   BundleRetrieveResponse,
   BundleShowRelationsResponse,
   BundleUpdateParams,
@@ -74,6 +90,7 @@ import {
   OrderListEmailsResponse,
   OrderListParams,
   OrderListResponse,
+  OrderListResponsesCursorPagination,
   OrderListTagsParams,
   OrderListTagsResponse,
   OrderMarkNotSpamParams,
@@ -112,8 +129,10 @@ import {
   ProductDeleteResponse,
   ProductListParams,
   ProductListResponse,
+  ProductListResponsesCursorPagination,
   ProductListSimplifiedParams,
   ProductListSimplifiedResponse,
+  ProductListSimplifiedResponsesCursorPagination,
   ProductRetrieveResponse,
   ProductShowRelationsResponse,
   ProductUpdateParams,
@@ -129,14 +148,19 @@ import {
   StoreListCustomAudiencesResponse,
   StoreListPagesParams,
   StoreListPagesResponse,
+  StoreListPagesResponsesCursorPagination,
   StoreListParams,
   StoreListPaymentAccountsParams,
   StoreListPaymentAccountsResponse,
+  StoreListPaymentAccountsResponsesCursorPagination,
   StoreListResponse,
+  StoreListResponsesCursorPagination,
   StoreListSalesPeopleParams,
   StoreListSalesPeopleResponse,
+  StoreListSalesPeopleResponsesCursorPagination,
   StoreListSimplifiedParams,
   StoreListSimplifiedResponse,
+  StoreListSimplifiedResponsesCursorPagination,
   StoreRetrieveResponse,
   StoreUpdateParams,
   StoreUpdateResponse,
@@ -613,6 +637,25 @@ export class ScalevAPI {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
+  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+    path: string,
+    Page: new (...args: any[]) => PageClass,
+    opts?: RequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    return this.requestAPIList(Page, { method: 'get', path, ...opts });
+  }
+
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
+    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
+    options: FinalRequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    const request = this.makeRequest(options, null, undefined);
+    return new Pagination.PagePromise<PageClass, Item>(this as any as ScalevAPI, request, Page);
+  }
+
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
@@ -869,6 +912,18 @@ ScalevAPI.Variants = Variants;
 export declare namespace ScalevAPI {
   export type RequestOptions = Opts.RequestOptions;
 
+  export import CursorPagination = Pagination.CursorPagination;
+  export {
+    type CursorPaginationParams as CursorPaginationParams,
+    type CursorPaginationResponse as CursorPaginationResponse,
+  };
+
+  export import PagePagination = Pagination.PagePagination;
+  export {
+    type PagePaginationParams as PagePaginationParams,
+    type PagePaginationResponse as PagePaginationResponse,
+  };
+
   export {
     Bundles as Bundles,
     type BundleCreateResponse as BundleCreateResponse,
@@ -880,6 +935,8 @@ export declare namespace ScalevAPI {
     type BundleListSimplifiedResponse as BundleListSimplifiedResponse,
     type BundleShowRelationsResponse as BundleShowRelationsResponse,
     type BundleUpdateSharingResponse as BundleUpdateSharingResponse,
+    type BundleListResponsesCursorPagination as BundleListResponsesCursorPagination,
+    type BundleListSimplifiedResponsesCursorPagination as BundleListSimplifiedResponsesCursorPagination,
     type BundleCreateParams as BundleCreateParams,
     type BundleUpdateParams as BundleUpdateParams,
     type BundleListParams as BundleListParams,
@@ -896,6 +953,7 @@ export declare namespace ScalevAPI {
   export {
     Locations as Locations,
     type LocationListResponse as LocationListResponse,
+    type LocationListResponsesPagePagination as LocationListResponsesPagePagination,
     type LocationListParams as LocationListParams,
   };
 
@@ -933,6 +991,7 @@ export declare namespace ScalevAPI {
     type OrderUploadResponse as OrderUploadResponse,
     type OrderUploadChangeStatusResponse as OrderUploadChangeStatusResponse,
     type OrderUploadReceiptResponse as OrderUploadReceiptResponse,
+    type OrderListResponsesCursorPagination as OrderListResponsesCursorPagination,
     type OrderCreateParams as OrderCreateParams,
     type OrderUpdateParams as OrderUpdateParams,
     type OrderListParams as OrderListParams,
@@ -960,6 +1019,7 @@ export declare namespace ScalevAPI {
     ProductTaxonomies as ProductTaxonomies,
     type ProductTaxonomyRetrieveResponse as ProductTaxonomyRetrieveResponse,
     type ProductTaxonomyListResponse as ProductTaxonomyListResponse,
+    type ProductTaxonomyListResponsesPagePagination as ProductTaxonomyListResponsesPagePagination,
     type ProductTaxonomyListParams as ProductTaxonomyListParams,
   };
 
@@ -974,6 +1034,8 @@ export declare namespace ScalevAPI {
     type ProductListSimplifiedResponse as ProductListSimplifiedResponse,
     type ProductShowRelationsResponse as ProductShowRelationsResponse,
     type ProductUpdateSharingResponse as ProductUpdateSharingResponse,
+    type ProductListResponsesCursorPagination as ProductListResponsesCursorPagination,
+    type ProductListSimplifiedResponsesCursorPagination as ProductListSimplifiedResponsesCursorPagination,
     type ProductCreateParams as ProductCreateParams,
     type ProductUpdateParams as ProductUpdateParams,
     type ProductListParams as ProductListParams,
@@ -1001,6 +1063,11 @@ export declare namespace ScalevAPI {
     type StoreListPaymentAccountsResponse as StoreListPaymentAccountsResponse,
     type StoreListSalesPeopleResponse as StoreListSalesPeopleResponse,
     type StoreListSimplifiedResponse as StoreListSimplifiedResponse,
+    type StoreListResponsesCursorPagination as StoreListResponsesCursorPagination,
+    type StoreListPagesResponsesCursorPagination as StoreListPagesResponsesCursorPagination,
+    type StoreListPaymentAccountsResponsesCursorPagination as StoreListPaymentAccountsResponsesCursorPagination,
+    type StoreListSalesPeopleResponsesCursorPagination as StoreListSalesPeopleResponsesCursorPagination,
+    type StoreListSimplifiedResponsesCursorPagination as StoreListSimplifiedResponsesCursorPagination,
     type StoreCreateParams as StoreCreateParams,
     type StoreUpdateParams as StoreUpdateParams,
     type StoreListParams as StoreListParams,

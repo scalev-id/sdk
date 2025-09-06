@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Metadata, asTextContentResult } from 'scalev-api-mcp/tools/types';
+import { Metadata, asTextContentResult } from 'scalev-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import ScalevAPI from 'scalev-api';
@@ -42,7 +42,8 @@ export const tool: Tool = {
 
 export const handler = async (client: ScalevAPI, args: Record<string, unknown> | undefined) => {
   const { store_id, ...body } = args as any;
-  return asTextContentResult(await client.stores.listSalesPeople(store_id, body));
+  const response = await client.stores.listSalesPeople(store_id, body).asResponse();
+  return asTextContentResult(await response.json());
 };
 
 export default { metadata, tool, handler };

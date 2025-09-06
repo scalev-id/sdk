@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -32,8 +33,11 @@ export class Bpos extends APIResource {
     bundleID: number,
     query: BpoListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<BpoListResponse> {
-    return this._client.get(path`/v2/bundles/${bundleID}/bpos`, { query, ...options });
+  ): PagePromise<BpoListResponsesCursorPagination, BpoListResponse> {
+    return this._client.getAPIList(path`/v2/bundles/${bundleID}/bpos`, CursorPagination<BpoListResponse>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -57,6 +61,8 @@ export class Bpos extends APIResource {
     return this._client.get(path`/v2/bundles/${bundle_id}/bpos/${id}/relations`, options);
   }
 }
+
+export type BpoListResponsesCursorPagination = CursorPagination<BpoListResponse>;
 
 export interface BpoCreateResponse {
   code?: number;
@@ -233,100 +239,78 @@ export namespace BpoUpdateResponse {
 }
 
 export interface BpoListResponse {
-  code?: number;
+  /**
+   * Bundle Price Option ID
+   */
+  id?: number;
 
-  data?: BpoListResponse.Data;
+  /**
+   * Bundle ID
+   */
+  bundle_id?: number;
 
-  status?: string;
+  /**
+   * Name
+   */
+  name?: string;
+
+  /**
+   * Price (including tax)
+   */
+  price?: number;
+
+  /**
+   * Price before tax
+   */
+  price_bt?: number;
+
+  /**
+   * Slug
+   */
+  slug?: string;
+
+  /**
+   * List of stores where the bundle price option is available
+   */
+  stores?: Array<BpoListResponse.Store>;
+
+  /**
+   * Bundle Price Option Unique ID
+   */
+  unique_id?: string;
 }
 
 export namespace BpoListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Store {
+    /**
+     * Store ID
+     */
+    id?: number;
 
-    last_id?: number;
+    custom_domain?: Store.CustomDomain;
 
-    page_size?: number;
-
-    results?: Array<Data.Result>;
+    /**
+     * Store name
+     */
+    name?: string;
   }
 
-  export namespace Data {
-    export interface Result {
+  export namespace Store {
+    export interface CustomDomain {
       /**
-       * Bundle Price Option ID
+       * Custom Domain ID
        */
       id?: number;
 
       /**
-       * Bundle ID
+       * Full URL
        */
-      bundle_id?: number;
+      full_url?: string;
 
       /**
-       * Name
+       * Is Verified
        */
-      name?: string;
-
-      /**
-       * Price (including tax)
-       */
-      price?: number;
-
-      /**
-       * Price before tax
-       */
-      price_bt?: number;
-
-      /**
-       * Slug
-       */
-      slug?: string;
-
-      /**
-       * List of stores where the bundle price option is available
-       */
-      stores?: Array<Result.Store>;
-
-      /**
-       * Bundle Price Option Unique ID
-       */
-      unique_id?: string;
-    }
-
-    export namespace Result {
-      export interface Store {
-        /**
-         * Store ID
-         */
-        id?: number;
-
-        custom_domain?: Store.CustomDomain;
-
-        /**
-         * Store name
-         */
-        name?: string;
-      }
-
-      export namespace Store {
-        export interface CustomDomain {
-          /**
-           * Custom Domain ID
-           */
-          id?: number;
-
-          /**
-           * Full URL
-           */
-          full_url?: string;
-
-          /**
-           * Is Verified
-           */
-          is_verified?: boolean;
-        }
-      }
+      is_verified?: boolean;
     }
   }
 }
@@ -624,18 +608,7 @@ export interface BpoUpdateParams {
   slug?: string;
 }
 
-export interface BpoListParams {
-  /**
-   * The ID of the last item from the previous page. Used for cursor-based
-   * pagination.
-   */
-  last_id?: number;
-
-  /**
-   * Number of items to return per page. Default is 25, maximum is 25.
-   */
-  page_size?: number;
-}
+export interface BpoListParams extends CursorPaginationParams {}
 
 export interface BpoDeleteParams {
   /**
@@ -658,6 +631,7 @@ export declare namespace Bpos {
     type BpoListResponse as BpoListResponse,
     type BpoDeleteResponse as BpoDeleteResponse,
     type BpoShowRelationsResponse as BpoShowRelationsResponse,
+    type BpoListResponsesCursorPagination as BpoListResponsesCursorPagination,
     type BpoCreateParams as BpoCreateParams,
     type BpoUpdateParams as BpoUpdateParams,
     type BpoListParams as BpoListParams,

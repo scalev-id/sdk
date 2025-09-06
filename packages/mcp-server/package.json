@@ -1,5 +1,5 @@
 {
-  "name": "scalev-api-mcp",
+  "name": "scalev-mcp",
   "version": "0.0.1",
   "description": "The official MCP Server for the Scalev API API",
   "author": "Scalev API <>",
@@ -68,8 +68,8 @@
     "typescript": "5.8.3"
   },
   "imports": {
-    "scalev-api-mcp": ".",
-    "scalev-api-mcp/*": "./src/*"
+    "scalev-mcp": ".",
+    "scalev-mcp/*": "./src/*"
   },
   "exports": {
     ".": {

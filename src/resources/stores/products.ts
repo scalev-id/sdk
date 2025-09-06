@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -13,15 +14,24 @@ export class Products extends APIResource {
    *
    * @example
    * ```ts
-   * const products = await client.stores.products.list(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const productListResponse of client.stores.products.list(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   list(
     storeID: number,
     query: ProductListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ProductListResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/products`, { query, ...options });
+  ): PagePromise<ProductListResponsesCursorPagination, ProductListResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/products`,
+      CursorPagination<ProductListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -78,223 +88,203 @@ export class Products extends APIResource {
   }
 }
 
+export type ProductListResponsesCursorPagination = CursorPagination<ProductListResponse>;
+
 export interface ProductListResponse {
-  code?: number;
+  /**
+   * Product primary key
+   */
+  id?: number;
 
-  data?: ProductListResponse.Data;
+  /**
+   * Display name of the product
+   */
+  display?: string;
 
-  status?: string;
+  /**
+   * List of image URLs associated with the product
+   */
+  images?: Array<string>;
+
+  /**
+   * Type of the product item
+   */
+  item_type?: 'physical' | 'digital' | 'course';
+
+  /**
+   * Human-readable name of the product item type
+   */
+  item_type_name?: string;
+
+  /**
+   * List of labels associated with the product
+   */
+  labels?: Array<ProductListResponse.Label>;
+
+  /**
+   * Product name
+   */
+  name?: string;
+
+  /**
+   * Name of first option value
+   */
+  option1_name?: string;
+
+  /**
+   * Name of 2nd option value
+   */
+  option2_name?: string;
+
+  /**
+   * Name of 3rd option value
+   */
+  option3_name?: string;
+
+  /**
+   * Product Public name
+   */
+  public_name?: string;
+
+  /**
+   * Product UUID
+   */
+  uuid?: string;
+
+  /**
+   * Count of variants associated with the product
+   */
+  variant_count?: number;
+
+  /**
+   * List of variants associated with the product
+   */
+  variants?: Array<ProductListResponse.Variant>;
 }
 
 export namespace ProductListResponse {
-  export interface Data {
-    has_next?: boolean;
-
-    last_id?: number;
-
-    page_size?: number;
-
-    results?: Array<Data.Result>;
+  export interface Label {
+    /**
+     * Label name
+     */
+    name?: string;
   }
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * Product primary key
-       */
-      id?: number;
+  export interface Variant {
+    /**
+     * Variant primary key
+     */
+    id?: number;
 
-      /**
-       * Display name of the product
-       */
-      display?: string;
+    /**
+     * Available quantity of the variant in inventory
+     */
+    available_qty?: number;
 
-      /**
-       * List of image URLs associated with the product
-       */
-      images?: Array<string>;
+    /**
+     * List of image URLs associated with the variant
+     */
+    images?: Array<string>;
 
-      /**
-       * Type of the product item
-       */
-      item_type?: 'physical' | 'digital' | 'course';
+    /**
+     * Mark variant as sellable
+     */
+    is_checked?: boolean;
 
-      /**
-       * Human-readable name of the product item type
-       */
-      item_type_name?: string;
+    /**
+     * Indicates if the variant is editable
+     */
+    is_editable?: boolean;
 
-      /**
-       * List of labels associated with the product
-       */
-      labels?: Array<Result.Label>;
+    /**
+     * Type of the product item
+     */
+    item_type?: 'physical' | 'digital' | 'course';
 
-      /**
-       * Product name
-       */
-      name?: string;
+    /**
+     * Additional metadata associated with the variant
+     */
+    metadata?: { [key: string]: unknown };
 
-      /**
-       * Name of first option value
-       */
-      option1_name?: string;
+    /**
+     * Full name of the variant
+     */
+    name?: string;
 
-      /**
-       * Name of 2nd option value
-       */
-      option2_name?: string;
+    /**
+     * Color associated with the first product option
+     */
+    option1_color?: string;
 
-      /**
-       * Name of 3rd option value
-       */
-      option3_name?: string;
+    /**
+     * Icon URL for the first product option
+     */
+    option1_icon_url?: string;
 
-      /**
-       * Product Public name
-       */
-      public_name?: string;
+    /**
+     * Value of the first product option
+     */
+    option1_value?: string;
 
-      /**
-       * Product UUID
-       */
-      uuid?: string;
+    /**
+     * Color associated with the second product option
+     */
+    option2_color?: string;
 
-      /**
-       * Count of variants associated with the product
-       */
-      variant_count?: number;
+    /**
+     * Icon URL for the second product option
+     */
+    option2_icon_url?: string;
 
-      /**
-       * List of variants associated with the product
-       */
-      variants?: Array<Result.Variant>;
-    }
+    /**
+     * Value of the second product option
+     */
+    option2_value?: string;
 
-    export namespace Result {
-      export interface Label {
-        /**
-         * Label name
-         */
-        name?: string;
-      }
+    /**
+     * Color associated with the third product option
+     */
+    option3_color?: string;
 
-      export interface Variant {
-        /**
-         * Variant primary key
-         */
-        id?: number;
+    /**
+     * Icon URL for the third product option
+     */
+    option3_icon_url?: string;
 
-        /**
-         * Available quantity of the variant in inventory
-         */
-        available_qty?: number;
+    /**
+     * Value of the third product option
+     */
+    option3_value?: string;
 
-        /**
-         * List of image URLs associated with the variant
-         */
-        images?: Array<string>;
+    /**
+     * Price of the variant
+     */
+    price?: number;
 
-        /**
-         * Mark variant as sellable
-         */
-        is_checked?: boolean;
+    /**
+     * Name of the associated product
+     */
+    product_name?: string;
 
-        /**
-         * Indicates if the variant is editable
-         */
-        is_editable?: boolean;
+    /**
+     * Reseller price of the variant
+     */
+    reseller_price?: number;
 
-        /**
-         * Type of the product item
-         */
-        item_type?: 'physical' | 'digital' | 'course';
+    /**
+     * Variant unique identifier
+     */
+    unique_id?: string;
 
-        /**
-         * Additional metadata associated with the variant
-         */
-        metadata?: { [key: string]: unknown };
+    /**
+     * Variant UUID
+     */
+    uuid?: string;
 
-        /**
-         * Full name of the variant
-         */
-        name?: string;
-
-        /**
-         * Color associated with the first product option
-         */
-        option1_color?: string;
-
-        /**
-         * Icon URL for the first product option
-         */
-        option1_icon_url?: string;
-
-        /**
-         * Value of the first product option
-         */
-        option1_value?: string;
-
-        /**
-         * Color associated with the second product option
-         */
-        option2_color?: string;
-
-        /**
-         * Icon URL for the second product option
-         */
-        option2_icon_url?: string;
-
-        /**
-         * Value of the second product option
-         */
-        option2_value?: string;
-
-        /**
-         * Color associated with the third product option
-         */
-        option3_color?: string;
-
-        /**
-         * Icon URL for the third product option
-         */
-        option3_icon_url?: string;
-
-        /**
-         * Value of the third product option
-         */
-        option3_value?: string;
-
-        /**
-         * Price of the variant
-         */
-        price?: number;
-
-        /**
-         * Name of the associated product
-         */
-        product_name?: string;
-
-        /**
-         * Reseller price of the variant
-         */
-        reseller_price?: number;
-
-        /**
-         * Variant unique identifier
-         */
-        unique_id?: string;
-
-        /**
-         * Variant UUID
-         */
-        uuid?: string;
-
-        /**
-         * Weight of the variant in grams
-         */
-        weight?: number;
-      }
-    }
+    /**
+     * Weight of the variant in grams
+     */
+    weight?: number;
   }
 }
 
@@ -460,7 +450,7 @@ export namespace ProductViewRelationsResponse {
   }
 }
 
-export interface ProductListParams {
+export interface ProductListParams extends CursorPaginationParams {
   /**
    * Show variants in products where is_checked is true or false
    */
@@ -493,20 +483,10 @@ export interface ProductListParams {
   label?: string;
 
   /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
    * Primary key of the order to validate if the products are applicable for that
    * order
    */
   order_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Type of quantity to filter by. Options are 'available_qty' (only products with
@@ -552,6 +532,7 @@ export declare namespace Products {
     type ProductAddResponse as ProductAddResponse,
     type ProductRemoveResponse as ProductRemoveResponse,
     type ProductViewRelationsResponse as ProductViewRelationsResponse,
+    type ProductListResponsesCursorPagination as ProductListResponsesCursorPagination,
     type ProductListParams as ProductListParams,
     type ProductAddParams as ProductAddParams,
     type ProductRemoveParams as ProductRemoveParams,

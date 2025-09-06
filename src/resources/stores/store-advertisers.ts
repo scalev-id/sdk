@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -13,16 +14,24 @@ export class StoreAdvertisers extends APIResource {
    *
    * @example
    * ```ts
-   * const storeAdvertisers =
-   *   await client.stores.storeAdvertisers.list(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const storeAdvertiserListResponse of client.stores.storeAdvertisers.list(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   list(
     storeID: number,
     query: StoreAdvertiserListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreAdvertiserListResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/store-advertisers`, { query, ...options });
+  ): PagePromise<StoreAdvertiserListResponsesCursorPagination, StoreAdvertiserListResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/store-advertisers`,
+      CursorPagination<StoreAdvertiserListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -65,87 +74,67 @@ export class StoreAdvertisers extends APIResource {
   }
 }
 
+export type StoreAdvertiserListResponsesCursorPagination = CursorPagination<StoreAdvertiserListResponse>;
+
 export interface StoreAdvertiserListResponse {
-  code?: number;
+  /**
+   * The business user ID
+   */
+  id: number;
 
-  data?: StoreAdvertiserListResponse.Data;
+  /**
+   * The business phone number
+   */
+  business_phone: string;
 
-  status?: string;
+  role: StoreAdvertiserListResponse.Role;
+
+  user: StoreAdvertiserListResponse.User;
 }
 
 export namespace StoreAdvertiserListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Role {
+    /**
+     * The role ID
+     */
+    id: number;
 
-    last_id?: number;
-
-    page_size?: number;
-
-    results?: Array<Data.Result>;
+    /**
+     * The name of the role
+     */
+    name: string;
   }
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * The business user ID
-       */
-      id: number;
+  export interface User {
+    /**
+     * User ID
+     */
+    id?: number;
 
-      /**
-       * The business phone number
-       */
-      business_phone: string;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-      role: Result.Role;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-      user: Result.User;
-    }
+    /**
+     * User email
+     */
+    email?: string;
 
-    export namespace Result {
-      export interface Role {
-        /**
-         * The role ID
-         */
-        id: number;
+    /**
+     * User full name
+     */
+    fullname?: string;
 
-        /**
-         * The name of the role
-         */
-        name: string;
-      }
-
-      export interface User {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-    }
+    /**
+     * User phone number
+     */
+    phone?: string;
   }
 }
 
@@ -161,17 +150,7 @@ export interface StoreAdvertiserRemoveResponse {
   status?: string;
 }
 
-export interface StoreAdvertiserListParams {
-  /**
-   * Last store advertiser ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-}
+export interface StoreAdvertiserListParams extends CursorPaginationParams {}
 
 export interface StoreAdvertiserAddParams {
   /**
@@ -192,6 +171,7 @@ export declare namespace StoreAdvertisers {
     type StoreAdvertiserListResponse as StoreAdvertiserListResponse,
     type StoreAdvertiserAddResponse as StoreAdvertiserAddResponse,
     type StoreAdvertiserRemoveResponse as StoreAdvertiserRemoveResponse,
+    type StoreAdvertiserListResponsesCursorPagination as StoreAdvertiserListResponsesCursorPagination,
     type StoreAdvertiserListParams as StoreAdvertiserListParams,
     type StoreAdvertiserAddParams as StoreAdvertiserAddParams,
     type StoreAdvertiserRemoveParams as StoreAdvertiserRemoveParams,

@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -24,8 +25,12 @@ export class Partners extends APIResource {
     productID: number,
     query: PartnerListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PartnerListResponse> {
-    return this._client.get(path`/v2/products/${productID}/partners`, { query, ...options });
+  ): PagePromise<PartnerListResponsesCursorPagination, PartnerListResponse> {
+    return this._client.getAPIList(
+      path`/v2/products/${productID}/partners`,
+      CursorPagination<PartnerListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -40,6 +45,8 @@ export class Partners extends APIResource {
     return this._client.delete(path`/v2/products/${product_id}/partners/${id}`, options);
   }
 }
+
+export type PartnerListResponsesCursorPagination = CursorPagination<PartnerListResponse>;
 
 export interface PartnerCreateResponse {
   code?: number;
@@ -110,81 +117,59 @@ export namespace PartnerCreateResponse {
   }
 }
 
+/**
+ * A partner associated with a product
+ */
 export interface PartnerListResponse {
-  code?: number;
+  /**
+   * Unique identifier of the product partner
+   */
+  id?: number;
 
-  data?: PartnerListResponse.Data;
+  /**
+   * Timestamp when the product partner was created
+   */
+  created_at?: string;
 
-  status?: string;
+  partner?: PartnerListResponse.Partner;
 }
 
 export namespace PartnerListResponse {
-  export interface Data {
-    has_next?: boolean;
-
-    last_id?: number;
-
-    page_size?: number;
-
-    results?: Array<Data.Result>;
-  }
-
-  export namespace Data {
+  export interface Partner {
     /**
-     * A partner associated with a product
+     * Business ID
      */
-    export interface Result {
-      /**
-       * Unique identifier of the product partner
-       */
-      id?: number;
+    id?: number;
 
-      /**
-       * Timestamp when the product partner was created
-       */
-      created_at?: string;
+    /**
+     * Name of the account holder
+     */
+    account_holder?: string;
 
-      partner?: Result.Partner;
-    }
+    /**
+     * Email address of the business
+     */
+    email?: string;
 
-    export namespace Result {
-      export interface Partner {
-        /**
-         * Business ID
-         */
-        id?: number;
+    /**
+     * Is the business banned?
+     */
+    is_banned?: boolean;
 
-        /**
-         * Name of the account holder
-         */
-        account_holder?: string;
+    /**
+     * URL to the business logo
+     */
+    logo?: string;
 
-        /**
-         * Email address of the business
-         */
-        email?: string;
+    /**
+     * Unique identifier for the business
+     */
+    unique_id?: string;
 
-        /**
-         * Is the business banned?
-         */
-        is_banned?: boolean;
-
-        /**
-         * URL to the business logo
-         */
-        logo?: string;
-
-        /**
-         * Unique identifier for the business
-         */
-        unique_id?: string;
-
-        /**
-         * Username of the business
-         */
-        username?: string;
-      }
-    }
+    /**
+     * Username of the business
+     */
+    username?: string;
   }
 }
 
@@ -201,17 +186,7 @@ export interface PartnerCreateParams {
   partner_unique_id: string;
 }
 
-export interface PartnerListParams {
-  /**
-   * Last ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-}
+export interface PartnerListParams extends CursorPaginationParams {}
 
 export interface PartnerDeleteParams {
   /**
@@ -225,6 +200,7 @@ export declare namespace Partners {
     type PartnerCreateResponse as PartnerCreateResponse,
     type PartnerListResponse as PartnerListResponse,
     type PartnerDeleteResponse as PartnerDeleteResponse,
+    type PartnerListResponsesCursorPagination as PartnerListResponsesCursorPagination,
     type PartnerCreateParams as PartnerCreateParams,
     type PartnerListParams as PartnerListParams,
     type PartnerDeleteParams as PartnerDeleteParams,

@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { type Uploadable } from '../../core/uploads';
 import { RequestOptions } from '../../internal/request-options';
 import { multipartFormRequestOptions } from '../../internal/uploads';
@@ -41,8 +42,12 @@ export class DigitalProductFiles extends APIResource {
     variantID: number,
     query: DigitalProductFileListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<DigitalProductFileListResponse> {
-    return this._client.get(path`/v2/variants/${variantID}/digital-product-files`, { query, ...options });
+  ): PagePromise<DigitalProductFileListResponsesCursorPagination, DigitalProductFileListResponse> {
+    return this._client.getAPIList(
+      path`/v2/variants/${variantID}/digital-product-files`,
+      CursorPagination<DigitalProductFileListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -57,6 +62,9 @@ export class DigitalProductFiles extends APIResource {
     return this._client.delete(path`/v2/variants/${variant_id}/digital-product-files/${id}`, options);
   }
 }
+
+export type DigitalProductFileListResponsesCursorPagination =
+  CursorPagination<DigitalProductFileListResponse>;
 
 export interface DigitalProductFileCreateResponse {
   code?: number;
@@ -133,52 +141,30 @@ export namespace DigitalProductFileRetrieveResponse {
 }
 
 export interface DigitalProductFileListResponse {
-  code?: number;
+  /**
+   * Digital product file primary key
+   */
+  id?: number;
 
-  data?: DigitalProductFileListResponse.Data;
+  /**
+   * MIME type of the digital product file
+   */
+  content_type?: string;
 
-  status?: string;
-}
+  /**
+   * File name of the digital product file
+   */
+  name?: string;
 
-export namespace DigitalProductFileListResponse {
-  export interface Data {
-    has_next?: boolean;
+  /**
+   * Size of the digital product file in bytes
+   */
+  size_in_bytes?: number;
 
-    last_id?: number;
-
-    page_size?: number;
-
-    results?: Array<Data.Result>;
-  }
-
-  export namespace Data {
-    export interface Result {
-      /**
-       * Digital product file primary key
-       */
-      id?: number;
-
-      /**
-       * MIME type of the digital product file
-       */
-      content_type?: string;
-
-      /**
-       * File name of the digital product file
-       */
-      name?: string;
-
-      /**
-       * Size of the digital product file in bytes
-       */
-      size_in_bytes?: number;
-
-      /**
-       * URL to access the digital product file
-       */
-      url?: string;
-    }
-  }
+  /**
+   * URL to access the digital product file
+   */
+  url?: string;
 }
 
 export interface DigitalProductFileDeleteResponse {
@@ -229,17 +215,7 @@ export interface DigitalProductFileRetrieveParams {
   variant_id: number;
 }
 
-export interface DigitalProductFileListParams {
-  /**
-   * Last ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-}
+export interface DigitalProductFileListParams extends CursorPaginationParams {}
 
 export interface DigitalProductFileDeleteParams {
   /**
@@ -254,6 +230,7 @@ export declare namespace DigitalProductFiles {
     type DigitalProductFileRetrieveResponse as DigitalProductFileRetrieveResponse,
     type DigitalProductFileListResponse as DigitalProductFileListResponse,
     type DigitalProductFileDeleteResponse as DigitalProductFileDeleteResponse,
+    type DigitalProductFileListResponsesCursorPagination as DigitalProductFileListResponsesCursorPagination,
     type DigitalProductFileCreateParams as DigitalProductFileCreateParams,
     type DigitalProductFileRetrieveParams as DigitalProductFileRetrieveParams,
     type DigitalProductFileListParams as DigitalProductFileListParams,

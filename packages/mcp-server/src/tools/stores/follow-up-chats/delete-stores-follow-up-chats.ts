@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { maybeFilter } from 'scalev-api-mcp/filtering';
-import { Metadata, asTextContentResult } from 'scalev-api-mcp/tools/types';
+import { maybeFilter } from 'scalev-mcp/filtering';
+import { Metadata, asTextContentResult } from 'scalev-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import ScalevAPI from 'scalev-api';

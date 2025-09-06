@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -32,17 +33,28 @@ export class Bundles extends APIResource {
    *
    * @example
    * ```ts
-   * const bundles = await client.stores.bundles.list(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const bundleListResponse of client.stores.bundles.list(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   list(
     storeID: number,
     query: BundleListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<BundleListResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/bundles`, { query, ...options });
+  ): PagePromise<BundleListResponsesCursorPagination, BundleListResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/bundles`,
+      CursorPagination<BundleListResponse>,
+      { query, ...options },
+    );
   }
 }
+
+export type BundleListResponsesCursorPagination = CursorPagination<BundleListResponse>;
 
 export interface BundleRetrieveResponse {
   /**
@@ -254,231 +266,209 @@ export namespace BundleRetrieveResponse {
 }
 
 export interface BundleListResponse {
-  code?: number;
+  /**
+   * Bundle ID
+   */
+  id?: number;
 
-  data?: BundleListResponse.Data;
+  /**
+   * Available Quantity
+   */
+  available_qty?: number;
 
-  status?: string;
+  /**
+   * List of Bundle Price Options
+   */
+  bundle_price_options?: Array<BundleListResponse.BundlePriceOption>;
+
+  /**
+   * List of Bundle Lines with Product details
+   */
+  bundlelines?: Array<BundleListResponse.Bundleline>;
+
+  /**
+   * Custom Identifier
+   */
+  custom_id?: string;
+
+  /**
+   * Display Name
+   */
+  display?: string;
+
+  /**
+   * List of Image URLs
+   */
+  images?: Array<string>;
+
+  /**
+   * Is Bundle Sharing Enabled
+   */
+  is_bundle_sharing?: boolean;
+
+  /**
+   * Name
+   */
+  name?: string;
+
+  /**
+   * Public Name
+   */
+  public_name?: string;
+
+  /**
+   * Weight Bump
+   */
+  weight_bump?: number;
 }
 
 export namespace BundleListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface BundlePriceOption {
+    /**
+     * Bundle Price Option ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Is owned by store
+     */
+    is_owned_by_store?: boolean;
 
-    page_size?: number;
+    /**
+     * Name
+     */
+    name?: string;
 
-    results?: Array<Data.Result>;
+    /**
+     * Price (including tax)
+     */
+    price?: number;
+
+    /**
+     * Price before tax
+     */
+    price_bt?: number;
+
+    /**
+     * Slug
+     */
+    slug?: string;
+
+    /**
+     * Bundle Price Option Unique ID
+     */
+    unique_id?: string;
   }
 
-  export namespace Data {
-    export interface Result {
+  export interface Bundleline {
+    /**
+     * Bundle Line ID
+     */
+    id?: number;
+
+    /**
+     * Quantity of the variant in the bundle line
+     */
+    quantity?: number;
+
+    variant?: Bundleline.Variant;
+  }
+
+  export namespace Bundleline {
+    export interface Variant {
       /**
-       * Bundle ID
+       * Variant ID
        */
       id?: number;
 
       /**
-       * Available Quantity
+       * Variant Description
        */
-      available_qty?: number;
+      description?: string;
 
-      /**
-       * List of Bundle Price Options
-       */
-      bundle_price_options?: Array<Result.BundlePriceOption>;
-
-      /**
-       * List of Bundle Lines with Product details
-       */
-      bundlelines?: Array<Result.Bundleline>;
-
-      /**
-       * Custom Identifier
-       */
-      custom_id?: string;
-
-      /**
-       * Display Name
-       */
-      display?: string;
-
-      /**
-       * List of Image URLs
-       */
       images?: Array<string>;
 
       /**
-       * Is Bundle Sharing Enabled
+       * Type of the product item
        */
-      is_bundle_sharing?: boolean;
+      item_type?: 'physical' | 'digital' | 'course';
+
+      metadata?: { [key: string]: unknown };
 
       /**
-       * Name
+       * Variant Fullname
        */
       name?: string;
 
       /**
-       * Public Name
+       * Option 1 Value
        */
-      public_name?: string;
+      option1_value?: string;
 
       /**
-       * Weight Bump
+       * Option 2 Value
        */
-      weight_bump?: number;
+      option2_value?: string;
+
+      /**
+       * Option 3 Value
+       */
+      option3_value?: string;
+
+      /**
+       * Price
+       */
+      price?: number;
+
+      product?: Variant.Product;
+
+      /**
+       * Product ID
+       */
+      product_id?: number;
+
+      /**
+       * Product Name
+       */
+      product_name?: string;
+
+      /**
+       * Variant Rich Description
+       */
+      rich_description?: string;
+
+      /**
+       * SKU
+       */
+      sku?: string;
+
+      /**
+       * Variant Unique ID
+       */
+      unique_id?: string;
+
+      /**
+       * Weight
+       */
+      weight?: number;
     }
 
-    export namespace Result {
-      export interface BundlePriceOption {
+    export namespace Variant {
+      export interface Product {
         /**
-         * Bundle Price Option ID
+         * Product ID
          */
         id?: number;
 
         /**
-         * Is owned by store
+         * Type of the product item
          */
-        is_owned_by_store?: boolean;
+        item_type?: 'physical' | 'digital' | 'course';
 
         /**
-         * Name
+         * Product Name
          */
         name?: string;
-
-        /**
-         * Price (including tax)
-         */
-        price?: number;
-
-        /**
-         * Price before tax
-         */
-        price_bt?: number;
-
-        /**
-         * Slug
-         */
-        slug?: string;
-
-        /**
-         * Bundle Price Option Unique ID
-         */
-        unique_id?: string;
-      }
-
-      export interface Bundleline {
-        /**
-         * Bundle Line ID
-         */
-        id?: number;
-
-        /**
-         * Quantity of the variant in the bundle line
-         */
-        quantity?: number;
-
-        variant?: Bundleline.Variant;
-      }
-
-      export namespace Bundleline {
-        export interface Variant {
-          /**
-           * Variant ID
-           */
-          id?: number;
-
-          /**
-           * Variant Description
-           */
-          description?: string;
-
-          images?: Array<string>;
-
-          /**
-           * Type of the product item
-           */
-          item_type?: 'physical' | 'digital' | 'course';
-
-          metadata?: { [key: string]: unknown };
-
-          /**
-           * Variant Fullname
-           */
-          name?: string;
-
-          /**
-           * Option 1 Value
-           */
-          option1_value?: string;
-
-          /**
-           * Option 2 Value
-           */
-          option2_value?: string;
-
-          /**
-           * Option 3 Value
-           */
-          option3_value?: string;
-
-          /**
-           * Price
-           */
-          price?: number;
-
-          product?: Variant.Product;
-
-          /**
-           * Product ID
-           */
-          product_id?: number;
-
-          /**
-           * Product Name
-           */
-          product_name?: string;
-
-          /**
-           * Variant Rich Description
-           */
-          rich_description?: string;
-
-          /**
-           * SKU
-           */
-          sku?: string;
-
-          /**
-           * Variant Unique ID
-           */
-          unique_id?: string;
-
-          /**
-           * Weight
-           */
-          weight?: number;
-        }
-
-        export namespace Variant {
-          export interface Product {
-            /**
-             * Product ID
-             */
-            id?: number;
-
-            /**
-             * Type of the product item
-             */
-            item_type?: 'physical' | 'digital' | 'course';
-
-            /**
-             * Product Name
-             */
-            name?: string;
-          }
-        }
       }
     }
   }
@@ -497,7 +487,7 @@ export interface BundleRetrieveParams {
   order_id?: number;
 }
 
-export interface BundleListParams {
+export interface BundleListParams extends CursorPaginationParams {
   /**
    * Filter bundles that are shared across businesses (true/false)
    */
@@ -509,20 +499,10 @@ export interface BundleListParams {
   label?: string;
 
   /**
-   * Last bundle ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
    * Primary key of the order to validate if the bundles are applicable for that
    * order
    */
   order_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Search term to filter bundles by name or description (case-insensitive, partial
@@ -535,6 +515,7 @@ export declare namespace Bundles {
   export {
     type BundleRetrieveResponse as BundleRetrieveResponse,
     type BundleListResponse as BundleListResponse,
+    type BundleListResponsesCursorPagination as BundleListResponsesCursorPagination,
     type BundleRetrieveParams as BundleRetrieveParams,
     type BundleListParams as BundleListParams,
   };

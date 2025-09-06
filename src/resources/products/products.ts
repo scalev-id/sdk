@@ -10,6 +10,7 @@ import {
   FollowUpChatGenerateResponse,
   FollowUpChatListParams,
   FollowUpChatListResponse,
+  FollowUpChatListResponsesCursorPagination,
   FollowUpChatRetrieveParams,
   FollowUpChatRetrieveResponse,
   FollowUpChatUpdateParams,
@@ -24,9 +25,11 @@ import {
   PartnerDeleteResponse,
   PartnerListParams,
   PartnerListResponse,
+  PartnerListResponsesCursorPagination,
   Partners,
 } from './partners';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -64,8 +67,11 @@ export class Products extends APIResource {
   list(
     query: ProductListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ProductListResponse> {
-    return this._client.get('/v2/products', { query, ...options });
+  ): PagePromise<ProductListResponsesCursorPagination, ProductListResponse> {
+    return this._client.getAPIList('/v2/products', CursorPagination<ProductListResponse>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -93,8 +99,12 @@ export class Products extends APIResource {
   listSimplified(
     query: ProductListSimplifiedParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ProductListSimplifiedResponse> {
-    return this._client.get('/v2/products/simplified', { query, ...options });
+  ): PagePromise<ProductListSimplifiedResponsesCursorPagination, ProductListSimplifiedResponse> {
+    return this._client.getAPIList(
+      '/v2/products/simplified',
+      CursorPagination<ProductListSimplifiedResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -116,6 +126,10 @@ export class Products extends APIResource {
     return this._client.patch(path`/v2/products/${productID}/sharing`, { body, ...options });
   }
 }
+
+export type ProductListResponsesCursorPagination = CursorPagination<ProductListResponse>;
+
+export type ProductListSimplifiedResponsesCursorPagination = CursorPagination<ProductListSimplifiedResponse>;
 
 export interface ProductCreateResponse {
   code?: number;
@@ -2311,327 +2325,305 @@ export namespace ProductUpdateResponse {
 }
 
 export interface ProductListResponse {
-  code?: number;
+  /**
+   * Product primary key
+   */
+  id?: number;
 
-  data?: ProductListResponse.Data;
+  business?: ProductListResponse.Business;
 
-  status?: string;
+  /**
+   * Timestamp when the product was created
+   */
+  created_at?: string;
+
+  created_by?: ProductListResponse.CreatedBy;
+
+  /**
+   * Detailed description of the product
+   */
+  description?: string;
+
+  /**
+   * Display name of the product
+   */
+  display?: string;
+
+  /**
+   * List of image URLs associated with the product
+   */
+  images?: Array<string>;
+
+  /**
+   * Indicates if the product is tracked in inventory
+   */
+  is_inventory?: boolean;
+
+  /**
+   * Indicates if the product has multiple variants
+   */
+  is_multiple?: boolean;
+
+  /**
+   * Indicates if the product is shared across businesses
+   */
+  is_product_sharing?: boolean;
+
+  /**
+   * Type of the product item
+   */
+  item_type?: 'physical' | 'digital' | 'course';
+
+  /**
+   * Human-readable name of the product item type
+   */
+  item_type_name?: string;
+
+  /**
+   * List of labels associated with the product
+   */
+  labels?: Array<ProductListResponse.Label>;
+
+  /**
+   * Timestamp when the product was last updated
+   */
+  last_updated_at?: string;
+
+  last_updated_by?: ProductListResponse.LastUpdatedBy;
+
+  /**
+   * Product name
+   */
+  name?: string;
+
+  /**
+   * Name of the first product option
+   */
+  option1_name?: string;
+
+  /**
+   * Name of the second product option
+   */
+  option2_name?: string;
+
+  /**
+   * Name of the third product option
+   */
+  option3_name?: string;
+
+  /**
+   * Product UUID
+   */
+  uuid?: string;
+
+  /**
+   * List of variants associated with the product
+   */
+  variants?: Array<ProductListResponse.Variant>;
 }
 
 export namespace ProductListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Business {
+    /**
+     * Business ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Name of the account holder
+     */
+    account_holder?: string;
 
-    page_size?: number;
+    /**
+     * Email address of the business
+     */
+    email?: string;
 
-    results?: Array<Data.Result>;
+    /**
+     * Is the business banned?
+     */
+    is_banned?: boolean;
+
+    /**
+     * URL to the business logo
+     */
+    logo?: string;
+
+    /**
+     * Unique identifier for the business
+     */
+    unique_id?: string;
+
+    /**
+     * Username of the business
+     */
+    username?: string;
   }
 
-  export namespace Data {
-    export interface Result {
+  export interface CreatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
+
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
+
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
+
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
+  }
+
+  export interface Label {
+    /**
+     * Label name
+     */
+    name?: string;
+  }
+
+  export interface LastUpdatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
+
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
+
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
+
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
+  }
+
+  export interface Variant {
+    /**
+     * Variant primary key
+     */
+    id?: number;
+
+    /**
+     * List of digital product files associated with the variant
+     */
+    digital_product_files?: Array<Variant.DigitalProductFile>;
+
+    /**
+     * List of image URLs associated with the variant
+     */
+    images?: Array<string>;
+
+    /**
+     * Mark variant as sellable
+     */
+    is_checked?: boolean;
+
+    /**
+     * Indicates if the variant is editable
+     */
+    is_editable?: boolean;
+
+    /**
+     * Type of the product item
+     */
+    item_type?: 'physical' | 'digital' | 'course';
+
+    /**
+     * Additional metadata associated with the variant
+     */
+    metadata?: { [key: string]: unknown };
+
+    /**
+     * Full name of the variant
+     */
+    name?: string;
+
+    /**
+     * Name of the associated product
+     */
+    product_name?: string;
+
+    /**
+     * List of self file URLs associated with the variant
+     */
+    self_file_urls?: Array<string>;
+
+    /**
+     * Variant unique identifier
+     */
+    unique_id?: string;
+
+    /**
+     * Variant UUID
+     */
+    uuid?: string;
+
+    /**
+     * Weight of the variant in grams
+     */
+    weight?: number;
+  }
+
+  export namespace Variant {
+    export interface DigitalProductFile {
       /**
-       * Product primary key
+       * Digital product file primary key
        */
       id?: number;
 
-      business?: Result.Business;
-
       /**
-       * Timestamp when the product was created
+       * MIME type of the digital product file
        */
-      created_at?: string;
-
-      created_by?: Result.CreatedBy;
+      content_type?: string;
 
       /**
-       * Detailed description of the product
-       */
-      description?: string;
-
-      /**
-       * Display name of the product
-       */
-      display?: string;
-
-      /**
-       * List of image URLs associated with the product
-       */
-      images?: Array<string>;
-
-      /**
-       * Indicates if the product is tracked in inventory
-       */
-      is_inventory?: boolean;
-
-      /**
-       * Indicates if the product has multiple variants
-       */
-      is_multiple?: boolean;
-
-      /**
-       * Indicates if the product is shared across businesses
-       */
-      is_product_sharing?: boolean;
-
-      /**
-       * Type of the product item
-       */
-      item_type?: 'physical' | 'digital' | 'course';
-
-      /**
-       * Human-readable name of the product item type
-       */
-      item_type_name?: string;
-
-      /**
-       * List of labels associated with the product
-       */
-      labels?: Array<Result.Label>;
-
-      /**
-       * Timestamp when the product was last updated
-       */
-      last_updated_at?: string;
-
-      last_updated_by?: Result.LastUpdatedBy;
-
-      /**
-       * Product name
+       * File name of the digital product file
        */
       name?: string;
 
       /**
-       * Name of the first product option
+       * Size of the digital product file in bytes
        */
-      option1_name?: string;
+      size_in_bytes?: number;
 
       /**
-       * Name of the second product option
+       * URL to access the digital product file
        */
-      option2_name?: string;
-
-      /**
-       * Name of the third product option
-       */
-      option3_name?: string;
-
-      /**
-       * Product UUID
-       */
-      uuid?: string;
-
-      /**
-       * List of variants associated with the product
-       */
-      variants?: Array<Result.Variant>;
-    }
-
-    export namespace Result {
-      export interface Business {
-        /**
-         * Business ID
-         */
-        id?: number;
-
-        /**
-         * Name of the account holder
-         */
-        account_holder?: string;
-
-        /**
-         * Email address of the business
-         */
-        email?: string;
-
-        /**
-         * Is the business banned?
-         */
-        is_banned?: boolean;
-
-        /**
-         * URL to the business logo
-         */
-        logo?: string;
-
-        /**
-         * Unique identifier for the business
-         */
-        unique_id?: string;
-
-        /**
-         * Username of the business
-         */
-        username?: string;
-      }
-
-      export interface CreatedBy {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-
-      export interface Label {
-        /**
-         * Label name
-         */
-        name?: string;
-      }
-
-      export interface LastUpdatedBy {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-
-      export interface Variant {
-        /**
-         * Variant primary key
-         */
-        id?: number;
-
-        /**
-         * List of digital product files associated with the variant
-         */
-        digital_product_files?: Array<Variant.DigitalProductFile>;
-
-        /**
-         * List of image URLs associated with the variant
-         */
-        images?: Array<string>;
-
-        /**
-         * Mark variant as sellable
-         */
-        is_checked?: boolean;
-
-        /**
-         * Indicates if the variant is editable
-         */
-        is_editable?: boolean;
-
-        /**
-         * Type of the product item
-         */
-        item_type?: 'physical' | 'digital' | 'course';
-
-        /**
-         * Additional metadata associated with the variant
-         */
-        metadata?: { [key: string]: unknown };
-
-        /**
-         * Full name of the variant
-         */
-        name?: string;
-
-        /**
-         * Name of the associated product
-         */
-        product_name?: string;
-
-        /**
-         * List of self file URLs associated with the variant
-         */
-        self_file_urls?: Array<string>;
-
-        /**
-         * Variant unique identifier
-         */
-        unique_id?: string;
-
-        /**
-         * Variant UUID
-         */
-        uuid?: string;
-
-        /**
-         * Weight of the variant in grams
-         */
-        weight?: number;
-      }
-
-      export namespace Variant {
-        export interface DigitalProductFile {
-          /**
-           * Digital product file primary key
-           */
-          id?: number;
-
-          /**
-           * MIME type of the digital product file
-           */
-          content_type?: string;
-
-          /**
-           * File name of the digital product file
-           */
-          name?: string;
-
-          /**
-           * Size of the digital product file in bytes
-           */
-          size_in_bytes?: number;
-
-          /**
-           * URL to access the digital product file
-           */
-          url?: string;
-        }
-      }
+      url?: string;
     }
   }
 }
@@ -2660,182 +2652,160 @@ export namespace ProductCountResponse {
 }
 
 export interface ProductListSimplifiedResponse {
-  code?: number;
+  /**
+   * Product primary key
+   */
+  id?: number;
 
-  data?: ProductListSimplifiedResponse.Data;
+  /**
+   * Display name of the product
+   */
+  display?: string;
 
-  status?: string;
+  /**
+   * List of image URLs associated with the product
+   */
+  images?: Array<string>;
+
+  /**
+   * If the request is made including `for_store_id` param, it shows
+   * `is_owned_by_store` field in the response, indicating if the product is included
+   * in the store.
+   */
+  is_owned_by_store?: boolean;
+
+  /**
+   * Type of the product item
+   */
+  item_type?: 'physical' | 'digital' | 'course';
+
+  /**
+   * Human-readable name of the product item type
+   */
+  item_type_name?: string;
+
+  /**
+   * List of labels associated with the product
+   */
+  labels?: Array<ProductListSimplifiedResponse.Label>;
+
+  /**
+   * Product name
+   */
+  name?: string;
+
+  /**
+   * Product UUID
+   */
+  uuid?: string;
+
+  /**
+   * List of variants associated with the product
+   */
+  variants?: Array<ProductListSimplifiedResponse.Variant>;
 }
 
 export namespace ProductListSimplifiedResponse {
-  export interface Data {
-    has_next?: boolean;
-
-    last_id?: number;
-
-    page_size?: number;
-
-    results?: Array<Data.Result>;
+  export interface Label {
+    /**
+     * Label name
+     */
+    name?: string;
   }
 
-  export namespace Data {
-    export interface Result {
+  export interface Variant {
+    /**
+     * Variant primary key
+     */
+    id?: number;
+
+    /**
+     * List of digital product files associated with the variant
+     */
+    digital_product_files?: Array<Variant.DigitalProductFile>;
+
+    /**
+     * List of image URLs associated with the variant
+     */
+    images?: Array<string>;
+
+    /**
+     * Mark variant as sellable
+     */
+    is_checked?: boolean;
+
+    /**
+     * Indicates if the variant is editable
+     */
+    is_editable?: boolean;
+
+    /**
+     * Type of the product item
+     */
+    item_type?: 'physical' | 'digital' | 'course';
+
+    /**
+     * Additional metadata associated with the variant
+     */
+    metadata?: { [key: string]: unknown };
+
+    /**
+     * Full name of the variant
+     */
+    name?: string;
+
+    /**
+     * Name of the associated product
+     */
+    product_name?: string;
+
+    /**
+     * List of self file URLs associated with the variant
+     */
+    self_file_urls?: Array<string>;
+
+    /**
+     * Variant unique identifier
+     */
+    unique_id?: string;
+
+    /**
+     * Variant UUID
+     */
+    uuid?: string;
+
+    /**
+     * Weight of the variant in grams
+     */
+    weight?: number;
+  }
+
+  export namespace Variant {
+    export interface DigitalProductFile {
       /**
-       * Product primary key
+       * Digital product file primary key
        */
       id?: number;
 
       /**
-       * Display name of the product
+       * MIME type of the digital product file
        */
-      display?: string;
+      content_type?: string;
 
       /**
-       * List of image URLs associated with the product
-       */
-      images?: Array<string>;
-
-      /**
-       * If the request is made including `for_store_id` param, it shows
-       * `is_owned_by_store` field in the response, indicating if the product is included
-       * in the store.
-       */
-      is_owned_by_store?: boolean;
-
-      /**
-       * Type of the product item
-       */
-      item_type?: 'physical' | 'digital' | 'course';
-
-      /**
-       * Human-readable name of the product item type
-       */
-      item_type_name?: string;
-
-      /**
-       * List of labels associated with the product
-       */
-      labels?: Array<Result.Label>;
-
-      /**
-       * Product name
+       * File name of the digital product file
        */
       name?: string;
 
       /**
-       * Product UUID
+       * Size of the digital product file in bytes
        */
-      uuid?: string;
+      size_in_bytes?: number;
 
       /**
-       * List of variants associated with the product
+       * URL to access the digital product file
        */
-      variants?: Array<Result.Variant>;
-    }
-
-    export namespace Result {
-      export interface Label {
-        /**
-         * Label name
-         */
-        name?: string;
-      }
-
-      export interface Variant {
-        /**
-         * Variant primary key
-         */
-        id?: number;
-
-        /**
-         * List of digital product files associated with the variant
-         */
-        digital_product_files?: Array<Variant.DigitalProductFile>;
-
-        /**
-         * List of image URLs associated with the variant
-         */
-        images?: Array<string>;
-
-        /**
-         * Mark variant as sellable
-         */
-        is_checked?: boolean;
-
-        /**
-         * Indicates if the variant is editable
-         */
-        is_editable?: boolean;
-
-        /**
-         * Type of the product item
-         */
-        item_type?: 'physical' | 'digital' | 'course';
-
-        /**
-         * Additional metadata associated with the variant
-         */
-        metadata?: { [key: string]: unknown };
-
-        /**
-         * Full name of the variant
-         */
-        name?: string;
-
-        /**
-         * Name of the associated product
-         */
-        product_name?: string;
-
-        /**
-         * List of self file URLs associated with the variant
-         */
-        self_file_urls?: Array<string>;
-
-        /**
-         * Variant unique identifier
-         */
-        unique_id?: string;
-
-        /**
-         * Variant UUID
-         */
-        uuid?: string;
-
-        /**
-         * Weight of the variant in grams
-         */
-        weight?: number;
-      }
-
-      export namespace Variant {
-        export interface DigitalProductFile {
-          /**
-           * Digital product file primary key
-           */
-          id?: number;
-
-          /**
-           * MIME type of the digital product file
-           */
-          content_type?: string;
-
-          /**
-           * File name of the digital product file
-           */
-          name?: string;
-
-          /**
-           * Size of the digital product file in bytes
-           */
-          size_in_bytes?: number;
-
-          /**
-           * URL to access the digital product file
-           */
-          url?: string;
-        }
-      }
+      url?: string;
     }
   }
 }
@@ -4415,7 +4385,7 @@ export namespace ProductUpdateParams {
   }
 }
 
-export interface ProductListParams {
+export interface ProductListParams extends CursorPaginationParams {
   /**
    * Show variants in products where is_checked is true or false
    */
@@ -4446,16 +4416,6 @@ export interface ProductListParams {
    * Filter products associated with a specific label name
    */
   label?: string;
-
-  /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Type of quantity to filter by. Options are 'available_qty' (only products with
@@ -4543,7 +4503,7 @@ export interface ProductCountParams {
   warehouse_id?: number;
 }
 
-export interface ProductListSimplifiedParams {
+export interface ProductListSimplifiedParams extends CursorPaginationParams {
   /**
    * If provided, includes `is_owned_by_store` field in the bundle price options to
    * indicate if the option is already included in the specified store.
@@ -4580,16 +4540,6 @@ export interface ProductListSimplifiedParams {
    * Filter products associated with a specific label name
    */
   label?: string;
-
-  /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Type of quantity to filter by. Options are 'available_qty' (only products with
@@ -4634,6 +4584,8 @@ export declare namespace Products {
     type ProductListSimplifiedResponse as ProductListSimplifiedResponse,
     type ProductShowRelationsResponse as ProductShowRelationsResponse,
     type ProductUpdateSharingResponse as ProductUpdateSharingResponse,
+    type ProductListResponsesCursorPagination as ProductListResponsesCursorPagination,
+    type ProductListSimplifiedResponsesCursorPagination as ProductListSimplifiedResponsesCursorPagination,
     type ProductCreateParams as ProductCreateParams,
     type ProductUpdateParams as ProductUpdateParams,
     type ProductListParams as ProductListParams,
@@ -4650,6 +4602,7 @@ export declare namespace Products {
     type FollowUpChatListResponse as FollowUpChatListResponse,
     type FollowUpChatDeleteResponse as FollowUpChatDeleteResponse,
     type FollowUpChatGenerateResponse as FollowUpChatGenerateResponse,
+    type FollowUpChatListResponsesCursorPagination as FollowUpChatListResponsesCursorPagination,
     type FollowUpChatCreateParams as FollowUpChatCreateParams,
     type FollowUpChatRetrieveParams as FollowUpChatRetrieveParams,
     type FollowUpChatUpdateParams as FollowUpChatUpdateParams,
@@ -4662,6 +4615,7 @@ export declare namespace Products {
     type PartnerCreateResponse as PartnerCreateResponse,
     type PartnerListResponse as PartnerListResponse,
     type PartnerDeleteResponse as PartnerDeleteResponse,
+    type PartnerListResponsesCursorPagination as PartnerListResponsesCursorPagination,
     type PartnerCreateParams as PartnerCreateParams,
     type PartnerListParams as PartnerListParams,
     type PartnerDeleteParams as PartnerDeleteParams,

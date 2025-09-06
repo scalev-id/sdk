@@ -12,6 +12,7 @@ export {
   type BpoListParams,
   type BpoDeleteParams,
   type BpoShowRelationsParams,
+  type BpoListResponsesCursorPagination,
 } from './bpos';
 export {
   Bundles,
@@ -30,6 +31,8 @@ export {
   type BundleCountParams,
   type BundleListSimplifiedParams,
   type BundleUpdateSharingParams,
+  type BundleListResponsesCursorPagination,
+  type BundleListSimplifiedResponsesCursorPagination,
 } from './bundles';
 export {
   FollowUpChats,
@@ -44,6 +47,7 @@ export {
   type FollowUpChatUpdateParams,
   type FollowUpChatListParams,
   type FollowUpChatDeleteParams,
+  type FollowUpChatListResponsesCursorPagination,
 } from './follow-up-chats';
 export {
   Partners,
@@ -53,4 +57,5 @@ export {
   type PartnerListParams,
   type PartnerAddParams,
   type PartnerRemoveParams,
+  type PartnerListResponsesCursorPagination,
 } from './partners';
