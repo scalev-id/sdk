@@ -2,7 +2,7 @@
   "name": "scalev-mcp",
   "version": "0.0.1",
   "description": "The official MCP Server for the Scalev API API",
-  "author": "Scalev API <>",
+  "author": "Scalev API <tech@scalev.id>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
