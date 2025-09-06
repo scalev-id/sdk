@@ -9,6 +9,7 @@ import {
   MessageHistoryShowResponse,
 } from './message-history';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { type Uploadable } from '../../core/uploads';
 import { RequestOptions } from '../../internal/request-options';
 import { multipartFormRequestOptions } from '../../internal/uploads';
@@ -50,8 +51,8 @@ export class Order extends APIResource {
   list(
     query: OrderListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<OrderListResponse> {
-    return this._client.get('/v2/order', { query, ...options });
+  ): PagePromise<OrderListResponsesCursorPagination, OrderListResponse> {
+    return this._client.getAPIList('/v2/order', CursorPagination<OrderListResponse>, { query, ...options });
   }
 
   /**
@@ -330,6 +331,8 @@ export class Order extends APIResource {
     );
   }
 }
+
+export type OrderListResponsesCursorPagination = CursorPagination<OrderListResponse>;
 
 export interface OrderCreateResponse {
   code?: number;
@@ -5605,1027 +5608,1005 @@ export namespace OrderUpdateResponse {
   }
 }
 
+/**
+ * Order data based on requested columns
+ */
 export interface OrderListResponse {
-  code?: number;
+  /**
+   * Order primary key
+   */
+  id?: number;
 
-  data?: OrderListResponse.Data;
+  advertiser?: OrderListResponse.Advertiser;
 
-  status?: string;
+  /**
+   * Order AWB courier aggregator status
+   */
+  awb_ca_status?: 'unavailable' | 'pending' | 'waiting' | 'failed' | 'created' | 'canceled';
+
+  /**
+   * Order AWB status
+   */
+  awb_status?: 'unavailable' | 'pending' | 'waiting' | 'failed' | 'created' | 'canceled';
+
+  canceled_time?: string | null;
+
+  /**
+   * Channel name
+   */
+  channel_name?: string | null;
+
+  closed_time?: string | null;
+
+  completed_time?: string | null;
+
+  confirmed_time?: string | null;
+
+  /**
+   * Additional courier information
+   */
+  courier_additional_info?: string | null;
+
+  courier_service?: OrderListResponse.CourierService;
+
+  /**
+   * Order creation timestamp
+   */
+  created_at?: string;
+
+  customer?: OrderListResponse.Customer;
+
+  destination_address?: OrderListResponse.DestinationAddress;
+
+  /**
+   * Discount code applied to the order
+   */
+  discount_code_applied_to?: string | null;
+
+  /**
+   * Discount code used in the order
+   */
+  discount_code_code?: string | null;
+
+  /**
+   * Discount amount from the discount code
+   */
+  discount_code_discount?: string;
+
+  /**
+   * Draft timestamp
+   */
+  draft_time?: string;
+
+  /**
+   * Dropshipper name
+   */
+  dropshipper_name?: string | null;
+
+  /**
+   * Dropshipper phone number
+   */
+  dropshipper_phone?: string | null;
+
+  /**
+   * E-payment provider
+   */
+  epayment_provider?: string | null;
+
+  /**
+   * External ID for the order
+   */
+  external_id?: string | null;
+
+  fb_pixel_ids?: Array<string>;
+
+  final_variants?: { [key: string]: number };
+
+  financial_entity?: OrderListResponse.FinancialEntity;
+
+  /**
+   * Type of follow up chat
+   */
+  follow_up_chat_type?: 'product' | 'order';
+
+  /**
+   * Follow up chats associated with the order
+   */
+  follow_up_chats?: Array<OrderListResponse.FollowUpChat>;
+
+  /**
+   * Gross revenue from the order
+   */
+  gross_revenue?: string;
+
+  handler?: OrderListResponse.Handler;
+
+  /**
+   * Handler phone number
+   */
+  handler_phone?: string | null;
+
+  /**
+   * Is the order a dropshipping order
+   */
+  is_dropshipping?: boolean;
+
+  /**
+   * Is the order probably spam
+   */
+  is_probably_spam?: boolean;
+
+  /**
+   * Is the order a Facebook purchase
+   */
+  is_purchase_fb?: boolean;
+
+  /**
+   * Is the order a Kwai purchase
+   */
+  is_purchase_kwai?: boolean;
+
+  /**
+   * Is the order a TikTok purchase
+   */
+  is_purchase_tiktok?: boolean;
+
+  /**
+   * Is the order a repeat order
+   */
+  is_repeat?: boolean;
+
+  kwai_pixel_ids?: Array<string>;
+
+  /**
+   * Last updated timestamp of the order
+   */
+  last_updated_at?: string;
+
+  /**
+   * Who marked the order as spam
+   */
+  mark_as_spam_by?: string | null;
+
+  message_history?: Array<OrderListResponse.MessageHistory>;
+
+  /**
+   * Metadata associated with the order
+   */
+  metadata?: { [key: string]: unknown };
+
+  /**
+   * Net payment revenue from the order
+   */
+  net_payment_revenue?: string;
+
+  /**
+   * Net revenue from the order
+   */
+  net_revenue?: number;
+
+  /**
+   * Notes associated with the order
+   */
+  notes?: string | null;
+
+  /**
+   * Order ID in string format
+   */
+  order_id?: string;
+
+  origin_address?: OrderListResponse.OriginAddress;
+
+  /**
+   * Other income associated with the order
+   */
+  other_income?: number;
+
+  /**
+   * Name of the other income
+   */
+  other_income_name?: string | null;
+
+  page?: OrderListResponse.Page;
+
+  /**
+   * Payment account holder name
+   */
+  payment_account_holder?: string | null;
+
+  /**
+   * Payment account ID
+   */
+  payment_account_id?: number | null;
+
+  /**
+   * Payment account number
+   */
+  payment_account_number?: string | null;
+
+  /**
+   * Payment fee associated with the order
+   */
+  payment_fee?: number;
+
+  /**
+   * Order payment method
+   */
+  payment_method?:
+    | 'gopay'
+    | 'va'
+    | 'qris'
+    | 'card'
+    | 'invoice'
+    | 'alfamart'
+    | 'ovo'
+    | 'dana'
+    | 'shopeepay'
+    | 'linkaja'
+    | 'no_payment'
+    | 'bank_transfer'
+    | 'marketplace'
+    | 'cod';
+
+  /**
+   * Order payment status
+   */
+  payment_status?: 'unpaid' | 'paid' | 'conflict' | 'settled';
+
+  /**
+   * Pending timestamp of the order
+   */
+  pending_time?: string;
+
+  /**
+   * Payment gateway payment info
+   */
+  pg_payment_info?: { [key: string]: unknown } | null;
+
+  /**
+   * Payment gateway reference ID
+   */
+  pg_reference_id?: string | null;
+
+  /**
+   * Platform where the order was placed
+   */
+  platform?: string;
+
+  /**
+   * Total product discount applied to the order
+   */
+  product_discount?: number;
+
+  /**
+   * Total product price before discounts
+   */
+  product_price?: number;
+
+  /**
+   * Ready to ship timestamp
+   */
+  rts_time?: string | null;
+
+  /**
+   * Scalev fee associated with the order
+   */
+  scalev_fee?: number;
+
+  /**
+   * Secret slug for the order
+   */
+  secret_slug?: string | null;
+
+  /**
+   * Shipment provider code
+   */
+  shipment_provider_code?: 'mengantar' | 'lincah' | 'ninja' | null;
+
+  /**
+   * Shipment receipt URL
+   */
+  shipment_receipt?: string | null;
+
+  /**
+   * Current shipment status of the order
+   */
+  shipment_status?: string | null;
+
+  /**
+   * Shipped timestamp of the order
+   */
+  shipped_time?: string | null;
+
+  /**
+   * Shipping cost associated with the order
+   */
+  shipping_cost?: number;
+
+  /**
+   * Shipping discount applied to the order
+   */
+  shipping_discount?: number;
+
+  /**
+   * Order status
+   */
+  status?:
+    | 'draft'
+    | 'pending'
+    | 'confirmed'
+    | 'in_process'
+    | 'ready'
+    | 'shipped'
+    | 'completed'
+    | 'canceled'
+    | 'rts'
+    | 'closed';
+
+  store?: OrderListResponse.Store;
+
+  /**
+   * Xendit VA bank code
+   */
+  sub_payment_method?:
+    | 'BCA'
+    | 'BNI'
+    | 'BRI'
+    | 'MANDIRI'
+    | 'PERMATA'
+    | 'BSI'
+    | 'BJB'
+    | 'CIMB'
+    | 'SAHABAT_SAMPOERNA'
+    | 'ARTAJASA';
+
+  /**
+   * Tags associated with the order
+   */
+  tags?: Array<OrderListResponse.Tag>;
+
+  tiktok_pixel_ids?: Array<string>;
+
+  /**
+   * Total weight of the order
+   */
+  total_weight?: number;
+
+  /**
+   * Transfer timestamp of the order
+   */
+  transfer_time?: string | null;
+
+  /**
+   * Transfer proof URL
+   */
+  transferproof_url?: string | null;
+
+  /**
+   * Discount from unique code applied to the order
+   */
+  unique_code_discount?: number;
+
+  /**
+   * UTM source for tracking
+   */
+  utm_source?: string | null;
+
+  warehouse?: OrderListResponse.Warehouse;
 }
 
 export namespace OrderListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Advertiser {
+    /**
+     * User ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-    page_size?: number;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-    results?: Array<Data.Result>;
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
   }
 
-  export namespace Data {
+  export interface CourierService {
     /**
-     * Order data based on requested columns
+     * Courier Service ID
      */
-    export interface Result {
+    id?: number;
+
+    /**
+     * Code for the courier service
+     */
+    code?: string;
+
+    /**
+     * Code for CO courier service
+     */
+    code_co?: string;
+
+    /**
+     * Code for KA courier service
+     */
+    code_ka?: string;
+
+    /**
+     * Code for Lincah courier service
+     */
+    code_lincah?: string;
+
+    /**
+     * Code for Mengantar courier service
+     */
+    code_mengantar?: string;
+
+    /**
+     * Code for RO courier service
+     */
+    code_ro?: string;
+
+    courier?: CourierService.Courier;
+
+    /**
+     * Name of the courier service
+     */
+    name?: string;
+  }
+
+  export namespace CourierService {
+    export interface Courier {
       /**
-       * Order primary key
+       * Courier ID
        */
       id?: number;
 
-      advertiser?: Result.Advertiser;
+      /**
+       * Courier code
+       */
+      code?: string;
 
       /**
-       * Order AWB courier aggregator status
+       * Courier code in Georgian
        */
-      awb_ca_status?: 'unavailable' | 'pending' | 'waiting' | 'failed' | 'created' | 'canceled';
+      code_ka?: string;
 
       /**
-       * Order AWB status
+       * Courier code in Lincah
        */
-      awb_status?: 'unavailable' | 'pending' | 'waiting' | 'failed' | 'created' | 'canceled';
-
-      canceled_time?: string | null;
+      code_lincah?: string;
 
       /**
-       * Channel name
+       * Courier code for Mengantar
        */
-      channel_name?: string | null;
-
-      closed_time?: string | null;
-
-      completed_time?: string | null;
-
-      confirmed_time?: string | null;
+      code_mengantar?: string;
 
       /**
-       * Additional courier information
+       * Courier code in Romanian
        */
-      courier_additional_info?: string | null;
-
-      courier_service?: Result.CourierService;
+      code_ro?: string;
 
       /**
-       * Order creation timestamp
+       * Type of the courier
        */
-      created_at?: string;
-
-      customer?: Result.Customer;
-
-      destination_address?: Result.DestinationAddress;
+      courier_type?: 'delivery' | 'pickup';
 
       /**
-       * Discount code applied to the order
+       * Is this a pickup courier?
        */
-      discount_code_applied_to?: string | null;
+      is_pickup?: boolean;
 
       /**
-       * Discount code used in the order
+       * Courier name
        */
-      discount_code_code?: string | null;
-
-      /**
-       * Discount amount from the discount code
-       */
-      discount_code_discount?: string;
-
-      /**
-       * Draft timestamp
-       */
-      draft_time?: string;
-
-      /**
-       * Dropshipper name
-       */
-      dropshipper_name?: string | null;
-
-      /**
-       * Dropshipper phone number
-       */
-      dropshipper_phone?: string | null;
-
-      /**
-       * E-payment provider
-       */
-      epayment_provider?: string | null;
-
-      /**
-       * External ID for the order
-       */
-      external_id?: string | null;
-
-      fb_pixel_ids?: Array<string>;
-
-      final_variants?: { [key: string]: number };
-
-      financial_entity?: Result.FinancialEntity;
-
-      /**
-       * Type of follow up chat
-       */
-      follow_up_chat_type?: 'product' | 'order';
-
-      /**
-       * Follow up chats associated with the order
-       */
-      follow_up_chats?: Array<Result.FollowUpChat>;
-
-      /**
-       * Gross revenue from the order
-       */
-      gross_revenue?: string;
-
-      handler?: Result.Handler;
-
-      /**
-       * Handler phone number
-       */
-      handler_phone?: string | null;
-
-      /**
-       * Is the order a dropshipping order
-       */
-      is_dropshipping?: boolean;
-
-      /**
-       * Is the order probably spam
-       */
-      is_probably_spam?: boolean;
-
-      /**
-       * Is the order a Facebook purchase
-       */
-      is_purchase_fb?: boolean;
-
-      /**
-       * Is the order a Kwai purchase
-       */
-      is_purchase_kwai?: boolean;
-
-      /**
-       * Is the order a TikTok purchase
-       */
-      is_purchase_tiktok?: boolean;
-
-      /**
-       * Is the order a repeat order
-       */
-      is_repeat?: boolean;
-
-      kwai_pixel_ids?: Array<string>;
-
-      /**
-       * Last updated timestamp of the order
-       */
-      last_updated_at?: string;
-
-      /**
-       * Who marked the order as spam
-       */
-      mark_as_spam_by?: string | null;
-
-      message_history?: Array<Result.MessageHistory>;
-
-      /**
-       * Metadata associated with the order
-       */
-      metadata?: { [key: string]: unknown };
-
-      /**
-       * Net payment revenue from the order
-       */
-      net_payment_revenue?: string;
-
-      /**
-       * Net revenue from the order
-       */
-      net_revenue?: number;
-
-      /**
-       * Notes associated with the order
-       */
-      notes?: string | null;
-
-      /**
-       * Order ID in string format
-       */
-      order_id?: string;
-
-      origin_address?: Result.OriginAddress;
-
-      /**
-       * Other income associated with the order
-       */
-      other_income?: number;
-
-      /**
-       * Name of the other income
-       */
-      other_income_name?: string | null;
-
-      page?: Result.Page;
-
-      /**
-       * Payment account holder name
-       */
-      payment_account_holder?: string | null;
-
-      /**
-       * Payment account ID
-       */
-      payment_account_id?: number | null;
-
-      /**
-       * Payment account number
-       */
-      payment_account_number?: string | null;
-
-      /**
-       * Payment fee associated with the order
-       */
-      payment_fee?: number;
-
-      /**
-       * Order payment method
-       */
-      payment_method?:
-        | 'gopay'
-        | 'va'
-        | 'qris'
-        | 'card'
-        | 'invoice'
-        | 'alfamart'
-        | 'ovo'
-        | 'dana'
-        | 'shopeepay'
-        | 'linkaja'
-        | 'no_payment'
-        | 'bank_transfer'
-        | 'marketplace'
-        | 'cod';
-
-      /**
-       * Order payment status
-       */
-      payment_status?: 'unpaid' | 'paid' | 'conflict' | 'settled';
-
-      /**
-       * Pending timestamp of the order
-       */
-      pending_time?: string;
-
-      /**
-       * Payment gateway payment info
-       */
-      pg_payment_info?: { [key: string]: unknown } | null;
-
-      /**
-       * Payment gateway reference ID
-       */
-      pg_reference_id?: string | null;
-
-      /**
-       * Platform where the order was placed
-       */
-      platform?: string;
-
-      /**
-       * Total product discount applied to the order
-       */
-      product_discount?: number;
-
-      /**
-       * Total product price before discounts
-       */
-      product_price?: number;
-
-      /**
-       * Ready to ship timestamp
-       */
-      rts_time?: string | null;
-
-      /**
-       * Scalev fee associated with the order
-       */
-      scalev_fee?: number;
-
-      /**
-       * Secret slug for the order
-       */
-      secret_slug?: string | null;
-
-      /**
-       * Shipment provider code
-       */
-      shipment_provider_code?: 'mengantar' | 'lincah' | 'ninja' | null;
-
-      /**
-       * Shipment receipt URL
-       */
-      shipment_receipt?: string | null;
-
-      /**
-       * Current shipment status of the order
-       */
-      shipment_status?: string | null;
-
-      /**
-       * Shipped timestamp of the order
-       */
-      shipped_time?: string | null;
-
-      /**
-       * Shipping cost associated with the order
-       */
-      shipping_cost?: number;
-
-      /**
-       * Shipping discount applied to the order
-       */
-      shipping_discount?: number;
-
-      /**
-       * Order status
-       */
-      status?:
-        | 'draft'
-        | 'pending'
-        | 'confirmed'
-        | 'in_process'
-        | 'ready'
-        | 'shipped'
-        | 'completed'
-        | 'canceled'
-        | 'rts'
-        | 'closed';
-
-      store?: Result.Store;
-
-      /**
-       * Xendit VA bank code
-       */
-      sub_payment_method?:
-        | 'BCA'
-        | 'BNI'
-        | 'BRI'
-        | 'MANDIRI'
-        | 'PERMATA'
-        | 'BSI'
-        | 'BJB'
-        | 'CIMB'
-        | 'SAHABAT_SAMPOERNA'
-        | 'ARTAJASA';
-
-      /**
-       * Tags associated with the order
-       */
-      tags?: Array<Result.Tag>;
-
-      tiktok_pixel_ids?: Array<string>;
-
-      /**
-       * Total weight of the order
-       */
-      total_weight?: number;
-
-      /**
-       * Transfer timestamp of the order
-       */
-      transfer_time?: string | null;
-
-      /**
-       * Transfer proof URL
-       */
-      transferproof_url?: string | null;
-
-      /**
-       * Discount from unique code applied to the order
-       */
-      unique_code_discount?: number;
-
-      /**
-       * UTM source for tracking
-       */
-      utm_source?: string | null;
-
-      warehouse?: Result.Warehouse;
+      name?: string;
     }
-
-    export namespace Result {
-      export interface Advertiser {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-
-      export interface CourierService {
-        /**
-         * Courier Service ID
-         */
-        id?: number;
-
-        /**
-         * Code for the courier service
-         */
-        code?: string;
-
-        /**
-         * Code for CO courier service
-         */
-        code_co?: string;
-
-        /**
-         * Code for KA courier service
-         */
-        code_ka?: string;
-
-        /**
-         * Code for Lincah courier service
-         */
-        code_lincah?: string;
-
-        /**
-         * Code for Mengantar courier service
-         */
-        code_mengantar?: string;
-
-        /**
-         * Code for RO courier service
-         */
-        code_ro?: string;
-
-        courier?: CourierService.Courier;
-
-        /**
-         * Name of the courier service
-         */
-        name?: string;
-      }
-
-      export namespace CourierService {
-        export interface Courier {
-          /**
-           * Courier ID
-           */
-          id?: number;
-
-          /**
-           * Courier code
-           */
-          code?: string;
-
-          /**
-           * Courier code in Georgian
-           */
-          code_ka?: string;
-
-          /**
-           * Courier code in Lincah
-           */
-          code_lincah?: string;
-
-          /**
-           * Courier code for Mengantar
-           */
-          code_mengantar?: string;
-
-          /**
-           * Courier code in Romanian
-           */
-          code_ro?: string;
-
-          /**
-           * Type of the courier
-           */
-          courier_type?: 'delivery' | 'pickup';
-
-          /**
-           * Is this a pickup courier?
-           */
-          is_pickup?: boolean;
-
-          /**
-           * Courier name
-           */
-          name?: string;
-        }
-      }
-
-      export interface Customer {
-        /**
-         * Customer ID
-         */
-        id?: number;
-
-        /**
-         * Confirmation timestamp
-         */
-        confirmed_at?: string;
-
-        /**
-         * Creation timestamp
-         */
-        created_at?: string;
-
-        /**
-         * Customer email
-         */
-        email?: string;
-
-        /**
-         * Last update timestamp
-         */
-        last_updated_at?: string;
-
-        /**
-         * Customer name
-         */
-        name?: string;
-
-        /**
-         * Customer phone number
-         */
-        phone?: string;
-
-        /**
-         * Customer status
-         */
-        status?: string;
-      }
-
-      export interface DestinationAddress {
-        /**
-         * Order Address ID
-         */
-        id?: number;
-
-        /**
-         * Full address
-         */
-        address?: string;
-
-        /**
-         * City of the address
-         */
-        city?: string;
-
-        /**
-         * Location ID for the address
-         */
-        location?: number;
-
-        /**
-         * Name of the recipient
-         */
-        name?: string;
-
-        /**
-         * Phone number of the recipient
-         */
-        phone?: string;
-
-        /**
-         * Postal code of the address
-         */
-        postal_code?: string;
-
-        /**
-         * Province of the address
-         */
-        province?: string;
-
-        /**
-         * Subdistrict of the address
-         */
-        subdistrict?: string;
-      }
-
-      export interface FinancialEntity {
-        /**
-         * Financial Entity ID
-         */
-        id?: number;
-
-        /**
-         * Code of the financial entity
-         */
-        code?: string;
-
-        /**
-         * Duitku code for the financial entity
-         */
-        duitku_code?: string;
-
-        /**
-         * Type of the financial entity
-         */
-        entity_type?: string;
-
-        /**
-         * Name of the financial entity
-         */
-        name?: string;
-
-        /**
-         * Platform associated with the financial entity
-         */
-        platform?: string;
-
-        /**
-         * Xendit code for the financial entity
-         */
-        xendit_code?: string;
-      }
-
-      export interface FollowUpChat {
-        /**
-         * Follow Up Chat ID
-         */
-        id?: number;
-
-        /**
-         * Bundle ID associated with the chat
-         */
-        bundle_id?: number;
-
-        /**
-         * Change status after follow up chat
-         */
-        change_status?: boolean;
-
-        /**
-         * Hours after which the follow up chat is triggered
-         */
-        hours_after?: number;
-
-        /**
-         * Image URL for the follow up chat
-         */
-        image?: string;
-
-        /**
-         * Is this a default follow up chat?
-         */
-        is_default?: boolean;
-
-        /**
-         * Name of the follow up chat
-         */
-        name?: string;
-
-        /**
-         * Product ID associated with the chat
-         */
-        product_id?: number;
-
-        /**
-         * Provider of the follow up chat service
-         */
-        provider?: string;
-
-        /**
-         * Store ID associated with the chat
-         */
-        store_id?: number;
-
-        /**
-         * Trigger condition for the follow up chat
-         */
-        trigger?: string;
-      }
-
-      export interface Handler {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-
-      export interface MessageHistory {
-        /**
-         * ID of the Follow Up Chat
-         */
-        id?: number;
-
-        /**
-         * Is the message from bot
-         */
-        is_from_bot?: boolean;
-
-        /**
-         * Message content
-         */
-        message?: string;
-
-        /**
-         * Name of the sender
-         */
-        name?: string;
-
-        /**
-         * Message provider
-         */
-        provider?: string;
-
-        /**
-         * Recipient name
-         */
-        recipient_name?: string;
-
-        /**
-         * Recipient phone number
-         */
-        recipient_phone?: string;
-
-        /**
-         * Sender name
-         */
-        sender_name?: string;
-
-        /**
-         * Sender phone number
-         */
-        sender_phone?: string;
-
-        /**
-         * Timestamp of the message
-         */
-        timestamp?: string;
-      }
-
-      export interface OriginAddress {
-        /**
-         * Warehouse Address ID
-         */
-        id?: number;
-
-        /**
-         * Full address of the warehouse
-         */
-        address?: string;
-
-        /**
-         * City of the warehouse address
-         */
-        city?: string;
-
-        /**
-         * Location ID for the address
-         */
-        location?: number;
-
-        /**
-         * Location ID for the address
-         */
-        location_id?: number;
-
-        /**
-         * Postal code of the warehouse address
-         */
-        postal_code?: string;
-
-        /**
-         * Province of the warehouse address
-         */
-        province?: string;
-
-        /**
-         * Subdistrict of the warehouse address
-         */
-        subdistrict?: string;
-
-        /**
-         * ID of the associated warehouse
-         */
-        warehouse?: number;
-      }
-
-      export interface Page {
-        /**
-         * Page ID
-         */
-        id?: number;
-
-        /**
-         * Is the page published?
-         */
-        is_published?: boolean;
-
-        /**
-         * Name of the page
-         */
-        name?: string;
-
-        /**
-         * Publication date of the page
-         */
-        published_at?: string;
-
-        /**
-         * Slug for the page URL
-         */
-        slug?: string;
-
-        /**
-         * ID of the store the page belongs to
-         */
-        store_id?: number;
-
-        /**
-         * Unique identifier for the page
-         */
-        unique_id?: string;
-      }
-
-      export interface Store {
-        /**
-         * Store ID
-         */
-        id?: number;
-
-        business?: Store.Business;
-
-        /**
-         * Name of the store
-         */
-        name?: string;
-
-        /**
-         * Unique identifier for the store
-         */
-        unique_id?: string;
-
-        /**
-         * UUID of the store
-         */
-        uuid?: string;
-      }
-
-      export namespace Store {
-        export interface Business {
-          /**
-           * Business ID
-           */
-          id?: number;
-
-          /**
-           * Name of the account holder
-           */
-          account_holder?: string;
-
-          /**
-           * Email address of the business
-           */
-          email?: string;
-
-          /**
-           * Is the business banned?
-           */
-          is_banned?: boolean;
-
-          /**
-           * URL to the business logo
-           */
-          logo?: string;
-
-          /**
-           * Unique identifier for the business
-           */
-          unique_id?: string;
-
-          /**
-           * Username of the business
-           */
-          username?: string;
-        }
-      }
-
-      export interface Tag {
-        /**
-         * Tag ID
-         */
-        id?: number;
-
-        /**
-         * Tag Name
-         */
-        name?: string;
-      }
-
-      export interface Warehouse {
-        /**
-         * Warehouse ID
-         */
-        id?: number;
-
-        business?: Warehouse.Business;
-
-        /**
-         * Contact name at the warehouse
-         */
-        contact_name?: string;
-
-        /**
-         * Contact phone number at the warehouse
-         */
-        contact_phone?: string;
-
-        /**
-         * Name of the warehouse
-         */
-        name?: string;
-      }
-
-      export namespace Warehouse {
-        export interface Business {
-          /**
-           * Business ID
-           */
-          id?: number;
-
-          /**
-           * Name of the account holder
-           */
-          account_holder?: string;
-
-          /**
-           * Email address of the business
-           */
-          email?: string;
-
-          /**
-           * Is the business banned?
-           */
-          is_banned?: boolean;
-
-          /**
-           * URL to the business logo
-           */
-          logo?: string;
-
-          /**
-           * Unique identifier for the business
-           */
-          unique_id?: string;
-
-          /**
-           * Username of the business
-           */
-          username?: string;
-        }
-      }
+  }
+
+  export interface Customer {
+    /**
+     * Customer ID
+     */
+    id?: number;
+
+    /**
+     * Confirmation timestamp
+     */
+    confirmed_at?: string;
+
+    /**
+     * Creation timestamp
+     */
+    created_at?: string;
+
+    /**
+     * Customer email
+     */
+    email?: string;
+
+    /**
+     * Last update timestamp
+     */
+    last_updated_at?: string;
+
+    /**
+     * Customer name
+     */
+    name?: string;
+
+    /**
+     * Customer phone number
+     */
+    phone?: string;
+
+    /**
+     * Customer status
+     */
+    status?: string;
+  }
+
+  export interface DestinationAddress {
+    /**
+     * Order Address ID
+     */
+    id?: number;
+
+    /**
+     * Full address
+     */
+    address?: string;
+
+    /**
+     * City of the address
+     */
+    city?: string;
+
+    /**
+     * Location ID for the address
+     */
+    location?: number;
+
+    /**
+     * Name of the recipient
+     */
+    name?: string;
+
+    /**
+     * Phone number of the recipient
+     */
+    phone?: string;
+
+    /**
+     * Postal code of the address
+     */
+    postal_code?: string;
+
+    /**
+     * Province of the address
+     */
+    province?: string;
+
+    /**
+     * Subdistrict of the address
+     */
+    subdistrict?: string;
+  }
+
+  export interface FinancialEntity {
+    /**
+     * Financial Entity ID
+     */
+    id?: number;
+
+    /**
+     * Code of the financial entity
+     */
+    code?: string;
+
+    /**
+     * Duitku code for the financial entity
+     */
+    duitku_code?: string;
+
+    /**
+     * Type of the financial entity
+     */
+    entity_type?: string;
+
+    /**
+     * Name of the financial entity
+     */
+    name?: string;
+
+    /**
+     * Platform associated with the financial entity
+     */
+    platform?: string;
+
+    /**
+     * Xendit code for the financial entity
+     */
+    xendit_code?: string;
+  }
+
+  export interface FollowUpChat {
+    /**
+     * Follow Up Chat ID
+     */
+    id?: number;
+
+    /**
+     * Bundle ID associated with the chat
+     */
+    bundle_id?: number;
+
+    /**
+     * Change status after follow up chat
+     */
+    change_status?: boolean;
+
+    /**
+     * Hours after which the follow up chat is triggered
+     */
+    hours_after?: number;
+
+    /**
+     * Image URL for the follow up chat
+     */
+    image?: string;
+
+    /**
+     * Is this a default follow up chat?
+     */
+    is_default?: boolean;
+
+    /**
+     * Name of the follow up chat
+     */
+    name?: string;
+
+    /**
+     * Product ID associated with the chat
+     */
+    product_id?: number;
+
+    /**
+     * Provider of the follow up chat service
+     */
+    provider?: string;
+
+    /**
+     * Store ID associated with the chat
+     */
+    store_id?: number;
+
+    /**
+     * Trigger condition for the follow up chat
+     */
+    trigger?: string;
+  }
+
+  export interface Handler {
+    /**
+     * User ID
+     */
+    id?: number;
+
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
+
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
+
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
+  }
+
+  export interface MessageHistory {
+    /**
+     * ID of the Follow Up Chat
+     */
+    id?: number;
+
+    /**
+     * Is the message from bot
+     */
+    is_from_bot?: boolean;
+
+    /**
+     * Message content
+     */
+    message?: string;
+
+    /**
+     * Name of the sender
+     */
+    name?: string;
+
+    /**
+     * Message provider
+     */
+    provider?: string;
+
+    /**
+     * Recipient name
+     */
+    recipient_name?: string;
+
+    /**
+     * Recipient phone number
+     */
+    recipient_phone?: string;
+
+    /**
+     * Sender name
+     */
+    sender_name?: string;
+
+    /**
+     * Sender phone number
+     */
+    sender_phone?: string;
+
+    /**
+     * Timestamp of the message
+     */
+    timestamp?: string;
+  }
+
+  export interface OriginAddress {
+    /**
+     * Warehouse Address ID
+     */
+    id?: number;
+
+    /**
+     * Full address of the warehouse
+     */
+    address?: string;
+
+    /**
+     * City of the warehouse address
+     */
+    city?: string;
+
+    /**
+     * Location ID for the address
+     */
+    location?: number;
+
+    /**
+     * Location ID for the address
+     */
+    location_id?: number;
+
+    /**
+     * Postal code of the warehouse address
+     */
+    postal_code?: string;
+
+    /**
+     * Province of the warehouse address
+     */
+    province?: string;
+
+    /**
+     * Subdistrict of the warehouse address
+     */
+    subdistrict?: string;
+
+    /**
+     * ID of the associated warehouse
+     */
+    warehouse?: number;
+  }
+
+  export interface Page {
+    /**
+     * Page ID
+     */
+    id?: number;
+
+    /**
+     * Is the page published?
+     */
+    is_published?: boolean;
+
+    /**
+     * Name of the page
+     */
+    name?: string;
+
+    /**
+     * Publication date of the page
+     */
+    published_at?: string;
+
+    /**
+     * Slug for the page URL
+     */
+    slug?: string;
+
+    /**
+     * ID of the store the page belongs to
+     */
+    store_id?: number;
+
+    /**
+     * Unique identifier for the page
+     */
+    unique_id?: string;
+  }
+
+  export interface Store {
+    /**
+     * Store ID
+     */
+    id?: number;
+
+    business?: Store.Business;
+
+    /**
+     * Name of the store
+     */
+    name?: string;
+
+    /**
+     * Unique identifier for the store
+     */
+    unique_id?: string;
+
+    /**
+     * UUID of the store
+     */
+    uuid?: string;
+  }
+
+  export namespace Store {
+    export interface Business {
+      /**
+       * Business ID
+       */
+      id?: number;
+
+      /**
+       * Name of the account holder
+       */
+      account_holder?: string;
+
+      /**
+       * Email address of the business
+       */
+      email?: string;
+
+      /**
+       * Is the business banned?
+       */
+      is_banned?: boolean;
+
+      /**
+       * URL to the business logo
+       */
+      logo?: string;
+
+      /**
+       * Unique identifier for the business
+       */
+      unique_id?: string;
+
+      /**
+       * Username of the business
+       */
+      username?: string;
+    }
+  }
+
+  export interface Tag {
+    /**
+     * Tag ID
+     */
+    id?: number;
+
+    /**
+     * Tag Name
+     */
+    name?: string;
+  }
+
+  export interface Warehouse {
+    /**
+     * Warehouse ID
+     */
+    id?: number;
+
+    business?: Warehouse.Business;
+
+    /**
+     * Contact name at the warehouse
+     */
+    contact_name?: string;
+
+    /**
+     * Contact phone number at the warehouse
+     */
+    contact_phone?: string;
+
+    /**
+     * Name of the warehouse
+     */
+    name?: string;
+  }
+
+  export namespace Warehouse {
+    export interface Business {
+      /**
+       * Business ID
+       */
+      id?: number;
+
+      /**
+       * Name of the account holder
+       */
+      account_holder?: string;
+
+      /**
+       * Email address of the business
+       */
+      email?: string;
+
+      /**
+       * Is the business banned?
+       */
+      is_banned?: boolean;
+
+      /**
+       * URL to the business logo
+       */
+      logo?: string;
+
+      /**
+       * Unique identifier for the business
+       */
+      unique_id?: string;
+
+      /**
+       * Username of the business
+       */
+      username?: string;
     }
   }
 }
@@ -20115,7 +20096,7 @@ export namespace OrderUpdateParams {
   }
 }
 
-export interface OrderListParams {
+export interface OrderListParams extends CursorPaginationParams {
   /**
    * Filter orders by advertiser ID
    */
@@ -20224,11 +20205,6 @@ export interface OrderListParams {
   is_transferproof_exist?: 'true' | 'false';
 
   /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
    * Filter orders by specific order ID
    */
   order_id?: string;
@@ -20237,11 +20213,6 @@ export interface OrderListParams {
    * Filter orders by page ID
    */
   page_id?: string;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Filter orders by payment method
@@ -20726,6 +20697,7 @@ export declare namespace Order {
     type OrderUploadResponse as OrderUploadResponse,
     type OrderUploadChangeStatusResponse as OrderUploadChangeStatusResponse,
     type OrderUploadReceiptResponse as OrderUploadReceiptResponse,
+    type OrderListResponsesCursorPagination as OrderListResponsesCursorPagination,
     type OrderCreateParams as OrderCreateParams,
     type OrderUpdateParams as OrderUpdateParams,
     type OrderListParams as OrderListParams,

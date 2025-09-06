@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^scalev-api-mcp$': '<rootDir>/src/index.ts',
-    '^scalev-api-mcp/(.*)$': '<rootDir>/src/$1',
+    '^scalev-mcp$': '<rootDir>/src/index.ts',
+    '^scalev-mcp/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   testPathIgnorePatterns: ['scripts'],

@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -15,8 +16,12 @@ export class Partners extends APIResource {
     bundleID: number,
     query: PartnerListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PartnerListResponse> {
-    return this._client.get(path`/v2/bundles/${bundleID}/partners`, { query, ...options });
+  ): PagePromise<PartnerListResponsesCursorPagination, PartnerListResponse> {
+    return this._client.getAPIList(
+      path`/v2/bundles/${bundleID}/partners`,
+      CursorPagination<PartnerListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -40,78 +45,58 @@ export class Partners extends APIResource {
   }
 }
 
+export type PartnerListResponsesCursorPagination = CursorPagination<PartnerListResponse>;
+
 export interface PartnerListResponse {
-  code?: number;
+  /**
+   * Bundle Partner ID
+   */
+  id: number;
 
-  data?: PartnerListResponse.Data;
+  /**
+   * Creation timestamp
+   */
+  created_at: string;
 
-  status?: string;
+  partner: PartnerListResponse.Partner;
 }
 
 export namespace PartnerListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Partner {
+    /**
+     * Business ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Name of the account holder
+     */
+    account_holder?: string;
 
-    page_size?: number;
+    /**
+     * Email address of the business
+     */
+    email?: string;
 
-    results?: Array<Data.Result>;
-  }
+    /**
+     * Is the business banned?
+     */
+    is_banned?: boolean;
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * Bundle Partner ID
-       */
-      id: number;
+    /**
+     * URL to the business logo
+     */
+    logo?: string;
 
-      /**
-       * Creation timestamp
-       */
-      created_at: string;
+    /**
+     * Unique identifier for the business
+     */
+    unique_id?: string;
 
-      partner: Result.Partner;
-    }
-
-    export namespace Result {
-      export interface Partner {
-        /**
-         * Business ID
-         */
-        id?: number;
-
-        /**
-         * Name of the account holder
-         */
-        account_holder?: string;
-
-        /**
-         * Email address of the business
-         */
-        email?: string;
-
-        /**
-         * Is the business banned?
-         */
-        is_banned?: boolean;
-
-        /**
-         * URL to the business logo
-         */
-        logo?: string;
-
-        /**
-         * Unique identifier for the business
-         */
-        unique_id?: string;
-
-        /**
-         * Username of the business
-         */
-        username?: string;
-      }
-    }
+    /**
+     * Username of the business
+     */
+    username?: string;
   }
 }
 
@@ -184,18 +169,7 @@ export interface PartnerRemoveResponse {
   status?: string;
 }
 
-export interface PartnerListParams {
-  /**
-   * The ID of the last item from the previous page. Used for cursor-based
-   * pagination.
-   */
-  last_id?: number;
-
-  /**
-   * Number of items to return per page. Default is 25, maximum is 25.
-   */
-  page_size?: number;
-}
+export interface PartnerListParams extends CursorPaginationParams {}
 
 export interface PartnerAddParams {
   /**
@@ -216,6 +190,7 @@ export declare namespace Partners {
     type PartnerListResponse as PartnerListResponse,
     type PartnerAddResponse as PartnerAddResponse,
     type PartnerRemoveResponse as PartnerRemoveResponse,
+    type PartnerListResponsesCursorPagination as PartnerListResponsesCursorPagination,
     type PartnerListParams as PartnerListParams,
     type PartnerAddParams as PartnerAddParams,
     type PartnerRemoveParams as PartnerRemoveParams,

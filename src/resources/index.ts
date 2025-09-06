@@ -17,9 +17,16 @@ export {
   type BundleCountParams,
   type BundleListSimplifiedParams,
   type BundleUpdateSharingParams,
+  type BundleListResponsesCursorPagination,
+  type BundleListSimplifiedResponsesCursorPagination,
 } from './bundles/bundles';
 export { Businesses, type BusinessRetrieveEnabledEpaymentsResponse } from './businesses';
-export { Locations, type LocationListResponse, type LocationListParams } from './locations';
+export {
+  Locations,
+  type LocationListResponse,
+  type LocationListParams,
+  type LocationListResponsesPagePagination,
+} from './locations';
 export {
   Order,
   type OrderCreateResponse,
@@ -75,12 +82,14 @@ export {
   type OrderUploadParams,
   type OrderUploadChangeStatusParams,
   type OrderUploadReceiptParams,
+  type OrderListResponsesCursorPagination,
 } from './order/order';
 export {
   ProductTaxonomies,
   type ProductTaxonomyRetrieveResponse,
   type ProductTaxonomyListResponse,
   type ProductTaxonomyListParams,
+  type ProductTaxonomyListResponsesPagePagination,
 } from './product-taxonomies';
 export {
   Products,
@@ -99,6 +108,8 @@ export {
   type ProductCountParams,
   type ProductListSimplifiedParams,
   type ProductUpdateSharingParams,
+  type ProductListResponsesCursorPagination,
+  type ProductListSimplifiedResponsesCursorPagination,
 } from './products/products';
 export {
   ShippingCosts,
@@ -125,5 +136,10 @@ export {
   type StoreListPaymentAccountsParams,
   type StoreListSalesPeopleParams,
   type StoreListSimplifiedParams,
+  type StoreListResponsesCursorPagination,
+  type StoreListPagesResponsesCursorPagination,
+  type StoreListPaymentAccountsResponsesCursorPagination,
+  type StoreListSalesPeopleResponsesCursorPagination,
+  type StoreListSimplifiedResponsesCursorPagination,
 } from './stores/stores';
 export { Variants, type VariantRetrieveResponse } from './variants/variants';

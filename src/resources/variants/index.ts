@@ -10,5 +10,6 @@ export {
   type DigitalProductFileRetrieveParams,
   type DigitalProductFileListParams,
   type DigitalProductFileDeleteParams,
+  type DigitalProductFileListResponsesCursorPagination,
 } from './digital-product-files';
 export { Variants, type VariantRetrieveResponse } from './variants';

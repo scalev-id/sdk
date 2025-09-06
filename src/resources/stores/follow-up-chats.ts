@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -73,16 +74,24 @@ export class FollowUpChats extends APIResource {
    *
    * @example
    * ```ts
-   * const followUpChats =
-   *   await client.stores.followUpChats.list(0);
+   * // Automatically fetches more pages as needed.
+   * for await (const followUpChatListResponse of client.stores.followUpChats.list(
+   *   0,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   list(
     storeID: number,
     query: FollowUpChatListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<FollowUpChatListResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/follow-up-chats`, { query, ...options });
+  ): PagePromise<FollowUpChatListResponsesCursorPagination, FollowUpChatListResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/follow-up-chats`,
+      CursorPagination<FollowUpChatListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -105,6 +114,8 @@ export class FollowUpChats extends APIResource {
     return this._client.delete(path`/v2/stores/${store_id}/follow-up-chats/${id}`, options);
   }
 }
+
+export type FollowUpChatListResponsesCursorPagination = CursorPagination<FollowUpChatListResponse>;
 
 export interface FollowUpChatCreateResponse {
   code?: number;
@@ -446,127 +457,105 @@ export namespace FollowUpChatUpdateResponse {
 }
 
 export interface FollowUpChatListResponse {
-  code?: number;
+  /**
+   * Follow-up chat ID
+   */
+  id?: number;
 
-  data?: FollowUpChatListResponse.Data;
+  /**
+   * Bundle ID associated with the follow-up chat
+   */
+  bundle_id?: number;
 
-  status?: string;
+  /**
+   * Triggered after order status change to this status
+   */
+  change_status?: boolean;
+
+  /**
+   * Hours after which the follow-up chat is sent
+   */
+  hours_after?: number;
+
+  /**
+   * Image URL for the follow-up chat
+   */
+  image?: string;
+
+  /**
+   * Is this a default follow-up chat
+   */
+  is_default?: boolean;
+
+  /**
+   * Name of the follow-up chat
+   */
+  name?: string;
+
+  /**
+   * Product ID associated with the follow-up chat
+   */
+  product_id?: number;
+
+  /**
+   * Provider of the follow-up chat
+   */
+  provider?: string;
+
+  /**
+   * Store ID associated with the follow-up chat
+   */
+  store_id?: number;
+
+  /**
+   * Text for bank transfer payments
+   */
+  text_for_bank_transfer?: string;
+
+  /**
+   * Text for cash on delivery payments
+   */
+  text_for_cod?: string;
+
+  /**
+   * Text for electronic payments
+   */
+  text_for_epayment?: string;
+
+  /**
+   * Trigger for the follow-up chat
+   */
+  trigger?: string;
+
+  /**
+   * WhatsApp gateway assignation type
+   */
+  wa_gateway_assignation_type?: string;
+
+  wa_integration?: FollowUpChatListResponse.WaIntegration;
 }
 
 export namespace FollowUpChatListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface WaIntegration {
+    /**
+     * Whatsapp Integration ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Name
+     */
+    name?: string;
 
-    page_size?: number;
+    /**
+     * Phone Number
+     */
+    phone_number?: string;
 
-    results?: Array<Data.Result>;
-  }
-
-  export namespace Data {
-    export interface Result {
-      /**
-       * Follow-up chat ID
-       */
-      id?: number;
-
-      /**
-       * Bundle ID associated with the follow-up chat
-       */
-      bundle_id?: number;
-
-      /**
-       * Triggered after order status change to this status
-       */
-      change_status?: boolean;
-
-      /**
-       * Hours after which the follow-up chat is sent
-       */
-      hours_after?: number;
-
-      /**
-       * Image URL for the follow-up chat
-       */
-      image?: string;
-
-      /**
-       * Is this a default follow-up chat
-       */
-      is_default?: boolean;
-
-      /**
-       * Name of the follow-up chat
-       */
-      name?: string;
-
-      /**
-       * Product ID associated with the follow-up chat
-       */
-      product_id?: number;
-
-      /**
-       * Provider of the follow-up chat
-       */
-      provider?: string;
-
-      /**
-       * Store ID associated with the follow-up chat
-       */
-      store_id?: number;
-
-      /**
-       * Text for bank transfer payments
-       */
-      text_for_bank_transfer?: string;
-
-      /**
-       * Text for cash on delivery payments
-       */
-      text_for_cod?: string;
-
-      /**
-       * Text for electronic payments
-       */
-      text_for_epayment?: string;
-
-      /**
-       * Trigger for the follow-up chat
-       */
-      trigger?: string;
-
-      /**
-       * WhatsApp gateway assignation type
-       */
-      wa_gateway_assignation_type?: string;
-
-      wa_integration?: Result.WaIntegration;
-    }
-
-    export namespace Result {
-      export interface WaIntegration {
-        /**
-         * Whatsapp Integration ID
-         */
-        id?: number;
-
-        /**
-         * Name
-         */
-        name?: string;
-
-        /**
-         * Phone Number
-         */
-        phone_number?: string;
-
-        /**
-         * Provider
-         */
-        provider?: string;
-      }
-    }
+    /**
+     * Provider
+     */
+    provider?: string;
   }
 }
 
@@ -712,17 +701,7 @@ export interface FollowUpChatUpdateParams {
   wa_integration_id?: number;
 }
 
-export interface FollowUpChatListParams {
-  /**
-   * Last ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-}
+export interface FollowUpChatListParams extends CursorPaginationParams {}
 
 export interface FollowUpChatDeleteParams {
   /**
@@ -738,6 +717,7 @@ export declare namespace FollowUpChats {
     type FollowUpChatUpdateResponse as FollowUpChatUpdateResponse,
     type FollowUpChatListResponse as FollowUpChatListResponse,
     type FollowUpChatDeleteResponse as FollowUpChatDeleteResponse,
+    type FollowUpChatListResponsesCursorPagination as FollowUpChatListResponsesCursorPagination,
     type FollowUpChatCreateParams as FollowUpChatCreateParams,
     type FollowUpChatRetrieveParams as FollowUpChatRetrieveParams,
     type FollowUpChatUpdateParams as FollowUpChatUpdateParams,

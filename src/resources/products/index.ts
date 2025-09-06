@@ -13,6 +13,7 @@ export {
   type FollowUpChatUpdateParams,
   type FollowUpChatListParams,
   type FollowUpChatDeleteParams,
+  type FollowUpChatListResponsesCursorPagination,
 } from './follow-up-chats';
 export {
   Partners,
@@ -22,6 +23,7 @@ export {
   type PartnerCreateParams,
   type PartnerListParams,
   type PartnerDeleteParams,
+  type PartnerListResponsesCursorPagination,
 } from './partners';
 export {
   Products,
@@ -40,4 +42,6 @@ export {
   type ProductCountParams,
   type ProductListSimplifiedParams,
   type ProductUpdateSharingParams,
+  type ProductListResponsesCursorPagination,
+  type ProductListSimplifiedResponsesCursorPagination,
 } from './products';

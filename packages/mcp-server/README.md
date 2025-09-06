@@ -24,7 +24,7 @@ node ./packages/mcp-server/dist/index.js
 ```
 
 > [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npx -y scalev-api-mcp`
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npx -y scalev-mcp`
 
 ### Via MCP Client
 
@@ -40,7 +40,11 @@ For clients with a configuration JSON, it might look something like this:
   "mcpServers": {
     "scalev_api_api": {
       "command": "node",
-      "args": ["/path/to/local/scalev-api-typescript/packages/mcp-server", "--client=claude", "--tools=all"],
+      "args": [
+        "/path/to/local/scalev-api-typescript/packages/mcp-server",
+        "--client=claude",
+        "--tools=dynamic"
+      ],
       "env": {
         "SCALEV_API_API_KEY": "My API Key"
       }
@@ -184,10 +188,10 @@ http://localhost:3000?client=cursor&capability=tool-name-length%3D40
 
 ```js
 // Import the server, generated endpoints, or the init function
-import { server, endpoints, init } from "scalev-api-mcp/server";
+import { server, endpoints, init } from "scalev-mcp/server";
 
 // import a specific tool
-import createBundles from "scalev-api-mcp/tools/bundles/create-bundles";
+import createBundles from "scalev-mcp/tools/bundles/create-bundles";
 
 // initialize the server and all endpoints
 init({ server, endpoints });

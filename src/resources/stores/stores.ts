@@ -15,6 +15,7 @@ import * as BundlesAPI from './bundles';
 import {
   BundleListParams,
   BundleListResponse,
+  BundleListResponsesCursorPagination,
   BundleRetrieveParams,
   BundleRetrieveResponse,
   Bundles,
@@ -35,6 +36,7 @@ import {
   FollowUpChatDeleteResponse,
   FollowUpChatListParams,
   FollowUpChatListResponse,
+  FollowUpChatListResponsesCursorPagination,
   FollowUpChatRetrieveParams,
   FollowUpChatRetrieveResponse,
   FollowUpChatUpdateParams,
@@ -57,6 +59,7 @@ import {
   ProductAddResponse,
   ProductListParams,
   ProductListResponse,
+  ProductListResponsesCursorPagination,
   ProductRemoveParams,
   ProductRemoveResponse,
   ProductViewRelationsParams,
@@ -69,6 +72,7 @@ import {
   StoreAdminAddResponse,
   StoreAdminListParams,
   StoreAdminListResponse,
+  StoreAdminListResponsesCursorPagination,
   StoreAdminRemoveParams,
   StoreAdminRemoveResponse,
   StoreAdmins,
@@ -79,11 +83,13 @@ import {
   StoreAdvertiserAddResponse,
   StoreAdvertiserListParams,
   StoreAdvertiserListResponse,
+  StoreAdvertiserListResponsesCursorPagination,
   StoreAdvertiserRemoveParams,
   StoreAdvertiserRemoveResponse,
   StoreAdvertisers,
 } from './store-advertisers';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -146,14 +152,17 @@ export class Stores extends APIResource {
    *
    * @example
    * ```ts
-   * const stores = await client.stores.list();
+   * // Automatically fetches more pages as needed.
+   * for await (const storeListResponse of client.stores.list()) {
+   *   // ...
+   * }
    * ```
    */
   list(
     query: StoreListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreListResponse> {
-    return this._client.get('/v2/stores', { query, ...options });
+  ): PagePromise<StoreListResponsesCursorPagination, StoreListResponse> {
+    return this._client.getAPIList('/v2/stores', CursorPagination<StoreListResponse>, { query, ...options });
   }
 
   /**
@@ -190,15 +199,24 @@ export class Stores extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.stores.listPages(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const storeListPagesResponse of client.stores.listPages(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listPages(
     storeID: number,
     query: StoreListPagesParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreListPagesResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/pages`, { query, ...options });
+  ): PagePromise<StoreListPagesResponsesCursorPagination, StoreListPagesResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/pages`,
+      CursorPagination<StoreListPagesResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -208,15 +226,24 @@ export class Stores extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.stores.listPaymentAccounts(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const storeListPaymentAccountsResponse of client.stores.listPaymentAccounts(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listPaymentAccounts(
     storeID: number,
     query: StoreListPaymentAccountsParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreListPaymentAccountsResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/payment-accounts`, { query, ...options });
+  ): PagePromise<StoreListPaymentAccountsResponsesCursorPagination, StoreListPaymentAccountsResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/payment-accounts`,
+      CursorPagination<StoreListPaymentAccountsResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -226,15 +253,24 @@ export class Stores extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.stores.listSalesPeople(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const storeListSalesPeopleResponse of client.stores.listSalesPeople(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listSalesPeople(
     storeID: number,
     query: StoreListSalesPeopleParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreListSalesPeopleResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/sales-people`, { query, ...options });
+  ): PagePromise<StoreListSalesPeopleResponsesCursorPagination, StoreListSalesPeopleResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/sales-people`,
+      CursorPagination<StoreListSalesPeopleResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -244,16 +280,33 @@ export class Stores extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.stores.listSimplified();
+   * // Automatically fetches more pages as needed.
+   * for await (const storeListSimplifiedResponse of client.stores.listSimplified()) {
+   *   // ...
+   * }
    * ```
    */
   listSimplified(
     query: StoreListSimplifiedParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreListSimplifiedResponse> {
-    return this._client.get('/v2/stores/simplified', { query, ...options });
+  ): PagePromise<StoreListSimplifiedResponsesCursorPagination, StoreListSimplifiedResponse> {
+    return this._client.getAPIList('/v2/stores/simplified', CursorPagination<StoreListSimplifiedResponse>, {
+      query,
+      ...options,
+    });
   }
 }
+
+export type StoreListResponsesCursorPagination = CursorPagination<StoreListResponse>;
+
+export type StoreListPagesResponsesCursorPagination = CursorPagination<StoreListPagesResponse>;
+
+export type StoreListPaymentAccountsResponsesCursorPagination =
+  CursorPagination<StoreListPaymentAccountsResponse>;
+
+export type StoreListSalesPeopleResponsesCursorPagination = CursorPagination<StoreListSalesPeopleResponse>;
+
+export type StoreListSimplifiedResponsesCursorPagination = CursorPagination<StoreListSimplifiedResponse>;
 
 export interface StoreCreateResponse {
   /**
@@ -5035,209 +5088,185 @@ export namespace StoreUpdateResponse {
 }
 
 export interface StoreListResponse {
-  code?: number;
+  /**
+   * Store ID
+   */
+  id?: number;
 
-  data?: StoreListResponse.Data;
+  /**
+   * Business ID
+   */
+  business_id?: number;
 
-  status?: string;
+  /**
+   * COD purchase triggers
+   */
+  cod_purchase_triggers?: Array<'public_upload' | 'internal_upload' | 'confirmed' | 'shipped' | 'completed'>;
+
+  /**
+   * Creation timestamp
+   */
+  created_at?: string;
+
+  created_by?: StoreListResponse.CreatedBy;
+
+  custom_domain?: StoreListResponse.CustomDomain;
+
+  /**
+   * Is dropshipping allowed in this store?
+   */
+  is_dropshipping_allowed?: boolean;
+
+  /**
+   * Is manual shipping cost enabled?
+   */
+  is_manual_shipping_cost?: boolean;
+
+  /**
+   * Is Moota integration enabled for this store?
+   */
+  is_moota_enabled?: boolean;
+
+  /**
+   * Is Scalev branding shown?
+   */
+  is_show_scalev_branding?: boolean;
+
+  /**
+   * Is transfer proof required for orders in this store?
+   */
+  is_transferproof_required?: boolean;
+
+  /**
+   * Is unique code required for orders?
+   */
+  is_unique_code?: boolean;
+
+  /**
+   * Last update timestamp
+   */
+  last_updated_at?: string;
+
+  last_updated_by?: StoreListResponse.LastUpdatedBy;
+
+  /**
+   * URL of the store logo
+   */
+  logo?: string;
+
+  /**
+   * Maximum amount for unique code orders
+   */
+  max_unique_code_amount?: number;
+
+  /**
+   * Name of the store
+   */
+  name?: string;
+
+  /**
+   * Non-COD purchase triggers
+   */
+  non_cod_purchase_triggers?: Array<
+    'public_upload' | 'internal_upload' | 'confirmed' | 'shipped' | 'completed'
+  >;
+
+  /**
+   * Unique identifier for the store
+   */
+  unique_id?: string;
+
+  /**
+   * UUID of the store
+   */
+  uuid?: string;
+
+  /**
+   * Warehouse ID
+   */
+  warehouse_id?: number;
 }
 
 export namespace StoreListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface CreatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-    page_size?: number;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-    results?: Array<Data.Result>;
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
   }
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * Store ID
-       */
-      id?: number;
+  export interface CustomDomain {
+    /**
+     * Custom Domain ID
+     */
+    id?: number;
 
-      /**
-       * Business ID
-       */
-      business_id?: number;
+    /**
+     * Full URL
+     */
+    full_url?: string;
 
-      /**
-       * COD purchase triggers
-       */
-      cod_purchase_triggers?: Array<
-        'public_upload' | 'internal_upload' | 'confirmed' | 'shipped' | 'completed'
-      >;
+    /**
+     * Is Verified
+     */
+    is_verified?: boolean;
+  }
 
-      /**
-       * Creation timestamp
-       */
-      created_at?: string;
+  export interface LastUpdatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
 
-      created_by?: Result.CreatedBy;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-      custom_domain?: Result.CustomDomain;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-      /**
-       * Is dropshipping allowed in this store?
-       */
-      is_dropshipping_allowed?: boolean;
+    /**
+     * User email
+     */
+    email?: string;
 
-      /**
-       * Is manual shipping cost enabled?
-       */
-      is_manual_shipping_cost?: boolean;
+    /**
+     * User full name
+     */
+    fullname?: string;
 
-      /**
-       * Is Moota integration enabled for this store?
-       */
-      is_moota_enabled?: boolean;
-
-      /**
-       * Is Scalev branding shown?
-       */
-      is_show_scalev_branding?: boolean;
-
-      /**
-       * Is transfer proof required for orders in this store?
-       */
-      is_transferproof_required?: boolean;
-
-      /**
-       * Is unique code required for orders?
-       */
-      is_unique_code?: boolean;
-
-      /**
-       * Last update timestamp
-       */
-      last_updated_at?: string;
-
-      last_updated_by?: Result.LastUpdatedBy;
-
-      /**
-       * URL of the store logo
-       */
-      logo?: string;
-
-      /**
-       * Maximum amount for unique code orders
-       */
-      max_unique_code_amount?: number;
-
-      /**
-       * Name of the store
-       */
-      name?: string;
-
-      /**
-       * Non-COD purchase triggers
-       */
-      non_cod_purchase_triggers?: Array<
-        'public_upload' | 'internal_upload' | 'confirmed' | 'shipped' | 'completed'
-      >;
-
-      /**
-       * Unique identifier for the store
-       */
-      unique_id?: string;
-
-      /**
-       * UUID of the store
-       */
-      uuid?: string;
-
-      /**
-       * Warehouse ID
-       */
-      warehouse_id?: number;
-    }
-
-    export namespace Result {
-      export interface CreatedBy {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-
-      export interface CustomDomain {
-        /**
-         * Custom Domain ID
-         */
-        id?: number;
-
-        /**
-         * Full URL
-         */
-        full_url?: string;
-
-        /**
-         * Is Verified
-         */
-        is_verified?: boolean;
-      }
-
-      export interface LastUpdatedBy {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-    }
+    /**
+     * User phone number
+     */
+    phone?: string;
   }
 }
 
@@ -5296,557 +5325,460 @@ export namespace StoreListCustomAudiencesResponse {
 }
 
 export interface StoreListPagesResponse {
-  code?: number;
+  /**
+   * Page ID
+   */
+  id?: number;
 
-  data?: StoreListPagesResponse.Data;
+  /**
+   * Is the page published?
+   */
+  is_published?: boolean;
 
-  status?: string;
-}
+  /**
+   * Name of the page
+   */
+  name?: string;
 
-export namespace StoreListPagesResponse {
-  export interface Data {
-    has_next?: boolean;
+  /**
+   * Publication date of the page
+   */
+  published_at?: string;
 
-    last_id?: number;
+  /**
+   * Slug for the page URL
+   */
+  slug?: string;
 
-    page_size?: number;
+  /**
+   * ID of the store the page belongs to
+   */
+  store_id?: number;
 
-    results?: Array<Data.Result>;
-  }
-
-  export namespace Data {
-    export interface Result {
-      /**
-       * Page ID
-       */
-      id?: number;
-
-      /**
-       * Is the page published?
-       */
-      is_published?: boolean;
-
-      /**
-       * Name of the page
-       */
-      name?: string;
-
-      /**
-       * Publication date of the page
-       */
-      published_at?: string;
-
-      /**
-       * Slug for the page URL
-       */
-      slug?: string;
-
-      /**
-       * ID of the store the page belongs to
-       */
-      store_id?: number;
-
-      /**
-       * Unique identifier for the page
-       */
-      unique_id?: string;
-    }
-  }
+  /**
+   * Unique identifier for the page
+   */
+  unique_id?: string;
 }
 
 export interface StoreListPaymentAccountsResponse {
-  code?: number;
+  /**
+   * Payment Account ID
+   */
+  id?: number;
 
-  data?: StoreListPaymentAccountsResponse.Data;
+  /**
+   * Account Holder Name
+   */
+  account_holder?: string;
 
-  status?: string;
+  /**
+   * Account Number
+   */
+  account_number?: string;
+
+  financial_entity?: StoreListPaymentAccountsResponse.FinancialEntity;
+
+  /**
+   * Is Owned By Store
+   */
+  is_owned_by_store?: boolean;
+
+  /**
+   * Payment Method
+   */
+  method?: string;
+
+  /**
+   * Unique Identifier
+   */
+  unique_id?: string;
 }
 
 export namespace StoreListPaymentAccountsResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface FinancialEntity {
+    /**
+     * Financial Entity ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Code of the financial entity
+     */
+    code?: string;
 
-    page_size?: number;
+    /**
+     * Duitku code for the financial entity
+     */
+    duitku_code?: string;
 
-    results?: Array<Data.Result>;
-  }
+    /**
+     * Type of the financial entity
+     */
+    entity_type?: string;
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * Payment Account ID
-       */
-      id?: number;
+    /**
+     * Name of the financial entity
+     */
+    name?: string;
 
-      /**
-       * Account Holder Name
-       */
-      account_holder?: string;
+    /**
+     * Platform associated with the financial entity
+     */
+    platform?: string;
 
-      /**
-       * Account Number
-       */
-      account_number?: string;
-
-      financial_entity?: Result.FinancialEntity;
-
-      /**
-       * Is Owned By Store
-       */
-      is_owned_by_store?: boolean;
-
-      /**
-       * Payment Method
-       */
-      method?: string;
-
-      /**
-       * Unique Identifier
-       */
-      unique_id?: string;
-    }
-
-    export namespace Result {
-      export interface FinancialEntity {
-        /**
-         * Financial Entity ID
-         */
-        id?: number;
-
-        /**
-         * Code of the financial entity
-         */
-        code?: string;
-
-        /**
-         * Duitku code for the financial entity
-         */
-        duitku_code?: string;
-
-        /**
-         * Type of the financial entity
-         */
-        entity_type?: string;
-
-        /**
-         * Name of the financial entity
-         */
-        name?: string;
-
-        /**
-         * Platform associated with the financial entity
-         */
-        platform?: string;
-
-        /**
-         * Xendit code for the financial entity
-         */
-        xendit_code?: string;
-      }
-    }
+    /**
+     * Xendit code for the financial entity
+     */
+    xendit_code?: string;
   }
 }
 
+/**
+ * Store Sales Person Simple Schema
+ */
 export interface StoreListSalesPeopleResponse {
-  code?: number;
+  /**
+   * Store Sales Person ID
+   */
+  id?: number;
 
-  data?: StoreListSalesPeopleResponse.Data;
+  business_user?: StoreListSalesPeopleResponse.BusinessUser;
 
-  status?: string;
+  /**
+   * Percentage of sales person
+   */
+  percentage?: number;
+
+  /**
+   * Weekly Schedule Schema
+   */
+  weekly_schedule?: StoreListSalesPeopleResponse.WeeklySchedule;
 }
 
 export namespace StoreListSalesPeopleResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface BusinessUser {
+    /**
+     * The business user ID
+     */
+    id: number;
 
-    last_id?: number;
+    /**
+     * The business phone number
+     */
+    business_phone: string;
 
-    page_size?: number;
+    role: BusinessUser.Role;
 
-    results?: Array<Data.Result>;
+    user: BusinessUser.User;
   }
 
-  export namespace Data {
-    /**
-     * Store Sales Person Simple Schema
-     */
-    export interface Result {
+  export namespace BusinessUser {
+    export interface Role {
       /**
-       * Store Sales Person ID
+       * The role ID
+       */
+      id: number;
+
+      /**
+       * The name of the role
+       */
+      name: string;
+    }
+
+    export interface User {
+      /**
+       * User ID
        */
       id?: number;
 
-      business_user?: Result.BusinessUser;
+      /**
+       * Affiliate code of the user
+       */
+      aff_code?: string;
 
       /**
-       * Percentage of sales person
+       * URL to user avatar
        */
-      percentage?: number;
+      avatar?: string;
 
       /**
-       * Weekly Schedule Schema
+       * User email
        */
-      weekly_schedule?: Result.WeeklySchedule;
+      email?: string;
+
+      /**
+       * User full name
+       */
+      fullname?: string;
+
+      /**
+       * User phone number
+       */
+      phone?: string;
+    }
+  }
+
+  /**
+   * Weekly Schedule Schema
+   */
+  export interface WeeklySchedule {
+    /**
+     * Day Schedule Schema
+     */
+    friday?: WeeklySchedule.Friday;
+
+    /**
+     * Day Schedule Schema
+     */
+    monday?: WeeklySchedule.Monday;
+
+    /**
+     * Day Schedule Schema
+     */
+    saturday?: WeeklySchedule.Saturday;
+
+    /**
+     * Day Schedule Schema
+     */
+    sunday?: WeeklySchedule.Sunday;
+
+    /**
+     * Day Schedule Schema
+     */
+    thursday?: WeeklySchedule.Thursday;
+
+    /**
+     * Day Schedule Schema
+     */
+    tuesday?: WeeklySchedule.Tuesday;
+
+    /**
+     * Day Schedule Schema
+     */
+    wednesday?: WeeklySchedule.Wednesday;
+  }
+
+  export namespace WeeklySchedule {
+    /**
+     * Day Schedule Schema
+     */
+    export interface Friday {
+      /**
+       * End time
+       */
+      end_time: string;
+
+      /**
+       * Is active
+       */
+      is_active: boolean;
+
+      /**
+       * Start time
+       */
+      start_time: string;
     }
 
-    export namespace Result {
-      export interface BusinessUser {
-        /**
-         * The business user ID
-         */
-        id: number;
-
-        /**
-         * The business phone number
-         */
-        business_phone: string;
-
-        role: BusinessUser.Role;
-
-        user: BusinessUser.User;
-      }
-
-      export namespace BusinessUser {
-        export interface Role {
-          /**
-           * The role ID
-           */
-          id: number;
-
-          /**
-           * The name of the role
-           */
-          name: string;
-        }
-
-        export interface User {
-          /**
-           * User ID
-           */
-          id?: number;
-
-          /**
-           * Affiliate code of the user
-           */
-          aff_code?: string;
-
-          /**
-           * URL to user avatar
-           */
-          avatar?: string;
-
-          /**
-           * User email
-           */
-          email?: string;
-
-          /**
-           * User full name
-           */
-          fullname?: string;
-
-          /**
-           * User phone number
-           */
-          phone?: string;
-        }
-      }
+    /**
+     * Day Schedule Schema
+     */
+    export interface Monday {
+      /**
+       * End time
+       */
+      end_time: string;
 
       /**
-       * Weekly Schedule Schema
+       * Is active
        */
-      export interface WeeklySchedule {
-        /**
-         * Day Schedule Schema
-         */
-        friday?: WeeklySchedule.Friday;
+      is_active: boolean;
 
-        /**
-         * Day Schedule Schema
-         */
-        monday?: WeeklySchedule.Monday;
+      /**
+       * Start time
+       */
+      start_time: string;
+    }
 
-        /**
-         * Day Schedule Schema
-         */
-        saturday?: WeeklySchedule.Saturday;
+    /**
+     * Day Schedule Schema
+     */
+    export interface Saturday {
+      /**
+       * End time
+       */
+      end_time: string;
 
-        /**
-         * Day Schedule Schema
-         */
-        sunday?: WeeklySchedule.Sunday;
+      /**
+       * Is active
+       */
+      is_active: boolean;
 
-        /**
-         * Day Schedule Schema
-         */
-        thursday?: WeeklySchedule.Thursday;
+      /**
+       * Start time
+       */
+      start_time: string;
+    }
 
-        /**
-         * Day Schedule Schema
-         */
-        tuesday?: WeeklySchedule.Tuesday;
+    /**
+     * Day Schedule Schema
+     */
+    export interface Sunday {
+      /**
+       * End time
+       */
+      end_time: string;
 
-        /**
-         * Day Schedule Schema
-         */
-        wednesday?: WeeklySchedule.Wednesday;
-      }
+      /**
+       * Is active
+       */
+      is_active: boolean;
 
-      export namespace WeeklySchedule {
-        /**
-         * Day Schedule Schema
-         */
-        export interface Friday {
-          /**
-           * End time
-           */
-          end_time: string;
+      /**
+       * Start time
+       */
+      start_time: string;
+    }
 
-          /**
-           * Is active
-           */
-          is_active: boolean;
+    /**
+     * Day Schedule Schema
+     */
+    export interface Thursday {
+      /**
+       * End time
+       */
+      end_time: string;
 
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
+      /**
+       * Is active
+       */
+      is_active: boolean;
 
-        /**
-         * Day Schedule Schema
-         */
-        export interface Monday {
-          /**
-           * End time
-           */
-          end_time: string;
+      /**
+       * Start time
+       */
+      start_time: string;
+    }
 
-          /**
-           * Is active
-           */
-          is_active: boolean;
+    /**
+     * Day Schedule Schema
+     */
+    export interface Tuesday {
+      /**
+       * End time
+       */
+      end_time: string;
 
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
+      /**
+       * Is active
+       */
+      is_active: boolean;
 
-        /**
-         * Day Schedule Schema
-         */
-        export interface Saturday {
-          /**
-           * End time
-           */
-          end_time: string;
+      /**
+       * Start time
+       */
+      start_time: string;
+    }
 
-          /**
-           * Is active
-           */
-          is_active: boolean;
+    /**
+     * Day Schedule Schema
+     */
+    export interface Wednesday {
+      /**
+       * End time
+       */
+      end_time: string;
 
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
+      /**
+       * Is active
+       */
+      is_active: boolean;
 
-        /**
-         * Day Schedule Schema
-         */
-        export interface Sunday {
-          /**
-           * End time
-           */
-          end_time: string;
-
-          /**
-           * Is active
-           */
-          is_active: boolean;
-
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
-
-        /**
-         * Day Schedule Schema
-         */
-        export interface Thursday {
-          /**
-           * End time
-           */
-          end_time: string;
-
-          /**
-           * Is active
-           */
-          is_active: boolean;
-
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
-
-        /**
-         * Day Schedule Schema
-         */
-        export interface Tuesday {
-          /**
-           * End time
-           */
-          end_time: string;
-
-          /**
-           * Is active
-           */
-          is_active: boolean;
-
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
-
-        /**
-         * Day Schedule Schema
-         */
-        export interface Wednesday {
-          /**
-           * End time
-           */
-          end_time: string;
-
-          /**
-           * Is active
-           */
-          is_active: boolean;
-
-          /**
-           * Start time
-           */
-          start_time: string;
-        }
-      }
+      /**
+       * Start time
+       */
+      start_time: string;
     }
   }
 }
 
 export interface StoreListSimplifiedResponse {
-  code?: number;
+  /**
+   * Store ID
+   */
+  id?: number;
 
-  data?: StoreListSimplifiedResponse.Data;
+  /**
+   * Business ID
+   */
+  business_id?: number;
 
-  status?: string;
+  custom_domain?: StoreListSimplifiedResponse.CustomDomain;
+
+  /**
+   * URL of the store logo
+   */
+  logo?: string;
+
+  /**
+   * Name of the store
+   */
+  name?: string;
+
+  /**
+   * Payment methods available in the store
+   */
+  payment_methods?: Array<
+    | 'gopay'
+    | 'va'
+    | 'qris'
+    | 'card'
+    | 'invoice'
+    | 'alfamart'
+    | 'ovo'
+    | 'dana'
+    | 'shopeepay'
+    | 'linkaja'
+    | 'no_payment'
+    | 'bank_transfer'
+    | 'marketplace'
+    | 'cod'
+  >;
+
+  /**
+   * Xendit VA bank codes
+   */
+  sub_payment_methods?: Array<
+    'BCA' | 'BNI' | 'BRI' | 'MANDIRI' | 'PERMATA' | 'BSI' | 'BJB' | 'CIMB' | 'SAHABAT_SAMPOERNA' | 'ARTAJASA'
+  >;
+
+  /**
+   * Unique identifier for the store
+   */
+  unique_id?: string;
+
+  /**
+   * UUID of the store
+   */
+  uuid?: string;
 }
 
 export namespace StoreListSimplifiedResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface CustomDomain {
+    /**
+     * Custom Domain ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Full URL
+     */
+    full_url?: string;
 
-    page_size?: number;
-
-    results?: Array<Data.Result>;
-  }
-
-  export namespace Data {
-    export interface Result {
-      /**
-       * Store ID
-       */
-      id?: number;
-
-      /**
-       * Business ID
-       */
-      business_id?: number;
-
-      custom_domain?: Result.CustomDomain;
-
-      /**
-       * URL of the store logo
-       */
-      logo?: string;
-
-      /**
-       * Name of the store
-       */
-      name?: string;
-
-      /**
-       * Payment methods available in the store
-       */
-      payment_methods?: Array<
-        | 'gopay'
-        | 'va'
-        | 'qris'
-        | 'card'
-        | 'invoice'
-        | 'alfamart'
-        | 'ovo'
-        | 'dana'
-        | 'shopeepay'
-        | 'linkaja'
-        | 'no_payment'
-        | 'bank_transfer'
-        | 'marketplace'
-        | 'cod'
-      >;
-
-      /**
-       * Xendit VA bank codes
-       */
-      sub_payment_methods?: Array<
-        | 'BCA'
-        | 'BNI'
-        | 'BRI'
-        | 'MANDIRI'
-        | 'PERMATA'
-        | 'BSI'
-        | 'BJB'
-        | 'CIMB'
-        | 'SAHABAT_SAMPOERNA'
-        | 'ARTAJASA'
-      >;
-
-      /**
-       * Unique identifier for the store
-       */
-      unique_id?: string;
-
-      /**
-       * UUID of the store
-       */
-      uuid?: string;
-    }
-
-    export namespace Result {
-      export interface CustomDomain {
-        /**
-         * Custom Domain ID
-         */
-        id?: number;
-
-        /**
-         * Full URL
-         */
-        full_url?: string;
-
-        /**
-         * Is Verified
-         */
-        is_verified?: boolean;
-      }
-    }
+    /**
+     * Is Verified
+     */
+    is_verified?: boolean;
   }
 }
 
@@ -6422,7 +6354,7 @@ export namespace StoreUpdateParams {
   }
 }
 
-export interface StoreListParams {
+export interface StoreListParams extends CursorPaginationParams {
   /**
    * Filter stores by custom domain (case-insensitive, exact match)
    */
@@ -6434,36 +6366,16 @@ export interface StoreListParams {
   has_domain?: boolean;
 
   /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-
-  /**
    * Search term to filter stores by name (case-insensitive, partial match)
    */
   search?: string;
 }
 
-export interface StoreListPagesParams {
+export interface StoreListPagesParams extends CursorPaginationParams {
   /**
    * Filter pages that are pinned (true/false)
    */
   is_pinned?: boolean;
-
-  /**
-   * Last page ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Search term to filter pages by title or content (case-insensitive, partial
@@ -6477,12 +6389,7 @@ export interface StoreListPagesParams {
   tags?: string;
 }
 
-export interface StoreListPaymentAccountsParams {
-  /**
-   * Last payment account ID for cursor-based pagination
-   */
-  last_id?: number;
-
+export interface StoreListPaymentAccountsParams extends CursorPaginationParams {
   /**
    * Filter by payment method
    */
@@ -6495,29 +6402,14 @@ export interface StoreListPaymentAccountsParams {
   order_id?: number;
 
   /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-
-  /**
    * Search by payment account name or number
    */
   search?: string;
 }
 
-export interface StoreListSalesPeopleParams {
-  /**
-   * Last sales person ID for cursor-based pagination
-   */
-  last_id?: number;
+export interface StoreListSalesPeopleParams extends CursorPaginationParams {}
 
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-}
-
-export interface StoreListSimplifiedParams {
+export interface StoreListSimplifiedParams extends CursorPaginationParams {
   /**
    * Filter stores by custom domain (case-insensitive, exact match)
    */
@@ -6527,16 +6419,6 @@ export interface StoreListSimplifiedParams {
    * Filter stores that have a custom domain (true/false)
    */
   has_domain?: boolean;
-
-  /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Search term to filter stores by name (case-insensitive, partial match)
@@ -6565,6 +6447,11 @@ export declare namespace Stores {
     type StoreListPaymentAccountsResponse as StoreListPaymentAccountsResponse,
     type StoreListSalesPeopleResponse as StoreListSalesPeopleResponse,
     type StoreListSimplifiedResponse as StoreListSimplifiedResponse,
+    type StoreListResponsesCursorPagination as StoreListResponsesCursorPagination,
+    type StoreListPagesResponsesCursorPagination as StoreListPagesResponsesCursorPagination,
+    type StoreListPaymentAccountsResponsesCursorPagination as StoreListPaymentAccountsResponsesCursorPagination,
+    type StoreListSalesPeopleResponsesCursorPagination as StoreListSalesPeopleResponsesCursorPagination,
+    type StoreListSimplifiedResponsesCursorPagination as StoreListSimplifiedResponsesCursorPagination,
     type StoreCreateParams as StoreCreateParams,
     type StoreUpdateParams as StoreUpdateParams,
     type StoreListParams as StoreListParams,
@@ -6588,6 +6475,7 @@ export declare namespace Stores {
     Bundles as Bundles,
     type BundleRetrieveResponse as BundleRetrieveResponse,
     type BundleListResponse as BundleListResponse,
+    type BundleListResponsesCursorPagination as BundleListResponsesCursorPagination,
     type BundleRetrieveParams as BundleRetrieveParams,
     type BundleListParams as BundleListParams,
   };
@@ -6607,6 +6495,7 @@ export declare namespace Stores {
     type FollowUpChatUpdateResponse as FollowUpChatUpdateResponse,
     type FollowUpChatListResponse as FollowUpChatListResponse,
     type FollowUpChatDeleteResponse as FollowUpChatDeleteResponse,
+    type FollowUpChatListResponsesCursorPagination as FollowUpChatListResponsesCursorPagination,
     type FollowUpChatCreateParams as FollowUpChatCreateParams,
     type FollowUpChatRetrieveParams as FollowUpChatRetrieveParams,
     type FollowUpChatUpdateParams as FollowUpChatUpdateParams,
@@ -6630,6 +6519,7 @@ export declare namespace Stores {
     type ProductAddResponse as ProductAddResponse,
     type ProductRemoveResponse as ProductRemoveResponse,
     type ProductViewRelationsResponse as ProductViewRelationsResponse,
+    type ProductListResponsesCursorPagination as ProductListResponsesCursorPagination,
     type ProductListParams as ProductListParams,
     type ProductAddParams as ProductAddParams,
     type ProductRemoveParams as ProductRemoveParams,
@@ -6641,6 +6531,7 @@ export declare namespace Stores {
     type StoreAdminListResponse as StoreAdminListResponse,
     type StoreAdminAddResponse as StoreAdminAddResponse,
     type StoreAdminRemoveResponse as StoreAdminRemoveResponse,
+    type StoreAdminListResponsesCursorPagination as StoreAdminListResponsesCursorPagination,
     type StoreAdminListParams as StoreAdminListParams,
     type StoreAdminAddParams as StoreAdminAddParams,
     type StoreAdminRemoveParams as StoreAdminRemoveParams,
@@ -6651,6 +6542,7 @@ export declare namespace Stores {
     type StoreAdvertiserListResponse as StoreAdvertiserListResponse,
     type StoreAdvertiserAddResponse as StoreAdvertiserAddResponse,
     type StoreAdvertiserRemoveResponse as StoreAdvertiserRemoveResponse,
+    type StoreAdvertiserListResponsesCursorPagination as StoreAdvertiserListResponsesCursorPagination,
     type StoreAdvertiserListParams as StoreAdvertiserListParams,
     type StoreAdvertiserAddParams as StoreAdvertiserAddParams,
     type StoreAdvertiserRemoveParams as StoreAdvertiserRemoveParams,

@@ -9,6 +9,7 @@ import {
   BpoDeleteResponse,
   BpoListParams,
   BpoListResponse,
+  BpoListResponsesCursorPagination,
   BpoShowRelationsParams,
   BpoShowRelationsResponse,
   BpoUpdateParams,
@@ -24,6 +25,7 @@ import {
   FollowUpChatGenerateResponse,
   FollowUpChatListParams,
   FollowUpChatListResponse,
+  FollowUpChatListResponsesCursorPagination,
   FollowUpChatRetrieveParams,
   FollowUpChatRetrieveResponse,
   FollowUpChatUpdateParams,
@@ -36,11 +38,13 @@ import {
   PartnerAddResponse,
   PartnerListParams,
   PartnerListResponse,
+  PartnerListResponsesCursorPagination,
   PartnerRemoveParams,
   PartnerRemoveResponse,
   Partners,
 } from './partners';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -82,8 +86,11 @@ export class Bundles extends APIResource {
   list(
     query: BundleListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<BundleListResponse> {
-    return this._client.get('/v2/bundles', { query, ...options });
+  ): PagePromise<BundleListResponsesCursorPagination, BundleListResponse> {
+    return this._client.getAPIList('/v2/bundles', CursorPagination<BundleListResponse>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -114,8 +121,11 @@ export class Bundles extends APIResource {
   listSimplified(
     query: BundleListSimplifiedParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<BundleListSimplifiedResponse> {
-    return this._client.get('/v2/bundles/simplified', { query, ...options });
+  ): PagePromise<BundleListSimplifiedResponsesCursorPagination, BundleListSimplifiedResponse> {
+    return this._client.getAPIList('/v2/bundles/simplified', CursorPagination<BundleListSimplifiedResponse>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -137,6 +147,10 @@ export class Bundles extends APIResource {
     return this._client.patch(path`/v2/bundles/${bundleID}/sharing`, { body, ...options });
   }
 }
+
+export type BundleListResponsesCursorPagination = CursorPagination<BundleListResponse>;
+
+export type BundleListSimplifiedResponsesCursorPagination = CursorPagination<BundleListSimplifiedResponse>;
 
 export interface BundleCreateResponse {
   code?: number;
@@ -2239,195 +2253,173 @@ export namespace BundleUpdateResponse {
 }
 
 export interface BundleListResponse {
-  code?: number;
+  /**
+   * Bundle ID
+   */
+  id?: number;
 
-  data?: BundleListResponse.Data;
+  business?: BundleListResponse.Business;
 
-  status?: string;
+  /**
+   * Creation timestamp
+   */
+  created_at?: string;
+
+  created_by?: BundleListResponse.CreatedBy;
+
+  /**
+   * Custom Identifier
+   */
+  custom_id?: string;
+
+  /**
+   * Description
+   */
+  description?: string;
+
+  /**
+   * Display Name
+   */
+  display?: string;
+
+  /**
+   * List of Image URLs
+   */
+  images?: Array<string>;
+
+  /**
+   * Is Bundle Sharing Enabled
+   */
+  is_bundle_sharing?: boolean;
+
+  /**
+   * Last update timestamp
+   */
+  last_updated_at?: string;
+
+  last_updated_by?: BundleListResponse.LastUpdatedBy;
+
+  /**
+   * Name
+   */
+  name?: string;
+
+  /**
+   * Public Name
+   */
+  public_name?: string;
+
+  /**
+   * Number of variants in the bundle
+   */
+  variants_count?: number;
+
+  /**
+   * Weight Bump
+   */
+  weight_bump?: number;
 }
 
 export namespace BundleListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Business {
+    /**
+     * Business ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Name of the account holder
+     */
+    account_holder?: string;
 
-    page_size?: number;
+    /**
+     * Email address of the business
+     */
+    email?: string;
 
-    results?: Array<Data.Result>;
+    /**
+     * Is the business banned?
+     */
+    is_banned?: boolean;
+
+    /**
+     * URL to the business logo
+     */
+    logo?: string;
+
+    /**
+     * Unique identifier for the business
+     */
+    unique_id?: string;
+
+    /**
+     * Username of the business
+     */
+    username?: string;
   }
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * Bundle ID
-       */
-      id?: number;
+  export interface CreatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
 
-      business?: Result.Business;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-      /**
-       * Creation timestamp
-       */
-      created_at?: string;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-      created_by?: Result.CreatedBy;
+    /**
+     * User email
+     */
+    email?: string;
 
-      /**
-       * Custom Identifier
-       */
-      custom_id?: string;
+    /**
+     * User full name
+     */
+    fullname?: string;
 
-      /**
-       * Description
-       */
-      description?: string;
+    /**
+     * User phone number
+     */
+    phone?: string;
+  }
 
-      /**
-       * Display Name
-       */
-      display?: string;
+  export interface LastUpdatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
 
-      /**
-       * List of Image URLs
-       */
-      images?: Array<string>;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-      /**
-       * Is Bundle Sharing Enabled
-       */
-      is_bundle_sharing?: boolean;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-      /**
-       * Last update timestamp
-       */
-      last_updated_at?: string;
+    /**
+     * User email
+     */
+    email?: string;
 
-      last_updated_by?: Result.LastUpdatedBy;
+    /**
+     * User full name
+     */
+    fullname?: string;
 
-      /**
-       * Name
-       */
-      name?: string;
-
-      /**
-       * Public Name
-       */
-      public_name?: string;
-
-      /**
-       * Number of variants in the bundle
-       */
-      variants_count?: number;
-
-      /**
-       * Weight Bump
-       */
-      weight_bump?: number;
-    }
-
-    export namespace Result {
-      export interface Business {
-        /**
-         * Business ID
-         */
-        id?: number;
-
-        /**
-         * Name of the account holder
-         */
-        account_holder?: string;
-
-        /**
-         * Email address of the business
-         */
-        email?: string;
-
-        /**
-         * Is the business banned?
-         */
-        is_banned?: boolean;
-
-        /**
-         * URL to the business logo
-         */
-        logo?: string;
-
-        /**
-         * Unique identifier for the business
-         */
-        unique_id?: string;
-
-        /**
-         * Username of the business
-         */
-        username?: string;
-      }
-
-      export interface CreatedBy {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-
-      export interface LastUpdatedBy {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-    }
+    /**
+     * User phone number
+     */
+    phone?: string;
   }
 }
 
@@ -2455,110 +2447,88 @@ export namespace BundleCountResponse {
 }
 
 export interface BundleListSimplifiedResponse {
-  code?: number;
+  /**
+   * Bundle ID
+   */
+  id?: number;
 
-  data?: BundleListSimplifiedResponse.Data;
+  /**
+   * List of Bundle Price Options
+   */
+  bundle_price_options?: Array<BundleListSimplifiedResponse.BundlePriceOption>;
 
-  status?: string;
+  /**
+   * Custom Identifier
+   */
+  custom_id?: string;
+
+  /**
+   * Display Name
+   */
+  display?: string;
+
+  /**
+   * List of Image URLs
+   */
+  images?: Array<string>;
+
+  /**
+   * Is Bundle Sharing Enabled
+   */
+  is_bundle_sharing?: boolean;
+
+  /**
+   * Name
+   */
+  name?: string;
+
+  /**
+   * Public Name
+   */
+  public_name?: string;
+
+  /**
+   * Weight Bump
+   */
+  weight_bump?: number;
 }
 
 export namespace BundleListSimplifiedResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface BundlePriceOption {
+    /**
+     * Bundle Price Option ID
+     */
+    id?: number;
 
-    last_id?: number;
+    /**
+     * Is owned by store
+     */
+    is_owned_by_store?: boolean;
 
-    page_size?: number;
+    /**
+     * Name
+     */
+    name?: string;
 
-    results?: Array<Data.Result>;
-  }
+    /**
+     * Price (including tax)
+     */
+    price?: number;
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * Bundle ID
-       */
-      id?: number;
+    /**
+     * Price before tax
+     */
+    price_bt?: number;
 
-      /**
-       * List of Bundle Price Options
-       */
-      bundle_price_options?: Array<Result.BundlePriceOption>;
+    /**
+     * Slug
+     */
+    slug?: string;
 
-      /**
-       * Custom Identifier
-       */
-      custom_id?: string;
-
-      /**
-       * Display Name
-       */
-      display?: string;
-
-      /**
-       * List of Image URLs
-       */
-      images?: Array<string>;
-
-      /**
-       * Is Bundle Sharing Enabled
-       */
-      is_bundle_sharing?: boolean;
-
-      /**
-       * Name
-       */
-      name?: string;
-
-      /**
-       * Public Name
-       */
-      public_name?: string;
-
-      /**
-       * Weight Bump
-       */
-      weight_bump?: number;
-    }
-
-    export namespace Result {
-      export interface BundlePriceOption {
-        /**
-         * Bundle Price Option ID
-         */
-        id?: number;
-
-        /**
-         * Is owned by store
-         */
-        is_owned_by_store?: boolean;
-
-        /**
-         * Name
-         */
-        name?: string;
-
-        /**
-         * Price (including tax)
-         */
-        price?: number;
-
-        /**
-         * Price before tax
-         */
-        price_bt?: number;
-
-        /**
-         * Slug
-         */
-        slug?: string;
-
-        /**
-         * Bundle Price Option Unique ID
-         */
-        unique_id?: string;
-      }
-    }
+    /**
+     * Bundle Price Option Unique ID
+     */
+    unique_id?: string;
   }
 }
 
@@ -3702,7 +3672,7 @@ export namespace BundleUpdateParams {
   }
 }
 
-export interface BundleListParams {
+export interface BundleListParams extends CursorPaginationParams {
   /**
    * Filter bundles by their sharing status
    */
@@ -3712,16 +3682,6 @@ export interface BundleListParams {
    * Filter bundles that are associated with the specified label
    */
   label?: string;
-
-  /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Search term to filter bundles by name (case-insensitive, partial match)
@@ -3766,7 +3726,7 @@ export interface BundleCountParams {
   store_id?: number;
 }
 
-export interface BundleListSimplifiedParams {
+export interface BundleListSimplifiedParams extends CursorPaginationParams {
   /**
    * If provided, includes `is_owned_by_store` field in the bundle price options to
    * indicate if the option is already included in the specified store.
@@ -3782,16 +3742,6 @@ export interface BundleListSimplifiedParams {
    * Filter bundles that are associated with the specified label
    */
   label?: string;
-
-  /**
-   * Last order ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
 
   /**
    * Search term to filter bundles by name (case-insensitive, partial match)
@@ -3826,6 +3776,8 @@ export declare namespace Bundles {
     type BundleListSimplifiedResponse as BundleListSimplifiedResponse,
     type BundleShowRelationsResponse as BundleShowRelationsResponse,
     type BundleUpdateSharingResponse as BundleUpdateSharingResponse,
+    type BundleListResponsesCursorPagination as BundleListResponsesCursorPagination,
+    type BundleListSimplifiedResponsesCursorPagination as BundleListSimplifiedResponsesCursorPagination,
     type BundleCreateParams as BundleCreateParams,
     type BundleUpdateParams as BundleUpdateParams,
     type BundleListParams as BundleListParams,
@@ -3841,6 +3793,7 @@ export declare namespace Bundles {
     type BpoListResponse as BpoListResponse,
     type BpoDeleteResponse as BpoDeleteResponse,
     type BpoShowRelationsResponse as BpoShowRelationsResponse,
+    type BpoListResponsesCursorPagination as BpoListResponsesCursorPagination,
     type BpoCreateParams as BpoCreateParams,
     type BpoUpdateParams as BpoUpdateParams,
     type BpoListParams as BpoListParams,
@@ -3856,6 +3809,7 @@ export declare namespace Bundles {
     type FollowUpChatListResponse as FollowUpChatListResponse,
     type FollowUpChatDeleteResponse as FollowUpChatDeleteResponse,
     type FollowUpChatGenerateResponse as FollowUpChatGenerateResponse,
+    type FollowUpChatListResponsesCursorPagination as FollowUpChatListResponsesCursorPagination,
     type FollowUpChatCreateParams as FollowUpChatCreateParams,
     type FollowUpChatRetrieveParams as FollowUpChatRetrieveParams,
     type FollowUpChatUpdateParams as FollowUpChatUpdateParams,
@@ -3868,6 +3822,7 @@ export declare namespace Bundles {
     type PartnerListResponse as PartnerListResponse,
     type PartnerAddResponse as PartnerAddResponse,
     type PartnerRemoveResponse as PartnerRemoveResponse,
+    type PartnerListResponsesCursorPagination as PartnerListResponsesCursorPagination,
     type PartnerListParams as PartnerListParams,
     type PartnerAddParams as PartnerAddParams,
     type PartnerRemoveParams as PartnerRemoveParams,

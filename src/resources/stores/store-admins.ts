@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -13,15 +14,24 @@ export class StoreAdmins extends APIResource {
    *
    * @example
    * ```ts
-   * const storeAdmins = await client.stores.storeAdmins.list(1);
+   * // Automatically fetches more pages as needed.
+   * for await (const storeAdminListResponse of client.stores.storeAdmins.list(
+   *   1,
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   list(
     storeID: number,
     query: StoreAdminListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<StoreAdminListResponse> {
-    return this._client.get(path`/v2/stores/${storeID}/store-admins`, { query, ...options });
+  ): PagePromise<StoreAdminListResponsesCursorPagination, StoreAdminListResponse> {
+    return this._client.getAPIList(
+      path`/v2/stores/${storeID}/store-admins`,
+      CursorPagination<StoreAdminListResponse>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -63,87 +73,67 @@ export class StoreAdmins extends APIResource {
   }
 }
 
+export type StoreAdminListResponsesCursorPagination = CursorPagination<StoreAdminListResponse>;
+
 export interface StoreAdminListResponse {
-  code?: number;
+  /**
+   * The business user ID
+   */
+  id: number;
 
-  data?: StoreAdminListResponse.Data;
+  /**
+   * The business phone number
+   */
+  business_phone: string;
 
-  status?: string;
+  role: StoreAdminListResponse.Role;
+
+  user: StoreAdminListResponse.User;
 }
 
 export namespace StoreAdminListResponse {
-  export interface Data {
-    has_next?: boolean;
+  export interface Role {
+    /**
+     * The role ID
+     */
+    id: number;
 
-    last_id?: number;
-
-    page_size?: number;
-
-    results?: Array<Data.Result>;
+    /**
+     * The name of the role
+     */
+    name: string;
   }
 
-  export namespace Data {
-    export interface Result {
-      /**
-       * The business user ID
-       */
-      id: number;
+  export interface User {
+    /**
+     * User ID
+     */
+    id?: number;
 
-      /**
-       * The business phone number
-       */
-      business_phone: string;
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
 
-      role: Result.Role;
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
 
-      user: Result.User;
-    }
+    /**
+     * User email
+     */
+    email?: string;
 
-    export namespace Result {
-      export interface Role {
-        /**
-         * The role ID
-         */
-        id: number;
+    /**
+     * User full name
+     */
+    fullname?: string;
 
-        /**
-         * The name of the role
-         */
-        name: string;
-      }
-
-      export interface User {
-        /**
-         * User ID
-         */
-        id?: number;
-
-        /**
-         * Affiliate code of the user
-         */
-        aff_code?: string;
-
-        /**
-         * URL to user avatar
-         */
-        avatar?: string;
-
-        /**
-         * User email
-         */
-        email?: string;
-
-        /**
-         * User full name
-         */
-        fullname?: string;
-
-        /**
-         * User phone number
-         */
-        phone?: string;
-      }
-    }
+    /**
+     * User phone number
+     */
+    phone?: string;
   }
 }
 
@@ -159,17 +149,7 @@ export interface StoreAdminRemoveResponse {
   status?: string;
 }
 
-export interface StoreAdminListParams {
-  /**
-   * Last store admin ID for cursor-based pagination
-   */
-  last_id?: number;
-
-  /**
-   * Number of items per page (default: 25, max: 25)
-   */
-  page_size?: number;
-}
+export interface StoreAdminListParams extends CursorPaginationParams {}
 
 export interface StoreAdminAddParams {
   /**
@@ -190,6 +170,7 @@ export declare namespace StoreAdmins {
     type StoreAdminListResponse as StoreAdminListResponse,
     type StoreAdminAddResponse as StoreAdminAddResponse,
     type StoreAdminRemoveResponse as StoreAdminRemoveResponse,
+    type StoreAdminListResponsesCursorPagination as StoreAdminListResponsesCursorPagination,
     type StoreAdminListParams as StoreAdminListParams,
     type StoreAdminAddParams as StoreAdminAddParams,
     type StoreAdminRemoveParams as StoreAdminRemoveParams,
