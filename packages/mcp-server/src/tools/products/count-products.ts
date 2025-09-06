@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   tags: [],
   httpMethod: 'get',
   httpPath: '/v2/products/count',
-  operationId: 'ScalevApiWeb.ProductController.index_count',
+  operationId: 'ScalevApiWeb.ProductController.show_count',
 };
 
 export const tool: Tool = {

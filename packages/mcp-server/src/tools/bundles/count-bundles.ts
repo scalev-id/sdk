@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   tags: [],
   httpMethod: 'get',
   httpPath: '/v2/bundles/count',
-  operationId: 'ScalevApiWeb.BundleController.index_count',
+  operationId: 'ScalevApiWeb.BundleController.show_count',
 };
 
 export const tool: Tool = {
