@@ -33,7 +33,7 @@ export const newMcpServer = () =>
   new McpServer(
     {
       name: 'scalev_api_api',
-      version: '0.0.1',
+      version: '1.0.0',
     },
     { capabilities: { tools: {}, logging: {} } },
   );
