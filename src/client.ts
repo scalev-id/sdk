@@ -45,6 +45,7 @@ import {
   ShippingCosts,
 } from './resources/shipping-costs';
 import {
+  Bundle,
   BundleCountParams,
   BundleCountResponse,
   BundleCreateParams,
@@ -926,6 +927,7 @@ export declare namespace ScalevAPI {
 
   export {
     Bundles as Bundles,
+    type Bundle as Bundle,
     type BundleCreateResponse as BundleCreateResponse,
     type BundleRetrieveResponse as BundleRetrieveResponse,
     type BundleUpdateResponse as BundleUpdateResponse,

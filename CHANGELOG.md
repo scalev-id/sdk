@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2025-09-08)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/scalev-id/sdk/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* **api:** manual updates ([d932564](https://github.com/scalev-id/sdk/commit/d932564005dd73e72c0fe4a56807fc90f12045fc))
+
 ## 1.1.0 (2025-09-08)
 
 Full Changelog: [v1.0.0...v1.1.0](https://github.com/scalev-id/sdk/compare/v1.0.0...v1.1.0)
