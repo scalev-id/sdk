@@ -9,9 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stainless-sdks/scalev-api-typescript.git"
+    "url": "git+https://github.com/scalev-id/sdk.git"
   },
-  "homepage": "https://github.com/stainless-sdks/scalev-api-typescript/tree/main/packages/mcp-server#readme",
+  "homepage": "https://github.com/scalev-id/sdk/tree/main/packages/mcp-server#readme",
   "documentation": "https://developers.scalev.id",
   "server": {
     "type": "node",
