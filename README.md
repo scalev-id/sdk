@@ -29,9 +29,10 @@ const client = new ScalevAPI({
   apiKey: process.env['SCALEV_API_API_KEY'], // This is the default and can be omitted
 });
 
-const store = await client.stores.create({ name: 'name' });
+const page = await client.stores.list({ search: 'My Store' });
+const storeListResponse = page.data?.results[0];
 
-console.log(store.id);
+console.log(storeListResponse.id);
 ```
 
 ### Request & Response types
@@ -46,8 +47,8 @@ const client = new ScalevAPI({
   apiKey: process.env['SCALEV_API_API_KEY'], // This is the default and can be omitted
 });
 
-const params: ScalevAPI.ProductCreateParams = { item_type: 'physical', name: 'name' };
-const product: ScalevAPI.ProductCreateResponse = await client.products.create(params);
+const params: ScalevAPI.ProductListParams = { page_size: 25, search: 'My Product' };
+const [productListResponse]: [ScalevAPI.ProductListResponse] = await client.products.list(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -97,7 +98,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const product = await client.products.create({ item_type: 'physical', name: 'name' }).catch(async (err) => {
+const page = await client.products.list({ page_size: 25, search: 'My Product' }).catch(async (err) => {
   if (err instanceof ScalevAPI.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -137,7 +138,7 @@ const client = new ScalevAPI({
 });
 
 // Or, configure per-request:
-await client.products.create({ item_type: 'physical', name: 'name' }, {
+await client.products.list({ page_size: 25, search: 'My Product' }, {
   maxRetries: 5,
 });
 ```
@@ -154,7 +155,7 @@ const client = new ScalevAPI({
 });
 
 // Override per-request:
-await client.products.create({ item_type: 'physical', name: 'name' }, {
+await client.products.list({ page_size: 25, search: 'My Product' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -208,15 +209,17 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new ScalevAPI();
 
-const response = await client.products.create({ item_type: 'physical', name: 'name' }).asResponse();
+const response = await client.products.list({ page_size: 25, search: 'My Product' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: product, response: raw } = await client.products
-  .create({ item_type: 'physical', name: 'name' })
+const { data: page, response: raw } = await client.products
+  .list({ page_size: 25, search: 'My Product' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(product.code);
+for await (const productListResponse of page) {
+  console.log(productListResponse.id);
+}
 ```
 
 ### Logging
@@ -296,7 +299,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.stores.create({
+client.stores.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
