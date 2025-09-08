@@ -29,9 +29,9 @@ const client = new ScalevAPI({
   apiKey: process.env['SCALEV_API_API_KEY'], // This is the default and can be omitted
 });
 
-const bundle = await client.bundles.create({ name: 'REPLACE_ME' });
+const store = await client.stores.create({ name: 'name' });
 
-console.log(bundle.code);
+console.log(store.id);
 ```
 
 ### Request & Response types
@@ -46,8 +46,8 @@ const client = new ScalevAPI({
   apiKey: process.env['SCALEV_API_API_KEY'], // This is the default and can be omitted
 });
 
-const params: ScalevAPI.BundleCreateParams = { name: 'REPLACE_ME' };
-const bundle: ScalevAPI.BundleCreateResponse = await client.bundles.create(params);
+const params: ScalevAPI.ProductCreateParams = { item_type: 'physical', name: 'name' };
+const product: ScalevAPI.ProductCreateResponse = await client.products.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -97,7 +97,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const bundle = await client.bundles.create({ name: 'REPLACE_ME' }).catch(async (err) => {
+const product = await client.products.create({ item_type: 'physical', name: 'name' }).catch(async (err) => {
   if (err instanceof ScalevAPI.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -137,7 +137,7 @@ const client = new ScalevAPI({
 });
 
 // Or, configure per-request:
-await client.bundles.create({ name: 'REPLACE_ME' }, {
+await client.products.create({ item_type: 'physical', name: 'name' }, {
   maxRetries: 5,
 });
 ```
@@ -154,7 +154,7 @@ const client = new ScalevAPI({
 });
 
 // Override per-request:
-await client.bundles.create({ name: 'REPLACE_ME' }, {
+await client.products.create({ item_type: 'physical', name: 'name' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -162,6 +162,37 @@ await client.bundles.create({ name: 'REPLACE_ME' }, {
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
+
+## Auto-pagination
+
+List methods in the ScalevAPI API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllStoreListResponses(params) {
+  const allStoreListResponses = [];
+  // Automatically fetches more pages as needed.
+  for await (const storeListResponse of client.stores.list({ last_id: 1, page_size: 25 })) {
+    allStoreListResponses.push(storeListResponse);
+  }
+  return allStoreListResponses;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.stores.list({ last_id: 1, page_size: 25 });
+for (const storeListResponse of page.data?.results) {
+  console.log(storeListResponse);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
 
 ## Advanced Usage
 
@@ -177,13 +208,15 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new ScalevAPI();
 
-const response = await client.bundles.create({ name: 'REPLACE_ME' }).asResponse();
+const response = await client.products.create({ item_type: 'physical', name: 'name' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: bundle, response: raw } = await client.bundles.create({ name: 'REPLACE_ME' }).withResponse();
+const { data: product, response: raw } = await client.products
+  .create({ item_type: 'physical', name: 'name' })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(bundle.code);
+console.log(product.code);
 ```
 
 ### Logging
@@ -263,7 +296,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.bundles.create({
+client.stores.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
