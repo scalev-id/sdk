@@ -2,6 +2,7 @@
 
 Types:
 
+- <code><a href="./src/resources/bundles/bundles.ts">Bundle</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleCreateResponse</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleRetrieveResponse</a></code>
 - <code><a href="./src/resources/bundles/bundles.ts">BundleUpdateResponse</a></code>
