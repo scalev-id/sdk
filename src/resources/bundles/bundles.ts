@@ -152,6 +152,696 @@ export type BundleListResponsesCursorPagination = CursorPagination<BundleListRes
 
 export type BundleListSimplifiedResponsesCursorPagination = CursorPagination<BundleListSimplifiedResponse>;
 
+export interface Bundle {
+  /**
+   * Bundle ID
+   */
+  id?: number;
+
+  /**
+   * List of Bundle Price Options
+   */
+  bundle_price_options?: Array<Bundle.BundlePriceOption>;
+
+  /**
+   * List of Bundle Lines with Product details
+   */
+  bundlelines?: Array<Bundle.Bundleline>;
+
+  business?: Bundle.Business;
+
+  /**
+   * Creation timestamp
+   */
+  created_at?: string;
+
+  created_by?: Bundle.CreatedBy;
+
+  /**
+   * Custom Identifier
+   */
+  custom_id?: string;
+
+  /**
+   * Description
+   */
+  description?: string;
+
+  /**
+   * List of Image URLs
+   */
+  images?: Array<string>;
+
+  /**
+   * Is Bundle Sharing Enabled
+   */
+  is_bundle_sharing?: boolean;
+
+  /**
+   * List of labels associated with the product
+   */
+  labels?: Array<Bundle.Label>;
+
+  /**
+   * Last update timestamp
+   */
+  last_updated_at?: string;
+
+  last_updated_by?: Bundle.LastUpdatedBy;
+
+  /**
+   * Meta Thumbnail URL
+   */
+  meta_thumbnail?: string;
+
+  /**
+   * Name
+   */
+  name?: string;
+
+  /**
+   * Public Name
+   */
+  public_name?: string;
+
+  /**
+   * Rich Description
+   */
+  rich_description?: string;
+
+  /**
+   * Weight Bump
+   */
+  weight_bump?: number;
+}
+
+export namespace Bundle {
+  export interface BundlePriceOption {
+    /**
+     * Bundle Price Option ID
+     */
+    id?: number;
+
+    /**
+     * List of form displays associated with the bundle price option
+     */
+    form_displays?: Array<BundlePriceOption.FormDisplay>;
+
+    /**
+     * Name
+     */
+    name?: string;
+
+    /**
+     * Price (including tax)
+     */
+    price?: number;
+
+    /**
+     * Price before tax
+     */
+    price_bt?: number;
+
+    /**
+     * Slug
+     */
+    slug?: string;
+
+    /**
+     * List of stores where the bundle price option is available
+     */
+    stores?: Array<BundlePriceOption.Store>;
+
+    /**
+     * Bundle Price Option Unique ID
+     */
+    unique_id?: string;
+
+    /**
+     * sell form displays associated with the bundle price option
+     */
+    upsell_form_displays?: Array<BundlePriceOption.UpsellFormDisplay>;
+  }
+
+  export namespace BundlePriceOption {
+    export interface FormDisplay {
+      /**
+       * Form Display ID
+       */
+      id?: number;
+
+      page_display?: FormDisplay.PageDisplay;
+    }
+
+    export namespace FormDisplay {
+      export interface PageDisplay {
+        /**
+         * Page Display ID
+         */
+        id?: number;
+
+        page?: PageDisplay.Page;
+      }
+
+      export namespace PageDisplay {
+        export interface Page {
+          /**
+           * Page ID
+           */
+          id?: number;
+
+          /**
+           * Is the page published?
+           */
+          is_published?: boolean;
+
+          /**
+           * Name of the page
+           */
+          name?: string;
+
+          /**
+           * Publication date of the page
+           */
+          published_at?: string;
+
+          /**
+           * Slug for the page URL
+           */
+          slug?: string;
+
+          /**
+           * ID of the store the page belongs to
+           */
+          store_id?: number;
+
+          /**
+           * Unique identifier for the page
+           */
+          unique_id?: string;
+        }
+      }
+    }
+
+    export interface Store {
+      /**
+       * Store ID
+       */
+      id?: number;
+
+      custom_domain?: Store.CustomDomain;
+
+      /**
+       * Store name
+       */
+      name?: string;
+    }
+
+    export namespace Store {
+      export interface CustomDomain {
+        /**
+         * Custom Domain ID
+         */
+        id?: number;
+
+        /**
+         * Full URL
+         */
+        full_url?: string;
+
+        /**
+         * Is Verified
+         */
+        is_verified?: boolean;
+      }
+    }
+
+    export interface UpsellFormDisplay {
+      /**
+       * Form Display ID
+       */
+      id?: number;
+
+      page_display?: UpsellFormDisplay.PageDisplay;
+    }
+
+    export namespace UpsellFormDisplay {
+      export interface PageDisplay {
+        /**
+         * Page Display ID
+         */
+        id?: number;
+
+        page?: PageDisplay.Page;
+      }
+
+      export namespace PageDisplay {
+        export interface Page {
+          /**
+           * Page ID
+           */
+          id?: number;
+
+          /**
+           * Is the page published?
+           */
+          is_published?: boolean;
+
+          /**
+           * Name of the page
+           */
+          name?: string;
+
+          /**
+           * Publication date of the page
+           */
+          published_at?: string;
+
+          /**
+           * Slug for the page URL
+           */
+          slug?: string;
+
+          /**
+           * ID of the store the page belongs to
+           */
+          store_id?: number;
+
+          /**
+           * Unique identifier for the page
+           */
+          unique_id?: string;
+        }
+      }
+    }
+  }
+
+  export interface Bundleline {
+    /**
+     * Bundle Line ID
+     */
+    id?: number;
+
+    /**
+     * Quantity of the variant in the bundle line
+     */
+    quantity?: number;
+
+    /**
+     * Subtotal price for the bundle line (variant price \* quantity)
+     */
+    subtotal?: string;
+
+    variant?: Bundleline.Variant;
+  }
+
+  export namespace Bundleline {
+    export interface Variant {
+      /**
+       * Variant primary key
+       */
+      id?: number;
+
+      /**
+       * Cost of Goods Sold
+       */
+      cogs?: number;
+
+      /**
+       * Cost of Goods Sold before tax
+       */
+      cogs_bt?: number;
+
+      /**
+       * Timestamp when the variant was created
+       */
+      created_at?: string;
+
+      /**
+       * List of digital product files associated with the variant
+       */
+      digital_product_files?: Array<Variant.DigitalProductFile>;
+
+      /**
+       * Display name for the variant
+       */
+      display?: string;
+
+      /**
+       * Full name of the variant
+       */
+      fullname?: string;
+
+      /**
+       * List of image URLs associated with the variant
+       */
+      images?: Array<string>;
+
+      /**
+       * Mark variant as sellable
+       */
+      is_checked?: boolean;
+
+      /**
+       * Indicates if the variant is editable
+       */
+      is_editable?: boolean;
+
+      /**
+       * Type of the product item
+       */
+      item_type?: 'physical' | 'digital' | 'course';
+
+      /**
+       * Timestamp when the variant was last updated
+       */
+      last_updated_at?: string;
+
+      /**
+       * Additional metadata associated with the variant
+       */
+      metadata?: { [key: string]: unknown };
+
+      /**
+       * Full name of the variant
+       */
+      name?: string;
+
+      /**
+       * Value of the first product option
+       */
+      option1_value?: string;
+
+      /**
+       * Value of the second product option
+       */
+      option2_value?: string;
+
+      /**
+       * Value of the third product option
+       */
+      option3_value?: string;
+
+      /**
+       * Price of the variant
+       */
+      price?: number;
+
+      /**
+       * Price before tax
+       */
+      price_bt?: number;
+
+      product?: Variant.Product;
+
+      /**
+       * Name of the associated product
+       */
+      product_name?: string;
+
+      /**
+       * Reseller price of the variant
+       */
+      reseller_price?: number;
+
+      /**
+       * Reseller price before tax
+       */
+      reseller_price_bt?: number;
+
+      /**
+       * List of self file URLs associated with the variant
+       */
+      self_file_urls?: Array<string>;
+
+      /**
+       * Stock Keeping Unit
+       */
+      sku?: string;
+
+      /**
+       * Variant unique identifier
+       */
+      unique_id?: string;
+
+      /**
+       * Variant UUID
+       */
+      uuid?: string;
+
+      /**
+       * Weight of the variant in grams
+       */
+      weight?: number;
+    }
+
+    export namespace Variant {
+      export interface DigitalProductFile {
+        /**
+         * Digital product file primary key
+         */
+        id?: number;
+
+        /**
+         * MIME type of the digital product file
+         */
+        content_type?: string;
+
+        /**
+         * File name of the digital product file
+         */
+        name?: string;
+
+        /**
+         * Size of the digital product file in bytes
+         */
+        size_in_bytes?: number;
+
+        /**
+         * URL to access the digital product file
+         */
+        url?: string;
+      }
+
+      export interface Product {
+        /**
+         * Product ID
+         */
+        id?: number;
+
+        business?: Product.Business;
+
+        /**
+         * Description
+         */
+        description?: string;
+
+        /**
+         * Product name for display
+         */
+        display?: string;
+
+        /**
+         * Is Inventory
+         */
+        is_inventory?: boolean;
+
+        /**
+         * Is Multiple
+         */
+        is_multiple?: boolean;
+
+        /**
+         * Is Product Sharing
+         */
+        is_product_sharing?: boolean;
+
+        /**
+         * Type of the product item
+         */
+        item_type?: 'physical' | 'digital' | 'course';
+
+        /**
+         * Item Type Name
+         */
+        item_type_name?: string;
+
+        /**
+         * Product Name
+         */
+        name?: string;
+
+        /**
+         * Option 1 Name
+         */
+        option1_name?: string;
+
+        /**
+         * Option 2 Name
+         */
+        option2_name?: string;
+
+        /**
+         * Option 3 Name
+         */
+        option3_name?: string;
+
+        /**
+         * Product UUID
+         */
+        uuid?: string;
+      }
+
+      export namespace Product {
+        export interface Business {
+          /**
+           * Business ID
+           */
+          id?: number;
+
+          /**
+           * Name of the account holder
+           */
+          account_holder?: string;
+
+          /**
+           * Email address of the business
+           */
+          email?: string;
+
+          /**
+           * Is the business banned?
+           */
+          is_banned?: boolean;
+
+          /**
+           * URL to the business logo
+           */
+          logo?: string;
+
+          /**
+           * Unique identifier for the business
+           */
+          unique_id?: string;
+
+          /**
+           * Username of the business
+           */
+          username?: string;
+        }
+      }
+    }
+  }
+
+  export interface Business {
+    /**
+     * Business ID
+     */
+    id?: number;
+
+    /**
+     * Name of the account holder
+     */
+    account_holder?: string;
+
+    /**
+     * Email address of the business
+     */
+    email?: string;
+
+    /**
+     * Is the business banned?
+     */
+    is_banned?: boolean;
+
+    /**
+     * URL to the business logo
+     */
+    logo?: string;
+
+    /**
+     * Unique identifier for the business
+     */
+    unique_id?: string;
+
+    /**
+     * Username of the business
+     */
+    username?: string;
+  }
+
+  export interface CreatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
+
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
+
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
+
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
+  }
+
+  export interface Label {
+    /**
+     * Label name
+     */
+    name?: string;
+  }
+
+  export interface LastUpdatedBy {
+    /**
+     * User ID
+     */
+    id?: number;
+
+    /**
+     * Affiliate code of the user
+     */
+    aff_code?: string;
+
+    /**
+     * URL to user avatar
+     */
+    avatar?: string;
+
+    /**
+     * User email
+     */
+    email?: string;
+
+    /**
+     * User full name
+     */
+    fullname?: string;
+
+    /**
+     * User phone number
+     */
+    phone?: string;
+  }
+}
+
 export interface BundleCreateResponse {
   code?: number;
 
@@ -3767,6 +4457,7 @@ Bundles.Partners = Partners;
 
 export declare namespace Bundles {
   export {
+    type Bundle as Bundle,
     type BundleCreateResponse as BundleCreateResponse,
     type BundleRetrieveResponse as BundleRetrieveResponse,
     type BundleUpdateResponse as BundleUpdateResponse,

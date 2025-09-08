@@ -2,6 +2,7 @@
 
 export {
   Bundles,
+  type Bundle,
   type BundleCreateResponse,
   type BundleRetrieveResponse,
   type BundleUpdateResponse,
