@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.1 (2025-09-10)
+
+Full Changelog: [v1.2.0...v1.2.1](https://github.com/scalev-id/sdk/compare/v1.2.0...v1.2.1)
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([d17e206](https://github.com/scalev-id/sdk/commit/d17e206ce1397040cc81c9e51ae52818c4b408ff))
+
+
+### Chores
+
+* **mcp:** upload dxt as release asset ([795d611](https://github.com/scalev-id/sdk/commit/795d61111c0378a5a70ef787e15df07405617981))
+
 ## 1.2.0 (2025-09-08)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/scalev-id/sdk/compare/v1.1.0...v1.2.0)
