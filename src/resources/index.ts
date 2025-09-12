@@ -117,6 +117,9 @@ export {
   type ShippingCostGetCourierServicesResponse,
   type ShippingCostGetEstimatesResponse,
   type ShippingCostSearchWarehousesResponse,
+  type ShippingCostGetCourierServicesParams,
+  type ShippingCostGetEstimatesParams,
+  type ShippingCostSearchWarehousesParams,
 } from './shipping-costs';
 export {
   Stores,

@@ -22,6 +22,50 @@ export const tool: Tool = {
   inputSchema: {
     type: 'object',
     properties: {
+      location_id: {
+        type: 'integer',
+        description: 'ID of the destination location',
+      },
+      payment_method: {
+        type: 'string',
+        description: 'Order payment method',
+        enum: [
+          'va',
+          'qris',
+          'card',
+          'invoice',
+          'alfamart',
+          'ovo',
+          'dana',
+          'shopeepay',
+          'linkaja',
+          'gopay',
+          'no_payment',
+          'bank_transfer',
+          'marketplace',
+          'cod',
+        ],
+      },
+      store_id: {
+        type: 'integer',
+        description: 'ID of the store',
+      },
+      warehouse_id: {
+        type: 'integer',
+        description: 'ID of the warehouse',
+      },
+      weight: {
+        type: 'integer',
+        description: 'Weight of the shipment in grams',
+      },
+      is_show_all: {
+        type: 'boolean',
+        description: 'Whether to show all courier services or only those available',
+      },
+      postal_code: {
+        type: 'string',
+        description: 'Postal code of the destination',
+      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -29,14 +73,16 @@ export const tool: Tool = {
           'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
       },
     },
-    required: [],
+    required: ['location_id', 'payment_method', 'store_id', 'warehouse_id', 'weight'],
   },
   annotations: {},
 };
 
 export const handler = async (client: ScalevAPI, args: Record<string, unknown> | undefined) => {
-  const { jq_filter } = args as any;
-  return asTextContentResult(await maybeFilter(jq_filter, await client.shippingCosts.getCourierServices()));
+  const { jq_filter, ...body } = args as any;
+  return asTextContentResult(
+    await maybeFilter(jq_filter, await client.shippingCosts.getCourierServices(body)),
+  );
 };
 
 export default { metadata, tool, handler };

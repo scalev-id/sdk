@@ -22,6 +22,36 @@ export const tool: Tool = {
   inputSchema: {
     type: 'object',
     properties: {
+      destination_id: {
+        type: 'integer',
+        description: 'ID of the destination location',
+      },
+      store_id: {
+        type: 'integer',
+        description: 'ID of the store',
+      },
+      variants: {
+        type: 'array',
+        description: 'List of product variant ids and their quantities',
+        items: {
+          type: 'object',
+          properties: {
+            qty: {
+              type: 'integer',
+              description: 'Quantity of the product variant',
+            },
+            variant_id: {
+              type: 'integer',
+              description: 'ID of the product variant',
+            },
+          },
+          required: ['qty', 'variant_id'],
+        },
+      },
+      order_id: {
+        type: 'integer',
+        description: 'ID of the order (for update order)',
+      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -29,14 +59,14 @@ export const tool: Tool = {
           'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
       },
     },
-    required: [],
+    required: ['destination_id', 'store_id', 'variants'],
   },
   annotations: {},
 };
 
 export const handler = async (client: ScalevAPI, args: Record<string, unknown> | undefined) => {
-  const { jq_filter } = args as any;
-  return asTextContentResult(await maybeFilter(jq_filter, await client.shippingCosts.searchWarehouses()));
+  const { jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.shippingCosts.searchWarehouses(body)));
 };
 
 export default { metadata, tool, handler };

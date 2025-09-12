@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 (2025-09-12)
+
+Full Changelog: [v1.2.1...v1.3.0](https://github.com/scalev-id/sdk/compare/v1.2.1...v1.3.0)
+
+### Features
+
+* **api:** api update ([573d55f](https://github.com/scalev-id/sdk/commit/573d55f598f70312e977ae52db2401dd39bfa07d))
+* **api:** api update ([06fc811](https://github.com/scalev-id/sdk/commit/06fc8118d395b0b2feccde6ab812a45564f0666d))
+
+
+### Bug Fixes
+
+* **mcp:** fix uploading dxt release assets ([c962953](https://github.com/scalev-id/sdk/commit/c9629531faf059435c8b45ccb7ec126374419e36))
+
 ## 1.2.1 (2025-09-10)
 
 Full Changelog: [v1.2.0...v1.2.1](https://github.com/scalev-id/sdk/compare/v1.2.0...v1.2.1)

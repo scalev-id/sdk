@@ -63,7 +63,6 @@ export interface PaymentMethodListResponse {
   code?: number;
 
   data?: Array<
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -73,6 +72,7 @@ export interface PaymentMethodListResponse {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -112,7 +112,6 @@ export interface PaymentMethodAddParams {
    * Payment methods to add to the store
    */
   payment_methods?: Array<
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -122,6 +121,7 @@ export interface PaymentMethodAddParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -146,7 +146,6 @@ export interface PaymentMethodRemoveParams {
    * Order payment method
    */
   payment_method?:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -156,6 +155,7 @@ export interface PaymentMethodRemoveParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'

@@ -41,7 +41,7 @@ describe('resource paymentMethods', () => {
   test.skip('add: required and optional params', async () => {
     const response = await client.stores.paymentMethods.add(1, {
       payment_account_ids: [0],
-      payment_methods: ['gopay'],
+      payment_methods: ['va'],
       sub_payment_methods: ['BCA'],
     });
   });
@@ -64,7 +64,7 @@ describe('resource paymentMethods', () => {
     await expect(
       client.stores.paymentMethods.remove(
         1,
-        { payment_account_id: 0, payment_method: 'gopay', sub_payment_method: 'BCA' },
+        { payment_account_id: 0, payment_method: 'va', sub_payment_method: 'BCA' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(ScalevAPI.NotFoundError);

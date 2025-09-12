@@ -22,6 +22,57 @@ export const tool: Tool = {
   inputSchema: {
     type: 'object',
     properties: {
+      courier_codes: {
+        type: 'array',
+        description: 'List of courier codes',
+        items: {
+          type: 'string',
+          title: 'CourierCode',
+          description: 'Schema for a courier code',
+          enum: [
+            'ninja',
+            'ide',
+            'sicepat',
+            'sap',
+            'ncs',
+            'anteraja',
+            'sentral',
+            'jne',
+            'jnt',
+            'pos',
+            'lion',
+            'rex',
+            'jtl',
+            'tiki',
+            'rpx',
+            'pandu',
+            'wahana',
+            'pahala',
+            'jet',
+            'slis',
+            'dse',
+            'first',
+            'star',
+            'idl',
+          ],
+        },
+      },
+      location_id: {
+        type: 'integer',
+        description: 'ID of the destination location',
+      },
+      warehouse_id: {
+        type: 'integer',
+        description: 'ID of the warehouse',
+      },
+      weight: {
+        type: 'integer',
+        description: 'Weight of the shipment in grams',
+      },
+      postal_code: {
+        type: 'string',
+        description: 'Postal code of the destination',
+      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -29,14 +80,14 @@ export const tool: Tool = {
           'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
       },
     },
-    required: [],
+    required: ['courier_codes', 'location_id', 'warehouse_id', 'weight'],
   },
   annotations: {},
 };
 
 export const handler = async (client: ScalevAPI, args: Record<string, unknown> | undefined) => {
-  const { jq_filter } = args as any;
-  return asTextContentResult(await maybeFilter(jq_filter, await client.shippingCosts.getEstimates()));
+  const { jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.shippingCosts.getEstimates(body)));
 };
 
 export default { metadata, tool, handler };

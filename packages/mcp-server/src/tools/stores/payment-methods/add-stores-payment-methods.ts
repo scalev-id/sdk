@@ -39,7 +39,6 @@ export const tool: Tool = {
           type: 'string',
           description: 'Order payment method',
           enum: [
-            'gopay',
             'va',
             'qris',
             'card',
@@ -49,6 +48,7 @@ export const tool: Tool = {
             'dana',
             'shopeepay',
             'linkaja',
+            'gopay',
             'no_payment',
             'bank_transfer',
             'marketplace',

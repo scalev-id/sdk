@@ -39,8 +39,11 @@ import {
   ProductTaxonomyRetrieveResponse,
 } from './resources/product-taxonomies';
 import {
+  ShippingCostGetCourierServicesParams,
   ShippingCostGetCourierServicesResponse,
+  ShippingCostGetEstimatesParams,
   ShippingCostGetEstimatesResponse,
+  ShippingCostSearchWarehousesParams,
   ShippingCostSearchWarehousesResponse,
   ShippingCosts,
 } from './resources/shipping-costs';
@@ -1051,6 +1054,9 @@ export declare namespace ScalevAPI {
     type ShippingCostGetCourierServicesResponse as ShippingCostGetCourierServicesResponse,
     type ShippingCostGetEstimatesResponse as ShippingCostGetEstimatesResponse,
     type ShippingCostSearchWarehousesResponse as ShippingCostSearchWarehousesResponse,
+    type ShippingCostGetCourierServicesParams as ShippingCostGetCourierServicesParams,
+    type ShippingCostGetEstimatesParams as ShippingCostGetEstimatesParams,
+    type ShippingCostSearchWarehousesParams as ShippingCostSearchWarehousesParams,
   };
 
   export {
