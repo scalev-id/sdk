@@ -658,7 +658,6 @@ export namespace OrderCreateResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -668,6 +667,7 @@ export namespace OrderCreateResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -2416,7 +2416,6 @@ export namespace OrderRetrieveResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -2426,6 +2425,7 @@ export namespace OrderRetrieveResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -4174,7 +4174,6 @@ export namespace OrderUpdateResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -4184,6 +4183,7 @@ export namespace OrderUpdateResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -5833,7 +5833,6 @@ export interface OrderListResponse {
    * Order payment method
    */
   payment_method?:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -5843,6 +5842,7 @@ export interface OrderListResponse {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -7017,7 +7017,6 @@ export namespace OrderCheckPaymentResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -7027,6 +7026,7 @@ export namespace OrderCheckPaymentResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -8775,7 +8775,6 @@ export namespace OrderCheckSettlementResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -8785,6 +8784,7 @@ export namespace OrderCheckSettlementResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -10541,7 +10541,6 @@ export namespace OrderCreateShipmentStatusHistoryResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -10551,6 +10550,7 @@ export namespace OrderCreateShipmentStatusHistoryResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -12299,7 +12299,6 @@ export namespace OrderDuplicateResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -12309,6 +12308,7 @@ export namespace OrderDuplicateResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -14579,7 +14579,6 @@ export namespace OrderUpdateCustomerResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -14589,6 +14588,7 @@ export namespace OrderUpdateCustomerResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -16337,7 +16337,6 @@ export namespace OrderUpdateShipmentResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -16347,6 +16346,7 @@ export namespace OrderUpdateShipmentResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -18122,7 +18122,6 @@ export namespace OrderUpdateTagsResponse {
      * Order payment method
      */
     payment_method?:
-      | 'gopay'
       | 'va'
       | 'qris'
       | 'card'
@@ -18132,6 +18131,7 @@ export namespace OrderUpdateTagsResponse {
       | 'dana'
       | 'shopeepay'
       | 'linkaja'
+      | 'gopay'
       | 'no_payment'
       | 'bank_transfer'
       | 'marketplace'
@@ -19807,7 +19807,6 @@ export interface OrderCreateParams {
    * Order payment method
    */
   payment_method?:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -19817,6 +19816,7 @@ export interface OrderCreateParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -20004,7 +20004,6 @@ export interface OrderUpdateParams {
    * Order payment method
    */
   payment_method?:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -20014,6 +20013,7 @@ export interface OrderUpdateParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -20353,7 +20353,6 @@ export interface OrderChangeStatusParams {
    * Order payment method
    */
   payment_method?:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -20363,6 +20362,7 @@ export interface OrderChangeStatusParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -20456,7 +20456,6 @@ export interface OrderDuplicateParams {
    * Order payment method
    */
   payment_method?:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -20466,6 +20465,7 @@ export interface OrderDuplicateParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'

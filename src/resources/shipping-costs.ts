@@ -496,7 +496,6 @@ export interface ShippingCostGetCourierServicesParams {
    * Order payment method
    */
   payment_method:
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -506,6 +505,7 @@ export interface ShippingCostGetCourierServicesParams {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
