@@ -9,24 +9,33 @@ export class ShippingCosts extends APIResource {
    * Retrieve available courier services based on warehouse, destination, payment
    * method, and package weight.
    */
-  getCourierServices(options?: RequestOptions): APIPromise<ShippingCostGetCourierServicesResponse> {
-    return this._client.post('/v2/shipping-costs/search-courier-service', options);
+  getCourierServices(
+    body: ShippingCostGetCourierServicesParams,
+    options?: RequestOptions,
+  ): APIPromise<ShippingCostGetCourierServicesResponse> {
+    return this._client.post('/v2/shipping-costs/search-courier-service', { body, ...options });
   }
 
   /**
    * Retrieve shipping cost estimates based on origin, destination, courier services,
    * and package weight.
    */
-  getEstimates(options?: RequestOptions): APIPromise<ShippingCostGetEstimatesResponse> {
-    return this._client.post('/v2/shipping-costs', options);
+  getEstimates(
+    body: ShippingCostGetEstimatesParams,
+    options?: RequestOptions,
+  ): APIPromise<ShippingCostGetEstimatesResponse> {
+    return this._client.post('/v2/shipping-costs', { body, ...options });
   }
 
   /**
    * Search for warehouses based on order details, store, destination, and product
    * variants.
    */
-  searchWarehouses(options?: RequestOptions): APIPromise<ShippingCostSearchWarehousesResponse> {
-    return this._client.post('/v2/shipping-costs/search-warehouse', options);
+  searchWarehouses(
+    body: ShippingCostSearchWarehousesParams,
+    options?: RequestOptions,
+  ): APIPromise<ShippingCostSearchWarehousesResponse> {
+    return this._client.post('/v2/shipping-costs/search-warehouse', { body, ...options });
   }
 }
 
@@ -477,10 +486,152 @@ export namespace ShippingCostSearchWarehousesResponse {
   }
 }
 
+export interface ShippingCostGetCourierServicesParams {
+  /**
+   * ID of the destination location
+   */
+  location_id: number;
+
+  /**
+   * Order payment method
+   */
+  payment_method:
+    | 'gopay'
+    | 'va'
+    | 'qris'
+    | 'card'
+    | 'invoice'
+    | 'alfamart'
+    | 'ovo'
+    | 'dana'
+    | 'shopeepay'
+    | 'linkaja'
+    | 'no_payment'
+    | 'bank_transfer'
+    | 'marketplace'
+    | 'cod';
+
+  /**
+   * ID of the store
+   */
+  store_id: number;
+
+  /**
+   * ID of the warehouse
+   */
+  warehouse_id: number;
+
+  /**
+   * Weight of the shipment in grams
+   */
+  weight: number;
+
+  /**
+   * Whether to show all courier services or only those available
+   */
+  is_show_all?: boolean;
+
+  /**
+   * Postal code of the destination
+   */
+  postal_code?: string;
+}
+
+export interface ShippingCostGetEstimatesParams {
+  /**
+   * List of courier codes
+   */
+  courier_codes: Array<
+    | 'ninja'
+    | 'ide'
+    | 'sicepat'
+    | 'sap'
+    | 'ncs'
+    | 'anteraja'
+    | 'sentral'
+    | 'jne'
+    | 'jnt'
+    | 'pos'
+    | 'lion'
+    | 'rex'
+    | 'jtl'
+    | 'tiki'
+    | 'rpx'
+    | 'pandu'
+    | 'wahana'
+    | 'pahala'
+    | 'jet'
+    | 'slis'
+    | 'dse'
+    | 'first'
+    | 'star'
+    | 'idl'
+  >;
+
+  /**
+   * ID of the destination location
+   */
+  location_id: number;
+
+  /**
+   * ID of the warehouse
+   */
+  warehouse_id: number;
+
+  /**
+   * Weight of the shipment in grams
+   */
+  weight: number;
+
+  /**
+   * Postal code of the destination
+   */
+  postal_code?: string;
+}
+
+export interface ShippingCostSearchWarehousesParams {
+  /**
+   * ID of the destination location
+   */
+  destination_id: number;
+
+  /**
+   * ID of the store
+   */
+  store_id: number;
+
+  /**
+   * List of product variant ids and their quantities
+   */
+  variants: Array<ShippingCostSearchWarehousesParams.Variant>;
+
+  /**
+   * ID of the order (for update order)
+   */
+  order_id?: number;
+}
+
+export namespace ShippingCostSearchWarehousesParams {
+  export interface Variant {
+    /**
+     * Quantity of the product variant
+     */
+    qty: number;
+
+    /**
+     * ID of the product variant
+     */
+    variant_id: number;
+  }
+}
+
 export declare namespace ShippingCosts {
   export {
     type ShippingCostGetCourierServicesResponse as ShippingCostGetCourierServicesResponse,
     type ShippingCostGetEstimatesResponse as ShippingCostGetEstimatesResponse,
     type ShippingCostSearchWarehousesResponse as ShippingCostSearchWarehousesResponse,
+    type ShippingCostGetCourierServicesParams as ShippingCostGetCourierServicesParams,
+    type ShippingCostGetEstimatesParams as ShippingCostGetEstimatesParams,
+    type ShippingCostSearchWarehousesParams as ShippingCostSearchWarehousesParams,
   };
 }

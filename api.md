@@ -263,9 +263,9 @@ Types:
 
 Methods:
 
-- <code title="post /v2/shipping-costs/search-courier-service">client.shippingCosts.<a href="./src/resources/shipping-costs.ts">getCourierServices</a>() -> ShippingCostGetCourierServicesResponse</code>
-- <code title="post /v2/shipping-costs">client.shippingCosts.<a href="./src/resources/shipping-costs.ts">getEstimates</a>() -> ShippingCostGetEstimatesResponse</code>
-- <code title="post /v2/shipping-costs/search-warehouse">client.shippingCosts.<a href="./src/resources/shipping-costs.ts">searchWarehouses</a>() -> ShippingCostSearchWarehousesResponse</code>
+- <code title="post /v2/shipping-costs/search-courier-service">client.shippingCosts.<a href="./src/resources/shipping-costs.ts">getCourierServices</a>({ ...params }) -> ShippingCostGetCourierServicesResponse</code>
+- <code title="post /v2/shipping-costs">client.shippingCosts.<a href="./src/resources/shipping-costs.ts">getEstimates</a>({ ...params }) -> ShippingCostGetEstimatesResponse</code>
+- <code title="post /v2/shipping-costs/search-warehouse">client.shippingCosts.<a href="./src/resources/shipping-costs.ts">searchWarehouses</a>({ ...params }) -> ShippingCostSearchWarehousesResponse</code>
 
 # Stores
 
