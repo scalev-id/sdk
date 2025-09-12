@@ -9,7 +9,7 @@ describe('resource shippingCosts', () => {
   test.skip('getCourierServices: only required params', async () => {
     const responsePromise = client.shippingCosts.getCourierServices({
       location_id: 0,
-      payment_method: 'gopay',
+      payment_method: 'va',
       store_id: 0,
       warehouse_id: 0,
       weight: 0,
@@ -27,7 +27,7 @@ describe('resource shippingCosts', () => {
   test.skip('getCourierServices: required and optional params', async () => {
     const response = await client.shippingCosts.getCourierServices({
       location_id: 0,
-      payment_method: 'gopay',
+      payment_method: 'va',
       store_id: 0,
       warehouse_id: 0,
       weight: 0,

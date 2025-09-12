@@ -27,7 +27,7 @@ export namespace BusinessRetrieveEnabledEpaymentsResponse {
      * List of enabled payment methods
      */
     payment_methods?: Array<
-      'gopay' | 'va' | 'qris' | 'card' | 'invoice' | 'alfamart' | 'ovo' | 'dana' | 'shopeepay' | 'linkaja'
+      'va' | 'qris' | 'card' | 'invoice' | 'alfamart' | 'ovo' | 'dana' | 'shopeepay' | 'linkaja' | 'gopay'
     >;
 
     /**
