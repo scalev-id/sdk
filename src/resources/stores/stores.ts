@@ -610,7 +610,6 @@ export interface StoreCreateResponse {
    * Payment methods available in the store
    */
   payment_methods?: Array<
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -620,6 +619,7 @@ export interface StoreCreateResponse {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -2203,7 +2203,6 @@ export interface StoreRetrieveResponse {
    * Payment methods available in the store
    */
   payment_methods?: Array<
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -2213,6 +2212,7 @@ export interface StoreRetrieveResponse {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -3796,7 +3796,6 @@ export interface StoreUpdateResponse {
    * Payment methods available in the store
    */
   payment_methods?: Array<
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -3806,6 +3805,7 @@ export interface StoreUpdateResponse {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'
@@ -5729,7 +5729,6 @@ export interface StoreListSimplifiedResponse {
    * Payment methods available in the store
    */
   payment_methods?: Array<
-    | 'gopay'
     | 'va'
     | 'qris'
     | 'card'
@@ -5739,6 +5738,7 @@ export interface StoreListSimplifiedResponse {
     | 'dana'
     | 'shopeepay'
     | 'linkaja'
+    | 'gopay'
     | 'no_payment'
     | 'bank_transfer'
     | 'marketplace'

@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.3.0 (2025-09-19)
+
+Full Changelog: [v1.2.1...v1.3.0](https://github.com/scalev-id/sdk/compare/v1.2.1...v1.3.0)
+
+### Features
+
+* **api:** api update ([573d55f](https://github.com/scalev-id/sdk/commit/573d55f598f70312e977ae52db2401dd39bfa07d))
+* **api:** api update ([06fc811](https://github.com/scalev-id/sdk/commit/06fc8118d395b0b2feccde6ab812a45564f0666d))
+* **mcp:** add docs search tool ([c22afd8](https://github.com/scalev-id/sdk/commit/c22afd8c8dda4a4ca785cd1268fb683864c3e10a))
+
+
+### Bug Fixes
+
+* **ci:** set permissions for DXT publish action ([945ffbe](https://github.com/scalev-id/sdk/commit/945ffbe50049f45c6b1e5af8c2ea46837181621a))
+* **mcp:** fix uploading dxt release assets ([c962953](https://github.com/scalev-id/sdk/commit/c9629531faf059435c8b45ccb7ec126374419e36))
+
+
+### Chores
+
+* **codegen:** internal codegen update ([22e556d](https://github.com/scalev-id/sdk/commit/22e556d04847ac22864e15d95e17d29f47262639))
+* **internal:** gitignore .mcpb files ([a1a9175](https://github.com/scalev-id/sdk/commit/a1a917530d8650146323d5fedbd14241768065ce))
+* **mcp:** rename dxt to mcpb ([c9ba890](https://github.com/scalev-id/sdk/commit/c9ba890fbfdc7667fde76ecd308cc3e77bc8f96f))
+
 ## 1.2.1 (2025-09-10)
 
 Full Changelog: [v1.2.0...v1.2.1](https://github.com/scalev-id/sdk/compare/v1.2.0...v1.2.1)
