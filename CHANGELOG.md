@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.1 (2025-09-20)
+
+Full Changelog: [v1.3.0...v1.3.1](https://github.com/scalev-id/sdk/compare/v1.3.0...v1.3.1)
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([0d5bbcc](https://github.com/scalev-id/sdk/commit/0d5bbcc951927af12cd84a51ab6621b0a88b3396))
+
 ## 1.3.0 (2025-09-19)
 
 Full Changelog: [v1.2.1...v1.3.0](https://github.com/scalev-id/sdk/compare/v1.2.1...v1.3.0)
