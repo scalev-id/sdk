@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "scalev-mcp/*": ["dist/src/*"],
-      "scalev-mcp": ["dist/src/index.ts"]
+      "scalev-mcp/*": ["./dist/src/*"],
+      "scalev-mcp": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
