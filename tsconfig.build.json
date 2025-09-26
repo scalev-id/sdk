@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "scalev-api/*": ["dist/src/*"],
-      "scalev-api": ["dist/src/index.ts"]
+      "scalev-api/*": ["./dist/src/*"],
+      "scalev-api": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
