@@ -7,10 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "scalev-mcp/*": ["src/*"],
-      "scalev-mcp": ["src/index.ts"]
+      "scalev-mcp/*": ["./src/*"],
+      "scalev-mcp": ["./src/index.ts"]
     },
     "noEmit": true,
 
