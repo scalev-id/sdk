@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   tags: [],
   httpMethod: 'get',
   httpPath: '/v2/businesses/enabled-epayments',
-  operationId: 'ScalevApiWeb.BusinessGlobalController.get_enabled_epayments',
+  operationId: 'ScalevApiWeb.BusinessGlobalController.get_enabled_payments (2)',
 };
 
 export const tool: Tool = {
