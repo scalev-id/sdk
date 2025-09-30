@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.4.0 (2025-09-30)
+
+Full Changelog: [v1.3.0...v1.4.0](https://github.com/scalev-id/sdk/compare/v1.3.0...v1.4.0)
+
+### Features
+
+* **mcp:** add option for including docs tools ([ed2d97c](https://github.com/scalev-id/sdk/commit/ed2d97ce34379f793deecdaa36e5fe75e8a5b8e0))
+* **mcp:** enable experimental docs search tool ([d9e14d0](https://github.com/scalev-id/sdk/commit/d9e14d0a3fc140f193f9899094c37b721d0f327e))
+
+
+### Bug Fixes
+
+* **mcp:** fix cli argument parsing logic ([319e4aa](https://github.com/scalev-id/sdk/commit/319e4aabababe44bb9658800c4a0c7ed8d17c984))
+* **mcp:** resolve a linting issue in server code ([cfd3212](https://github.com/scalev-id/sdk/commit/cfd321205bbef47827e441cf8fe2231f8d3b0777))
+
+
+### Performance Improvements
+
+* faster formatting ([fff4b08](https://github.com/scalev-id/sdk/commit/fff4b08be61c48d54df8f6adcf2b06471261ef55))
+
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([0d5bbcc](https://github.com/scalev-id/sdk/commit/0d5bbcc951927af12cd84a51ab6621b0a88b3396))
+* improve example values ([e69bef7](https://github.com/scalev-id/sdk/commit/e69bef79753f9501a11ddc18db8b33d09aa3cbb3))
+* **internal:** codegen related update ([9904f46](https://github.com/scalev-id/sdk/commit/9904f467c634b3bbf4ab04536b40cc9dc0bbff30))
+* **internal:** fix incremental formatting in some cases ([1fa150e](https://github.com/scalev-id/sdk/commit/1fa150e0324ca874cbff32f33e2c05713a37a0f0))
+* **internal:** ignore .eslintcache ([f715178](https://github.com/scalev-id/sdk/commit/f715178a7a163cfcfda5eb291927a220b16a3554))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([aed8ce9](https://github.com/scalev-id/sdk/commit/aed8ce96fbe25dca4b4cace93f53d05acf1732d2))
+* **mcp:** allow pointing `docs_search` tool at other URLs ([abefd5c](https://github.com/scalev-id/sdk/commit/abefd5c6a80c44006d10eaeaa87f5153f41c0f31))
+* update lockfile ([067de9a](https://github.com/scalev-id/sdk/commit/067de9a5088b1dc05fa131e58dc33baf3ae190ea))
+
 ## 1.3.0 (2025-09-19)
 
 Full Changelog: [v1.2.1...v1.3.0](https://github.com/scalev-id/sdk/compare/v1.2.1...v1.3.0)
