@@ -1,6 +1,6 @@
 {
   "name": "scalev-api",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "The official TypeScript library for the Scalev API API",
   "author": "Scalev API <tech@scalev.id>",
   "types": "dist/index.d.ts",
