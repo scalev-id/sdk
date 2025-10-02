@@ -351,22 +351,23 @@ export class ScalevAPI {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    return;
+    if (this.apiKey && values.get('authorization')) {
+      return;
+    }
+    if (nulls.has('authorization')) {
+      return;
+    }
+
+    throw new Error(
+      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
+    );
   }
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([await this.bearerAPIKeyAuth(opts), await this.oauth2Auth(opts)]);
-  }
-
-  protected async bearerAPIKeyAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     if (this.apiKey == null) {
       return undefined;
     }
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
-  }
-
-  protected async oauth2Auth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return undefined;
   }
 
   /**
