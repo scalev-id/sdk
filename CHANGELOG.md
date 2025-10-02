@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.5.0 (2025-10-02)
+
+Full Changelog: [v1.4.0...v1.5.0](https://github.com/scalev-id/sdk/compare/v1.4.0...v1.5.0)
+
+### Features
+
+* **api:** api update ([1f7710f](https://github.com/scalev-id/sdk/commit/1f7710fc006322ed620802119babd7ce4a0553f7))
+
+
+### Chores
+
+* **internal:** codegen related update ([0920320](https://github.com/scalev-id/sdk/commit/0920320a6a661e4845e4db667a9b90a98131416f))
+* **internal:** remove .eslintcache ([3d8d678](https://github.com/scalev-id/sdk/commit/3d8d678e46bd214df9a7799fd3d0025511683044))
+
 ## 1.4.0 (2025-09-30)
 
 Full Changelog: [v1.3.0...v1.4.0](https://github.com/scalev-id/sdk/compare/v1.3.0...v1.4.0)
