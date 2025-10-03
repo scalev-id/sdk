@@ -212,44 +212,14 @@ export namespace ProductListResponse {
     name?: string;
 
     /**
-     * Color associated with the first product option
-     */
-    option1_color?: string;
-
-    /**
-     * Icon URL for the first product option
-     */
-    option1_icon_url?: string;
-
-    /**
      * Value of the first product option
      */
     option1_value?: string;
 
     /**
-     * Color associated with the second product option
-     */
-    option2_color?: string;
-
-    /**
-     * Icon URL for the second product option
-     */
-    option2_icon_url?: string;
-
-    /**
      * Value of the second product option
      */
     option2_value?: string;
-
-    /**
-     * Color associated with the third product option
-     */
-    option3_color?: string;
-
-    /**
-     * Icon URL for the third product option
-     */
-    option3_icon_url?: string;
 
     /**
      * Value of the third product option
