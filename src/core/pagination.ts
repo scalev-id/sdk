@@ -216,7 +216,7 @@ export class PagePagination<Item> extends AbstractPage<Item> implements PagePagi
   }
 
   nextPageRequestOptions(): PageRequestOptions | null {
-    const currentPage = this.data?.page;
+    const currentPage = this.data?.page ?? 1;
 
     return {
       ...this.options,
