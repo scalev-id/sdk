@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'generate_bundles_follow_up_chats',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nGenerates a new follow up chat for a bundle.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  title: 'BlankSuccessResponse',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nGenerates a new follow up chat for a bundle.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/follow_up_chat_generate_response',\n  $defs: {\n    follow_up_chat_generate_response: {\n      type: 'object',\n      title: 'BlankSuccessResponse',\n      properties: {\n        code: {\n          type: 'integer'\n        },\n        status: {\n          type: 'string'\n        }\n      }\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {

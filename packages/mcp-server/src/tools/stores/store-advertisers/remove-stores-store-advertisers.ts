@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'remove_stores_store_advertisers',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nDissociates a specific business user as a store advertiser from a store.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  title: 'BlankSuccessResponse',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nDissociates a specific business user as a store advertiser from a store.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/store_advertiser_remove_response',\n  $defs: {\n    store_advertiser_remove_response: {\n      type: 'object',\n      title: 'BlankSuccessResponse',\n      properties: {\n        code: {\n          type: 'integer'\n        },\n        status: {\n          type: 'string'\n        }\n      }\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {

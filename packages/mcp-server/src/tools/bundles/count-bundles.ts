@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'count_bundles',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRetrieves the total count of bundles for the authenticated business. This endpoint does not support any filtering or pagination.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    data: {\n      type: 'object',\n      title: 'BundleCount',\n      properties: {\n        count: {\n          type: 'integer',\n          description: 'Total number of bundles'\n        }\n      }\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRetrieves the total count of bundles for the authenticated business. This endpoint does not support any filtering or pagination.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/bundle_count_response',\n  $defs: {\n    bundle_count_response: {\n      type: 'object',\n      properties: {\n        code: {\n          type: 'integer'\n        },\n        data: {\n          type: 'object',\n          title: 'BundleCount',\n          properties: {\n            count: {\n              type: 'integer',\n              description: 'Total number of bundles'\n            }\n          }\n        },\n        status: {\n          type: 'string'\n        }\n      }\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {

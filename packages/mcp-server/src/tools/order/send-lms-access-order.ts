@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'send_lms_access_order',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nSend LMS access email to customer.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  title: 'BlankSuccessResponse',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nSend LMS access email to customer.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/order_send_lms_access_response',\n  $defs: {\n    order_send_lms_access_response: {\n      type: 'object',\n      title: 'BlankSuccessResponse',\n      properties: {\n        code: {\n          type: 'integer'\n        },\n        status: {\n          type: 'string'\n        }\n      }\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {

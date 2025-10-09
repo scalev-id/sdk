@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'list_tags_order',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRetrieve a list of tags associated with orders.\n\n# Response Schema\n```json\n{\n  type: 'object',\n  properties: {\n    code: {\n      type: 'integer'\n    },\n    data: {\n      type: 'array',\n      title: 'TagNameList',\n      description: 'List of tag names',\n      items: {\n        type: 'string',\n        description: 'Tag Name'\n      }\n    },\n    status: {\n      type: 'string'\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRetrieve a list of tags associated with orders.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/order_list_tags_response',\n  $defs: {\n    order_list_tags_response: {\n      type: 'object',\n      properties: {\n        code: {\n          type: 'integer'\n        },\n        data: {\n          type: 'array',\n          title: 'TagNameList',\n          description: 'List of tag names',\n          items: {\n            type: 'string',\n            description: 'Tag Name'\n          }\n        },\n        status: {\n          type: 'string'\n        }\n      }\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {
